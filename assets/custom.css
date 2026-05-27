@@ -1,0 +1,45 @@
+/* Grande Ateu — classes customizadas (cores e fontes do projeto) */
+
+/* Backgrounds */
+.bg-fundo        { background-color: #F9F7F4 }
+.bg-fundo-sec    { background-color: #EFEFEF }
+.bg-acento       { background-color: #1A3A5C }
+.hover\:bg-acento:hover { background-color: #1A3A5C }
+.hover\:bg-blue-50:hover { background-color: #eff6ff }
+
+/* Texto */
+.text-texto      { color: #1C1C1E }
+.text-texto-sec  { color: #6B6B6B }
+.text-acento     { color: #1A3A5C }
+.text-link       { color: #2563EB }
+.hover\:text-acento:hover { color: #1A3A5C }
+.hover\:text-white:hover  { color: #fff }
+.group:hover .group-hover\:text-acento { color: #1A3A5C }
+
+/* Bordas */
+.border-borda    { border-color: #DCDCDC }
+.border-acento   { border-color: #1A3A5C }
+.hover\:border-acento:hover { border-color: #1A3A5C }
+.divide-borda > :not([hidden]) ~ :not([hidden]) { --tw-divide-opacity: 1; border-color: #DCDCDC }
+
+/* Azuis do footer */
+.text-blue-100   { color: #dbeafe }
+.text-blue-200   { color: #bfdbfe }
+.text-blue-300   { color: #93c5fd }
+.border-blue-800 { border-color: #1e40af }
+
+/* Fontes — sobrescreve os padrões do Tailwind v2 */
+.font-serif { font-family: 'Playfair Display', Georgia, serif }
+.font-sans  { font-family: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif }
+
+/* Transição */
+.transition-colors {
+  transition-property: color, background-color, border-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms
+}
+.transition-shadow {
+  transition-property: box-shadow;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms
+}
