@@ -36,36 +36,30 @@
   <header class="bg-fundo border-b border-borda sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="flex items-center justify-between h-16" aria-label="Navegação principal">
-        <a href="/" class="font-serif text-xl font-bold text-acento">Grande Ateu <span class="hidden sm:inline text-texto-sec text-sm font-sans font-normal">| A Bíblia</span></a>
+        <!-- Esquerda: hamburguer (mobile) + logo -->
+        <div class="flex items-center gap-3">
+          <button id="menu-btn" class="md:hidden p-2 -ml-2" aria-label="Abrir menu" aria-expanded="false">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <a href="/" class="font-serif text-xl font-bold text-acento">Grande Ateu <span class="text-texto-sec text-sm font-sans font-normal">| A Bíblia</span></a>
+        </div>
+        <!-- Desktop: nav links -->
         <ul class="hidden md:flex items-center gap-6 text-sm font-semibold text-texto">
           <li><a href="/t1/" class="hover:text-acento transition-colors">Tomo I</a></li>
           <li><a href="/t2/" class="hover:text-acento transition-colors">Tomo II</a></li>
           <li><a href="/t3/" class="hover:text-acento transition-colors">Tomo III</a></li>
           <li><a href="/faq/" class="hover:text-acento transition-colors">FAQ</a></li>
           <li><a href="/sobre/" class="hover:text-acento transition-colors">Sobre</a></li>
-          <li class="text-texto-sec text-xs">
-            <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https://grandeateu.com" target="_blank" rel="noopener" class="hover:text-acento">EN</a>
-            <span class="mx-1">|</span>
-            <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https://grandeateu.com" target="_blank" rel="noopener" class="hover:text-acento">ES</a>
+          <!-- Bandeiras -->
+          <li class="flex items-center gap-2">
+            <a href="/" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https://grandeateu.com" target="_blank" rel="noopener" title="English"><img src="/assets/flags/us.svg" alt="EN" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https://grandeateu.com" target="_blank" rel="noopener" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https://grandeateu.com" target="_blank" rel="noopener" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https://grandeateu.com" target="_blank" rel="noopener" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="24" height="17" style="border-radius:2px;display:block;"></a>
           </li>
         </ul>
-        <button id="menu-btn" class="md:hidden p-2" aria-label="Abrir menu" aria-expanded="false">
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
       </nav>
-      <div id="menu-mobile" class="hidden md:hidden pb-4">
-        <ul class="flex flex-col gap-3 text-sm font-semibold">
-          <li><a href="/t1/">Tomo I — Ruptura</a></li>
-          <li><a href="/t2/">Tomo II — Edificação</a></li>
-          <li><a href="/t3/">Tomo III — Consolidação</a></li>
-          <li><a href="/faq/">FAQ</a></li>
-          <li><a href="/sobre/">Sobre</a></li>
-          <li class="flex gap-3 text-texto-sec">
-            <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https://grandeateu.com" target="_blank" rel="noopener">EN</a>
-            <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https://grandeateu.com" target="_blank" rel="noopener">ES</a>
-          </li>
-        </ul>
-      </div>
     </div>
   </header>
 
@@ -218,9 +212,19 @@
   </footer>
 
   <script>
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu-mobile');
-    btn.addEventListener('click', () => { const aberto = menu.classList.toggle('hidden'); btn.setAttribute('aria-expanded', !aberto); });
+    // ─── DEEP LINK PARA O APP ──────────────────────────────────────
+    // Mude para false para desativar o redirecionamento
+    const DEEP_LINK_ATIVO = true;
+    const APP_PACKAGE = 'com.anthropic.claude';
+    const STORE_URL   = 'https://play.google.com/store/apps/details?id=com.anthropic.claude&hl=pt_BR';
+
+    // Só dispara em Android real — evita ERR_UNKNOWN_URL_SCHEME no desktop
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (DEEP_LINK_ATIVO && isAndroid) {
+      const intentUrl = `intent://#Intent;package=${APP_PACKAGE};S.browser_fallback_url=${encodeURIComponent(STORE_URL)};end`;
+      window.location.href = intentUrl;
+    }
   </script>
+  <script src="/assets/mobile.js"></script>
 </body>
 </html>
