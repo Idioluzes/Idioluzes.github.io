@@ -28,10 +28,10 @@
     </ul>
     <div style="padding:16px 20px;border-top:1px solid #DCDCDC;display:flex;gap:14px;align-items:center;">
       <a href="/" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fidioluzes.github.io%2F" target="_blank" rel="noopener" title="English"><img src="/assets/flags/us.svg" alt="EN" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https%3A%2F%2Fidioluzes.github.io%2F" target="_blank" rel="noopener" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https%3A%2F%2Fidioluzes.github.io%2F" target="_blank" rel="noopener" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https%3A%2F%2Fidioluzes.github.io%2F" target="_blank" rel="noopener" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fidioluzes.github.io%2F" title="English"><img src="/assets/flags/us.svg" alt="EN" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
     </div>
   </nav>
 
