@@ -28,9 +28,60 @@
 .text-blue-300   { color: #93c5fd }
 .border-blue-800 { border-color: #1e40af }
 
+/* ── @font-face — todas as fontes são locais (sem Google Fonts CDN) ── */
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/assets/fontes/PlayfairDisplay-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/assets/fontes/PlayfairDisplay-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/assets/fontes/PlayfairDisplay-Italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  src: url('/assets/fontes/SourceSans3-Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  src: url('/assets/fontes/SourceSans3-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  src: url('/assets/fontes/SourceSans3-SemiBold.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Spectral';
+  src: url('/assets/fontes/Spectral-Medium.ttf') format('truetype');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Neuton';
+  src: url('/assets/fontes/Neuton-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'PT Serif';
+  src: url('/assets/fontes/PTSerif-Regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
 /* Fontes — sobrescreve os padrões do Tailwind v2 */
-.font-serif { font-family: 'Playfair Display', Georgia, serif }
-.font-sans  { font-family: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif }
+.font-serif    { font-family: 'Playfair Display', Georgia, serif }
+.font-sans     { font-family: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif }
+.font-spectral { font-family: 'Spectral', Georgia, serif }
+.font-neuton   { font-family: 'Neuton', Georgia, serif }
+.font-pt-serif { font-family: 'PT Serif', Georgia, serif }
 
 /* Transição */
 .transition-colors {
