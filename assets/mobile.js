@@ -27,11 +27,11 @@
       <li><a href="#" data-modal="modal-config" style="display:block;padding:14px 20px;color:#6B6B6B;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;">Configurações</a></li>
     </ul>
     <div style="padding:16px 20px;border-top:1px solid #DCDCDC;display:flex;gap:14px;align-items:center;">
-      <a href="/" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fidioluzes.github.io%2F" title="English"><img src="/assets/flags/us.svg" alt="EN" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https%3A%2F%2Fidioluzes.github.io%2F" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="#" data-translate="pt" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="#" data-translate="en" title="English"><img src="/assets/flags/us.svg" alt="EN" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="#" data-translate="es" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="#" data-translate="de" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <a href="#" data-translate="fr" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
     </div>
   </nav>
 
@@ -189,6 +189,49 @@
 
   fixHamburgerPosition();
   window.addEventListener('resize', fixHamburgerPosition);
+
+  // ── LINKS DE BANDEIRA — dinâmicos ────────────────────────────────
+  // Funciona tanto no site original quanto dentro do translate.goog.
+  // No translate.goog: troca só o parâmetro _x_tr_tl da URL atual.
+  // Bandeira BR: volta sempre ao site original.
+
+  var SITE_ORIGEM = 'https://idioluzes.github.io';
+
+  function getTranslateUrl(lang) {
+    var noTranslate = window.location.hostname.endsWith('.translate.goog');
+
+    // Bandeira Brasil → volta ao original
+    if (lang === 'pt') {
+      return noTranslate
+        ? SITE_ORIGEM + window.location.pathname
+        : '/';
+    }
+
+    // Já dentro do translate.goog → só troca o idioma
+    if (noTranslate) {
+      var url = new URL(window.location.href);
+      url.searchParams.set('_x_tr_tl', lang);
+      return url.toString();
+    }
+
+    // Site original → monta URL de tradução para a página atual
+    var pagina = encodeURIComponent(SITE_ORIGEM + window.location.pathname);
+    return 'https://translate.google.com/translate?sl=pt&tl=' + lang + '&u=' + pagina;
+  }
+
+  function atualizarBandeiras() {
+    // Drawer (data-translate)
+    document.querySelectorAll('[data-translate]').forEach(function (a) {
+      a.href = getTranslateUrl(a.dataset.translate);
+    });
+    // Desktop nav — <img alt="EN/ES/DE/FR/PT"> dentro de <a>
+    var mapa = { EN: 'en', ES: 'es', DE: 'de', FR: 'fr', PT: 'pt' };
+    document.querySelectorAll('nav a > img[alt]').forEach(function (img) {
+      var lang = mapa[img.alt];
+      if (lang) img.parentElement.href = getTranslateUrl(lang);
+    });
+  }
+  atualizarBandeiras();
 
   // ── FECHAR DRAWER ────────────────────────────────────────────────
 
