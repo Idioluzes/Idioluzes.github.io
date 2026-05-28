@@ -1,7 +1,130 @@
-// mobile.js — bottom nav, drawer lateral e modais para todas as páginas
+// mobile.js — bottom nav, drawer lateral, modais e dark mode para todas as páginas
 // Centralizado aqui: muda em 1 lugar, reflete em todo o site.
 
 (function () {
+
+  // ── ÍCONES DE TEMA ───────────────────────────────────────────────
+
+  var MOON_SVG = '<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>';
+  var SUN_SVG  = '<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+
+  // ── DARK MODE — LEITURA INICIAL ──────────────────────────────────
+  // (o anti-flash já está no <head> de cada página; aqui confirmamos o estado)
+
+  var _saved = '';
+  try { _saved = localStorage.getItem('gaTheme') || ''; } catch (e) {}
+  var _escuro = _saved === 'dark' ? true
+              : _saved === 'light' ? false
+              : !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+  // Garante consistência (pode ser que o script inline do <head> já aplicou)
+  if (_escuro) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+
+  function isDark() { return document.documentElement.classList.contains('dark'); }
+
+  function aplicarTema(dark) {
+    // Ativa transição suave
+    document.documentElement.classList.add('ga-tema-transicao');
+    setTimeout(function () { document.documentElement.classList.remove('ga-tema-transicao'); }, 250);
+
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    var icone  = dark ? SUN_SVG  : MOON_SVG;
+    var titulo = dark ? 'Mudar para modo claro' : 'Mudar para modo escuro';
+
+    // Atualiza todos os botões toggle (bottom nav, drawer, desktop nav)
+    document.querySelectorAll('[data-dark-toggle]').forEach(function (btn) {
+      btn.innerHTML = icone;
+      btn.title = titulo;
+      btn.setAttribute('aria-label', titulo);
+    });
+
+    // Dark mode nos elementos injetados com inline style
+    _aplicarDarkInjetados(dark);
+  }
+
+  function toggleTema() {
+    var novo = !isDark();
+    try { localStorage.setItem('gaTheme', novo ? 'dark' : 'light'); } catch (e) {}
+    aplicarTema(novo);
+  }
+
+  // Ajusta cores dos elementos injetados via inline style (não cobertos pelo CSS externo)
+  function _aplicarDarkInjetados(dark) {
+    var drawer = document.getElementById('m-drawer');
+    if (drawer) {
+      drawer.style.background = dark ? '#0D1520' : '#fff';
+      // Cabeçalho do drawer
+      var drawerHead = drawer.querySelector('div:first-child');
+      if (drawerHead) drawerHead.style.borderColor = dark ? '#1E3040' : '#DCDCDC';
+      // Título
+      var titulo = drawerHead && drawerHead.querySelector('span');
+      if (titulo) titulo.style.color = dark ? '#7BB3E0' : '#1A3A5C';
+      // Botão fechar drawer
+      var btnClose = drawerHead && drawerHead.querySelector('button');
+      if (btnClose) btnClose.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+      // Links do menu
+      drawer.querySelectorAll('ul li a').forEach(function (a) {
+        a.style.color = dark ? '#E8E4DC' : '#1C1C1E';
+        a.style.borderColor = dark ? '#2A3D50' : '#f0f0f0';
+      });
+      // Links "cinzas" (Apoiar, Configurações)
+      var linksSecondary = drawer.querySelectorAll('ul li a[data-modal]');
+      linksSecondary.forEach(function (a) {
+        a.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+      });
+      // Rodapé das bandeiras
+      var drawerFoot = drawer.querySelector('div:last-child');
+      if (drawerFoot) drawerFoot.style.borderColor = dark ? '#1E3040' : '#DCDCDC';
+      // Botão dark toggle no drawer
+      var darkBtn = drawerFoot && drawerFoot.querySelector('[data-dark-toggle]');
+      if (darkBtn) darkBtn.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+    }
+
+    // Modais
+    ['modal-apoiar', 'modal-config'].forEach(function (id) {
+      var modal = document.getElementById(id);
+      if (!modal) return;
+      var inner = modal.querySelector('div');
+      if (!inner) return;
+      inner.style.background = dark ? '#0D1520' : '#fff';
+      var head = inner.querySelector('div:first-child');
+      if (head) head.style.borderColor = dark ? '#1E3040' : '#DCDCDC';
+      var titulo = head && head.querySelector('span');
+      if (titulo) titulo.style.color = dark ? '#7BB3E0' : '#1A3A5C';
+      var btnX = head && head.querySelector('button');
+      if (btnX) btnX.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+      // Texto dos modais
+      inner.querySelectorAll('p').forEach(function (p) {
+        p.style.color = dark ? '#E8E4DC' : '#1C1C1E';
+      });
+      // Links do modal-config
+      inner.querySelectorAll('ul li a').forEach(function (a) {
+        a.style.color = dark ? '#E8E4DC' : '#1C1C1E';
+        a.style.borderColor = dark ? '#2A3D50' : '#f5f5f5';
+      });
+      // Box de apoio
+      var box = inner.querySelector('div[style*="background:#F9F7F4"], div[style*="background:#0D1520"]');
+      if (box) {
+        box.style.background = dark ? '#1A2B3C' : '#F9F7F4';
+        box.style.borderColor = dark ? '#2A3D50' : '#DCDCDC';
+        box.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+      }
+    });
+  }
+
+  // ── VARIÁVEIS PARA O HTML INJETADO ───────────────────────────────
+
+  var _temaIcone  = _escuro ? SUN_SVG  : MOON_SVG;
+  var _temaTitulo = _escuro ? 'Mudar para modo claro' : 'Mudar para modo escuro';
 
   // ── HTML INJETADO ────────────────────────────────────────────────
 
@@ -16,6 +139,12 @@
       <button id="m-drawer-close" aria-label="Fechar menu" style="background:none;border:none;cursor:pointer;padding:4px;color:#6B6B6B;">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
+    </div>
+    <div style="padding:10px 16px;border-bottom:1px solid #DCDCDC;">
+      <div style="display:flex;align-items:center;gap:8px;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:7px 10px;">
+        <svg width="14" height="14" fill="none" stroke="#6B6B6B" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        <input id="m-busca-drawer" type="search" placeholder="Buscar passagens..." autocomplete="off" style="border:none;background:transparent;outline:none;font-family:sans-serif;font-size:.88rem;width:100%;color:#1C1C1E;"/>
+      </div>
     </div>
     <ul style="list-style:none;margin:0;padding:12px 0;flex:1;">
       <li><a href="/t1/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Tomo I — Ruptura</a></li>
@@ -32,6 +161,7 @@
       <a href="#" data-translate="es" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
       <a href="#" data-translate="de" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
       <a href="#" data-translate="fr" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
+      <button data-dark-toggle aria-label="${_temaTitulo}" title="${_temaTitulo}" style="background:none;border:none;cursor:pointer;color:#6B6B6B;padding:4px;display:flex;align-items:center;margin-left:auto;">${_temaIcone}</button>
     </div>
   </nav>
 
@@ -73,7 +203,25 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAV — só mobile -->
+  <!-- MODAL: BUSCA -->
+  <div id="modal-busca" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.65);padding:16px;">
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:640px;margin:56px auto 0;max-height:82vh;display:flex;flex-direction:column;overflow:hidden;font-family:sans-serif;">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid #DCDCDC;">
+        <svg width="17" height="17" fill="none" stroke="#6B6B6B" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        <input id="m-busca-input" type="search" placeholder="Buscar passagens, capítulos, livros..." autocomplete="off" style="flex:1;border:none;outline:none;font-size:.95rem;font-family:sans-serif;color:#1C1C1E;background:transparent;"/>
+        <button data-fechar="modal-busca" style="background:none;border:none;cursor:pointer;color:#6B6B6B;font-size:1.4rem;line-height:1;">✕</button>
+      </div>
+      <div style="padding:6px 16px;display:flex;gap:8px;align-items:center;border-bottom:1px solid #f0f0f0;flex-shrink:0;">
+        <span style="font-size:.72rem;color:#9B9B9B;font-family:sans-serif;">Modo:</span>
+        <button data-busca-modo="parcial" style="background:#1A3A5C;color:#fff;border:1px solid #1A3A5C;border-radius:12px;padding:3px 10px;font-size:.72rem;cursor:pointer;font-family:sans-serif;font-weight:600;line-height:1.4;">Contém</button>
+        <button data-busca-modo="exato" style="background:transparent;color:#6B6B6B;border:1px solid #DCDCDC;border-radius:12px;padding:3px 10px;font-size:.72rem;cursor:pointer;font-family:sans-serif;font-weight:600;line-height:1.4;">Palavra inteira</button>
+      </div>
+      <div id="m-busca-resultados" style="overflow-y:auto;flex:1;"></div>
+      <div id="m-busca-hint" style="padding:20px;text-align:center;color:#6B6B6B;font-size:.85rem;line-height:1.7;">Digite <strong>3+ caracteres</strong> para busca automática<br>ou pressione <strong>Enter</strong> com qualquer texto.</div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV — só mobile (3 botões: Home · Apoiar · Config) -->
   <nav id="m-bottom-nav" aria-label="Navegação mobile" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1A3A5C;border-top:1px solid #2a4f7a;height:60px;">
     <div style="display:flex;align-items:stretch;height:100%;max-width:480px;margin:0 auto;">
       <a href="/" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:white;text-decoration:none;font-family:sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;padding:8px 4px;">
@@ -93,11 +241,56 @@
 
   document.body.insertAdjacentHTML('beforeend', html);
 
-  // ── OCULTAR FOOTER DESKTOP NO MOBILE ────────────────────────────
-  // Em mobile a barra inferior substitui o footer. CSS via media query.
+  // Aplica dark nos elementos injetados imediatamente se necessário
+  if (_escuro) _aplicarDarkInjetados(true);
+
+  // ── CSS: OCULTAR FOOTER DESKTOP NO MOBILE ───────────────────────
+
   const mobileStyle = document.createElement('style');
-  mobileStyle.textContent = '@media(max-width:767px){footer[role="contentinfo"]{display:none!important;}}';
+  mobileStyle.textContent = [
+    '@media(max-width:767px){',
+    'footer[role="contentinfo"]{display:none!important;}',
+    // Garante que o nav desktop (com botões de busca/tema injetados) nunca apareça no mobile
+    'header nav > ul{display:none!important;}',
+    '}'
+  ].join('');
   document.head.appendChild(mobileStyle);
+
+  // ── ÍCONES NO NAV DESKTOP (busca + dark mode) ───────────────────
+
+  var desktopUl = document.querySelector('header nav > ul');
+  if (desktopUl) {
+    var _icoStyle = 'background:none;border:none;cursor:pointer;color:inherit;padding:4px;display:flex;align-items:center;line-height:1;opacity:.75;';
+    var SEARCH_SVG = '<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>';
+
+    // Botão de Busca
+    var liSearch = document.createElement('li');
+    var btnSearch = document.createElement('button');
+    btnSearch.setAttribute('aria-label', 'Buscar');
+    btnSearch.title = 'Buscar';
+    btnSearch.innerHTML = SEARCH_SVG;
+    btnSearch.style.cssText = _icoStyle;
+    btnSearch.addEventListener('click', function () {
+      abrirModal('modal-busca');
+      setTimeout(function () {
+        var inp = document.getElementById('m-busca-input');
+        if (inp) inp.focus();
+      }, 80);
+    });
+    liSearch.appendChild(btnSearch);
+    desktopUl.appendChild(liSearch);
+
+    // Botão Dark Mode
+    var liDark = document.createElement('li');
+    var btnDark = document.createElement('button');
+    btnDark.setAttribute('data-dark-toggle', '');
+    btnDark.setAttribute('aria-label', _temaTitulo);
+    btnDark.title = _temaTitulo;
+    btnDark.innerHTML = _escuro ? SUN_SVG : MOON_SVG;
+    btnDark.style.cssText = _icoStyle;
+    liDark.appendChild(btnDark);
+    desktopUl.appendChild(liDark);
+  }
 
   // ── HELPERS ──────────────────────────────────────────────────────
 
@@ -238,23 +431,664 @@
   document.getElementById('m-drawer-close').addEventListener('click', fecharDrawer);
   document.getElementById('m-overlay').addEventListener('click', fecharDrawer);
 
-  // ── LINKS COM data-modal ─────────────────────────────────────────
+  // ── BOTÕES FLUTUANTES PREV / NEXT ────────────────────────────────
+  // Lê o <nav aria-label="Livros|Capítulos|Passagens"> do <main>
+  // e cria botões colados às bordas do viewport.
+
+  var _LABELS_CONTEUDO = ['Livros', 'Capítulos', 'Passagens'];
+  var _btnPrevRef = null;
+  var _btnNextRef = null;
+
+  // Reposiciona / reestiliza os botões conforme o breakpoint atual
+  function _posicionarNavFlutuante() {
+    var wrap  = document.getElementById('m-nav-flutuante');
+    var mainEl = document.querySelector('main');
+    if (!wrap || !mainEl) return;
+
+    if (window.innerWidth < 768) {
+      // Mobile: half-pill grudado na borda — fácil de atingir com o polegar
+      wrap.style.paddingLeft  = '0';
+      wrap.style.paddingRight = '0';
+      if (_btnPrevRef) { _btnPrevRef.style.borderRadius='0 6px 6px 0'; _btnPrevRef.style.width='36px'; _btnPrevRef.style.height='54px'; }
+      if (_btnNextRef) { _btnNextRef.style.borderRadius='6px 0 0 6px'; _btnNextRef.style.width='36px'; _btnNextRef.style.height='54px'; }
+    } else {
+      // Desktop: circular, centralizado na margem vazia ao lado do <main>
+      var rect = mainEl.getBoundingClientRect();
+      var btnW = 44; // px
+      // Empurra o wrap para dentro: os botões ficam no meio da margem livre
+      var padL = Math.max(0, Math.round(rect.left  / 2 - btnW / 2));
+      var padR = Math.max(0, Math.round((window.innerWidth - rect.right) / 2 - btnW / 2));
+      wrap.style.paddingLeft  = padL + 'px';
+      wrap.style.paddingRight = padR + 'px';
+      if (_btnPrevRef) { _btnPrevRef.style.borderRadius='50%'; _btnPrevRef.style.width=btnW+'px'; _btnPrevRef.style.height=btnW+'px'; }
+      if (_btnNextRef) { _btnNextRef.style.borderRadius='50%'; _btnNextRef.style.width=btnW+'px'; _btnNextRef.style.height=btnW+'px'; }
+    }
+  }
+
+  function iniciarBotoesNavegacao() {
+    var antigo = document.getElementById('m-nav-flutuante');
+    if (antigo) antigo.remove();
+    _btnPrevRef = null;
+    _btnNextRef = null;
+
+    var mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    var navConteudo = null;
+    mainEl.querySelectorAll('nav').forEach(function (nav) {
+      if (_LABELS_CONTEUDO.indexOf(nav.getAttribute('aria-label')) !== -1) navConteudo = nav;
+    });
+    if (!navConteudo) return;
+
+    var hrAnterior = null, hrProximo = null;
+    navConteudo.querySelectorAll('a').forEach(function (a) {
+      var t = a.textContent;
+      if (t.includes('←')) hrAnterior = a.getAttribute('href');
+      if (t.includes('→')) hrProximo  = a.getAttribute('href');
+    });
+    if (!hrAnterior && !hrProximo) return;
+
+    var wrap = document.createElement('div');
+    wrap.id = 'm-nav-flutuante';
+    wrap.setAttribute('aria-hidden', 'true');
+    wrap.style.cssText = 'position:fixed;top:50%;transform:translateY(-50%);left:0;right:0;pointer-events:none;z-index:49;display:flex;justify-content:space-between;align-items:center;';
+
+    var base = 'pointer-events:all;display:flex;align-items:center;justify-content:center;background:rgba(26,58,92,.78);color:#fff;text-decoration:none;font-size:1.1rem;border:none;cursor:pointer;line-height:1;transition:opacity .15s,background .15s;opacity:.65;';
+
+    function criarBtn(href, seta, label) {
+      var btn = document.createElement('a');
+      btn.href = href;
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
+      btn.innerHTML = seta;
+      btn.style.cssText = base;
+      btn.addEventListener('mouseenter', function () { this.style.opacity='1'; this.style.background='rgba(26,58,92,.95)'; });
+      btn.addEventListener('mouseleave', function () { this.style.opacity='.65'; this.style.background='rgba(26,58,92,.78)'; });
+      return btn;
+    }
+
+    if (hrAnterior) { _btnPrevRef = criarBtn(hrAnterior, '&#8592;', 'Anterior'); wrap.appendChild(_btnPrevRef); }
+    else            { wrap.appendChild(document.createElement('span')); }
+
+    if (hrProximo)  { _btnNextRef = criarBtn(hrProximo,  '&#8594;', 'Próximo');  wrap.appendChild(_btnNextRef);  }
+    else            { wrap.appendChild(document.createElement('span')); }
+
+    document.body.appendChild(wrap);
+    _posicionarNavFlutuante(); // aplica estilo/posição corretos para o breakpoint atual
+  }
+
+  iniciarBotoesNavegacao();
+  window.addEventListener('resize', _posicionarNavFlutuante);
+
+  // ── EVENT DELEGATION ─────────────────────────────────────────────
 
   document.addEventListener('click', function (e) {
+
+    // Dark mode toggle
+    const dt = e.target.closest('[data-dark-toggle]');
+    if (dt) { e.preventDefault(); toggleTema(); return; }
+
+    // Abrir modal
     const el = e.target.closest('[data-modal]');
     if (el) {
       e.preventDefault();
       fecharDrawer();
       setTimeout(() => abrirModal(el.dataset.modal), 150);
+      return;
     }
+
+    // Fechar modal pelo botão ✕
     const fc = e.target.closest('[data-fechar]');
-    if (fc) { fecharModal(fc.dataset.fechar); }
+    if (fc) { fecharModal(fc.dataset.fechar); return; }
+
+    // Itens "em breve"
     const ph = e.target.closest('[data-placeholder]');
-    if (ph) { e.preventDefault(); alert('Em breve.'); }
-    // Fechar modal ao clicar no overlay (fora do conteúdo)
+    if (ph) { e.preventDefault(); alert('Em breve.'); return; }
+
+    // Fechar modal ao clicar no overlay (fora do conteúdo interno)
     if (e.target.id === 'modal-apoiar' || e.target.id === 'modal-config') {
       fecharModal(e.target.id);
     }
   });
+
+
+  // ── NAVEGAÇÃO SPA ─────────────────────────────────────────────────
+  // Ao clicar em qualquer link interno troca só o <main> + URL.
+  // Header, footer, drawer e modais ficam intactos.
+
+  function _ehLinkInterno(href) {
+    if (!href || href === '#' || href.startsWith('#')) return false;
+    if (/^(https?:|mailto:|tel:|data:)/.test(href)) return false;
+    if (/\.(xml|pdf|svg|png|jpg|webp|woff2?|ttf|js|css)$/.test(href)) return false;
+    return true;
+  }
+
+  // Barra de progresso fina no topo
+  var _barra = document.createElement('div');
+  _barra.style.cssText = 'position:fixed;top:0;left:0;height:2px;width:0%;z-index:9999;background:#7BB3E0;opacity:0;pointer-events:none;transition:width .3s ease,opacity .2s ease;';
+  document.body.appendChild(_barra);
+  function _barraOn()  { _barra.style.opacity='1'; _barra.style.width='65%'; }
+  function _barraOff() {
+    _barra.style.width = '100%';
+    setTimeout(function () {
+      _barra.style.opacity = '0';
+      setTimeout(function () { _barra.style.width = '0%'; }, 250);
+    }, 180);
+  }
+
+  // Cache de preload (hover antecipado)
+  var _preload = {};
+  var _navegandoSPA = false;
+
+  async function navegarSPA(url) {
+    if (_navegandoSPA) return;
+    if (window.location.pathname === url) return;
+    _navegandoSPA = true;
+    _barraOn();
+    fecharDrawer();
+
+    try {
+      var html = _preload[url]
+                ? await _preload[url]
+                : await fetch(url).then(function (r) {
+                    if (!r.ok) throw new Error(r.status);
+                    return r.text();
+                  });
+
+      var parser = new DOMParser();
+      var doc    = parser.parseFromString(html, 'text/html');
+      var novoMain  = doc.querySelector('main');
+      var atualMain = document.querySelector('main');
+      if (!novoMain || !atualMain) throw new Error('sem main');
+
+      // Troca o <main> inteiro (preserva class, width, etc.)
+      atualMain.replaceWith(document.adoptNode(novoMain));
+
+      // Atualiza title + meta description + canonical
+      document.title = doc.title;
+      var sel = [
+        ['meta[name="description"]', 'content'],
+        ['link[rel="canonical"]',    'href']
+      ];
+      sel.forEach(function (par) {
+        var novo  = doc.querySelector(par[0]);
+        var atual = document.querySelector(par[0]);
+        if (novo && atual) atual[par[1]] = novo[par[1]];
+      });
+
+      history.pushState({ url: url }, document.title, url);
+      window.scrollTo(0, 0);
+
+      // Re-inicializa após troca de conteúdo
+      iniciarBotoesNavegacao();
+      atualizarBandeiras();
+
+    } catch (e) {
+      window.location.href = url; // fallback
+    } finally {
+      _navegandoSPA = false;
+      _barraOff();
+    }
+  }
+
+  // Preload ao passar o mouse
+  document.addEventListener('mouseover', function (e) {
+    var a = e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!_ehLinkInterno(href) || _preload[href]) return;
+    _preload[href] = fetch(href)
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .catch(function () { return null; });
+  });
+
+  // Intercepta cliques em links internos
+  document.addEventListener('click', function (e) {
+    if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest('a[href]');
+    if (!a || a.target === '_blank') return;
+    // Deixa os links especiais passarem sem interferência
+    if (a.hasAttribute('data-modal') ||
+        a.hasAttribute('data-translate') ||
+        a.hasAttribute('data-placeholder') ||
+        a.hasAttribute('data-fechar')) return;
+    var href = a.getAttribute('href');
+    if (!_ehLinkInterno(href)) return;
+    e.preventDefault();
+    navegarSPA(href);
+  });
+
+  // Botões voltar/avançar do browser
+  window.addEventListener('popstate', function () {
+    navegarSPA(window.location.pathname);
+  });
+
+  // ── BARRA DE DROPDOWN (Tomo › Livro › Cap › Passagem) ───────────
+  // Injetada dentro do <header> — fica sticky junto com ele.
+  // Visível em qualquer página /t1/ /t2/ /t3/ e seus filhos.
+
+  var _SEL_STYLE = 'border:1px solid #DCDCDC;border-radius:6px;padding:5px 6px;font-family:sans-serif;font-size:.75rem;color:#1A3A5C;background:#fff;cursor:pointer;font-weight:600;flex:1;min-width:0;';
+
+  function _ehConteudo() {
+    return /^\/(t1|t2|t3)\//.test(window.location.pathname);
+  }
+
+  function _parseUrl() {
+    var pts = window.location.pathname.split('/').filter(Boolean);
+    return {
+      tomo  : pts[0] || '',
+      livro : pts[1] || '',
+      cap   : pts[2] ? parseInt(pts[2]) : 0,
+      pass  : pts[3] ? parseInt(pts[3]) : 0
+    };
+  }
+
+  function _carregarScript(url, cb) {
+    if (document.querySelector('script[src="' + url + '"]')) { if (cb) cb(); return; }
+    var s = document.createElement('script');
+    s.src = url;
+    s.onload = function () { if (cb) cb(); };
+    document.head.appendChild(s);
+  }
+
+  function _popularLivros(tomo, livroSel) {
+    var sel = document.getElementById('m-sel-livro');
+    if (!sel || !window.GA_NAVDATA || !window.GA_NAVDATA[tomo]) return;
+    sel.disabled = false;
+    sel.innerHTML = '';
+    window.GA_NAVDATA[tomo].livros.forEach(function (l) {
+      var o = document.createElement('option');
+      o.value = l.sigla; o.textContent = l.sigla + ' — ' + l.nome;
+      if (l.sigla === livroSel) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  function _popularCaps(tomo, livro, capSel) {
+    var sel = document.getElementById('m-sel-cap');
+    if (!sel || !window.GA_NAVDATA || !window.GA_NAVDATA[tomo]) return;
+    var ld = window.GA_NAVDATA[tomo].livros.find(function (l) { return l.sigla === livro; });
+    if (!ld) return;
+    sel.disabled = false;
+    sel.innerHTML = '';
+    ld.caps.forEach(function (c) {
+      var o = document.createElement('option');
+      o.value = c.num;
+      o.textContent = 'CAP. ' + c.num;
+      if (c.num === capSel) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  function _popularPassagens(tomo, livro, cap, passSel) {
+    var sel = document.getElementById('m-sel-pass');
+    if (!sel || !window.GA_NAVDATA || !window.GA_NAVDATA[tomo]) return;
+    var ld = window.GA_NAVDATA[tomo].livros.find(function (l) { return l.sigla === livro; });
+    if (!ld) return;
+    var cd = ld.caps.find(function (c) { return c.num === cap; });
+    if (!cd || !cd.pass || !cd.pass.length) return;
+    sel.disabled = false;
+    sel.innerHTML = '';
+    cd.pass.forEach(function (p) {
+      var o = document.createElement('option');
+      o.value = p; o.textContent = 'PASS.' + p;
+      if (p === passSel) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  function _popularDropdowns() {
+    if (!window.GA_NAVDATA) return;
+    var u  = _parseUrl();
+    var st = document.getElementById('m-sel-tomo');
+    var sl = document.getElementById('m-sel-livro');
+    var sc = document.getElementById('m-sel-cap');
+    var sp = document.getElementById('m-sel-pass');
+    var _dash = '<option value="" disabled selected>—</option>';
+
+    // Reseta dependentes antes de popular para não exibir valores de navegação anterior
+    if (sl) { sl.innerHTML = _dash; sl.disabled = true; }
+    if (sc) { sc.innerHTML = _dash; sc.disabled = true; }
+    if (sp) { sp.innerHTML = _dash; sp.disabled = true; }
+
+    if (st) st.value = u.tomo;
+
+    if (u.tomo && u.livro) {
+      _popularLivros(u.tomo, u.livro);
+      if (u.cap) {
+        _popularCaps(u.tomo, u.livro, u.cap);
+        if (u.pass) _popularPassagens(u.tomo, u.livro, u.cap, u.pass);
+      }
+    }
+    // Se só tomo (sem livro), os selects dependentes ficam como "—" (já resetados acima)
+  }
+
+  function _atualizarBarraDropdown() {
+    var bar = document.getElementById('m-nav-drop');
+    if (_ehConteudo()) {
+      if (bar) { bar.style.display = 'block'; _popularDropdowns(); }
+      else     { _criarBarraDropdown(); }
+    } else {
+      if (bar) bar.style.display = 'none';
+    }
+  }
+
+  function _criarBarraDropdown() {
+    var header = document.querySelector('header');
+    if (!header) return;
+
+    var bar = document.createElement('div');
+    bar.id = 'm-nav-drop';
+    bar.style.cssText = 'border-top:1px solid #DCDCDC;background:#F9F7F4;overflow:hidden;';
+
+    // Wrapper centralizado alinhado ao max-w-3xl do conteúdo (≈ 48rem)
+    var inner = document.createElement('div');
+    inner.style.cssText = 'max-width:48rem;margin:0 auto;padding:5px 16px;display:flex;gap:5px;align-items:center;';
+
+    var mkSep = function () {
+      var sp = document.createElement('span');
+      sp.textContent = '›';
+      sp.style.cssText = 'color:#DCDCDC;flex-shrink:0;font-size:.9rem;';
+      return sp;
+    };
+
+    // Selects sem placeholder navegável — disabled mostra traço visual
+    var mkSel = function (id, disabled) {
+      var s = document.createElement('select');
+      s.id = id;
+      s.style.cssText = _SEL_STYLE;
+      s.disabled = !!disabled;
+      if (disabled) s.innerHTML = '<option value="" disabled selected>—</option>';
+      return s;
+    };
+
+    var selTomo  = mkSel('m-sel-tomo',  false);
+    var selLivro = mkSel('m-sel-livro', true);
+    var selCap   = mkSel('m-sel-cap',   true);
+    var selPass  = mkSel('m-sel-pass',  true);
+
+    // Livro recebe flex:2 para acomodar "Sigla — Nome" sem comprimir os outros
+    selLivro.style.flex = '2';
+
+    // Tomo options (fixos — sem option vazio)
+    [['t1','Tomo I'],['t2','Tomo II'],['t3','Tomo III']].forEach(function (t) {
+      var o = document.createElement('option');
+      o.value = t[0]; o.textContent = t[1];
+      selTomo.appendChild(o);
+    });
+
+    inner.appendChild(selTomo);  inner.appendChild(mkSep());
+    inner.appendChild(selLivro); inner.appendChild(mkSep());
+    inner.appendChild(selCap);   inner.appendChild(mkSep());
+    inner.appendChild(selPass);
+    bar.appendChild(inner);
+    header.appendChild(bar);
+
+    // ── Cascade listeners ────────────────────────────────────────────
+
+    selTomo.addEventListener('change', function () {
+      var t = this.value;
+      if (!t) return;
+      // Limpa dependentes
+      selLivro.innerHTML = ''; selLivro.disabled = false;
+      selCap.innerHTML   = '<option value="" disabled selected>—</option>'; selCap.disabled = true;
+      selPass.innerHTML  = '<option value="" disabled selected>—</option>'; selPass.disabled = true;
+      _popularLivros(t, '');
+      // Auto-navega ao 1.º livro do tomo
+      if (window.GA_NAVDATA && window.GA_NAVDATA[t] && window.GA_NAVDATA[t].livros.length) {
+        var fl = window.GA_NAVDATA[t].livros[0];
+        selLivro.value = fl.sigla;
+        navegarSPA('/' + t + '/' + fl.sigla + '/');
+      } else {
+        navegarSPA('/' + t + '/');
+      }
+    });
+
+    selLivro.addEventListener('change', function () {
+      var t = selTomo.value, l = this.value;
+      if (!l) return;
+      // Limpa dependentes
+      selCap.innerHTML  = ''; selCap.disabled = false;
+      selPass.innerHTML = '<option value="" disabled selected>—</option>'; selPass.disabled = true;
+      _popularCaps(t, l, 0);
+      // Auto-navega ao cap. 1 do livro
+      if (window.GA_NAVDATA && window.GA_NAVDATA[t]) {
+        var ld = window.GA_NAVDATA[t].livros.find(function (lv) { return lv.sigla === l; });
+        if (ld && ld.caps.length) {
+          var fc = ld.caps[0];
+          selCap.value = fc.num;
+          navegarSPA('/' + t + '/' + l + '/' + fc.num + '/');
+        } else {
+          navegarSPA('/' + t + '/' + l + '/');
+        }
+      }
+    });
+
+    selCap.addEventListener('change', function () {
+      var t = selTomo.value, l = selLivro.value, c = parseInt(this.value);
+      selPass.innerHTML = ''; selPass.disabled = !c;
+      if (c) { _popularPassagens(t, l, c, 0); navegarSPA('/' + t + '/' + l + '/' + c + '/'); }
+    });
+
+    selPass.addEventListener('change', function () {
+      var t = selTomo.value, l = selLivro.value, c = selCap.value, p = this.value;
+      if (p) navegarSPA('/' + t + '/' + l + '/' + c + '/' + p + '/');
+    });
+
+    // Carrega navdata e popula conforme URL atual
+    _carregarScript('/assets/navdata.js', _popularDropdowns);
+  }
+
+  // Inicia barra se estiver em página de conteúdo
+  if (_ehConteudo()) _criarBarraDropdown();
+
+
+  // ── BUSCA ────────────────────────────────────────────────────────
+
+  var _buscaTimer = null;
+  var _buscaModo  = 'parcial'; // 'parcial' = contém | 'exato' = palavra inteira
+
+  // Escapa HTML para injeção segura
+  function _escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Envolve ocorrências da query em <mark> amarelo
+  function _highlight(text, rawQuery) {
+    if (!rawQuery || !text) return _escHtml(text);
+    var escaped = rawQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Modo exato: \b ... \b; parcial: qualquer ocorrência
+    var pattern = _buscaModo === 'exato'
+      ? '(\\b' + escaped + '\\b)'
+      : '(' + escaped + ')';
+    try {
+      var regex = new RegExp(pattern, 'gi');
+      return _escHtml(text).replace(regex,
+        '<mark style="background:#FEF08A;color:inherit;border-radius:2px;padding:0 1px;">$1</mark>');
+    } catch(e) { return _escHtml(text); }
+  }
+
+  // Extrai contexto em torno do match: 5 palavras antes + match + 5 palavras depois
+  function _contexto(text, rawQuery) {
+    if (!text || !rawQuery) return text || '';
+    try {
+      var escaped = rawQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      var re = new RegExp(escaped, 'i');
+      var m  = re.exec(text);
+      if (!m) {
+        // Tenta via texto normalizado (fallback para diacríticos)
+        var ni = _norm(text).indexOf(_norm(rawQuery));
+        if (ni === -1) return text.length > 130 ? text.substring(0, 130) + '…' : text;
+        m = { index: ni, 0: text.substring(ni, ni + rawQuery.length) };
+      }
+      var idx     = m.index;
+      var matchTx = m[0];
+
+      // Palavras antes do match
+      var before      = text.substring(0, idx);
+      var bWords      = before.length ? before.split(/\s+/).filter(Boolean) : [];
+      var ctxBefore   = bWords.slice(-5).join(' ');
+      var hasPrefix   = bWords.length > 5 || (bWords.length === 5 && before.trimStart() !== before);
+
+      // Palavras depois do match
+      var after       = text.substring(idx + matchTx.length);
+      var aWords      = after.length ? after.split(/\s+/).filter(Boolean) : [];
+      var ctxAfter    = aWords.slice(0, 5).join(' ');
+      var hasSuffix   = aWords.length > 5;
+
+      return (hasPrefix   ? '…' : '') +
+             (ctxBefore   ? ctxBefore + ' ' : '') +
+             matchTx +
+             (ctxAfter    ? ' ' + ctxAfter : '') +
+             (hasSuffix   ? '…' : '');
+    } catch(e) {
+      return text.length > 130 ? text.substring(0, 130) + '…' : text;
+    }
+  }
+
+  function _norm(s) {
+    // Remove diacríticos após NFD decomposition (U+0300-U+036F)
+    return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
+
+  function _renderBusca(items, query) {
+    var div  = document.getElementById('m-busca-resultados');
+    var hint = document.getElementById('m-busca-hint');
+    if (!div) return;
+    if (!items.length) {
+      div.innerHTML = '<div style="padding:20px;text-align:center;color:#6B6B6B;font-size:.85rem;">Nenhum resultado para <em>"' + _escHtml(query) + '"</em>.</div>';
+      if (hint) hint.style.display = 'none';
+      return;
+    }
+    if (hint) hint.style.display = 'none';
+    var q = _norm(query.trim());
+    // Cabeçalho com contagem
+    var total = items.length;
+    var countHtml = '<div style="padding:8px 20px 6px;font-family:sans-serif;font-size:.75rem;color:#6B6B6B;border-bottom:1px solid #f0f0f0;">' +
+      total + (total === 1 ? ' resultado' : ' resultados') + ' para <em>"' + _escHtml(query) + '"</em>' +
+      (total === 20 ? ' <span style="color:#9B9B9B">(limite de exibição)</span>' : '') +
+      '</div>';
+    div.innerHTML = countHtml + items.map(function (it) {
+      // Escolhe snippet: usa texto se contém match; caso contrário usa capDesc (que foi o que casou)
+      var alvo = _norm(it.texto || '').includes(q)
+        ? (it.texto || '')
+        : (it.capDesc || it.texto || '');
+      // Snippet inteligente: 5 palavras antes + match + 5 palavras depois
+      var snip = _contexto(alvo, query);
+      return '<a href="' + _escHtml(it.url) + '" class="_ga-busca-res" style="display:block;padding:12px 20px;border-bottom:1px solid #f0f0f0;text-decoration:none;color:#1C1C1E;font-family:sans-serif;">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">' +
+          '<span style="font-family:monospace;font-size:.7rem;background:#F9F7F4;color:#6B6B6B;padding:2px 6px;border-radius:4px;white-space:nowrap;">' + _escHtml(it.ref) + '</span>' +
+          '<span style="font-size:.8rem;color:#1A3A5C;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + _highlight(it.capTitulo || it.livroNome, query) + '</span>' +
+        '</div>' +
+        '<p style="font-size:.83rem;color:#6B6B6B;margin:0;line-height:1.6;">' + _highlight(snip, query) + '</p>' +
+      '</a>';
+    }).join('');
+  }
+
+  function _executarBusca(query) {
+    var div  = document.getElementById('m-busca-resultados');
+    var hint = document.getElementById('m-busca-hint');
+    if (!query || !query.trim()) {
+      if (div)  div.innerHTML = '';
+      if (hint) { hint.style.display='block'; }
+      return;
+    }
+    if (!window.GA_SEARCH) {
+      if (hint) { hint.style.display='block'; hint.innerHTML='Carregando índice…'; }
+      _carregarScript('/assets/search-index.js', function () { _executarBusca(query); });
+      return;
+    }
+    var q = _norm(query.trim());
+    var res = window.GA_SEARCH.filter(function (it) {
+      var hay = _norm(it.texto + ' ' + it.capTitulo + ' ' + (it.capDesc || '') + ' ' + it.livroNome);
+      if (_buscaModo === 'exato') {
+        // Palavra inteira: q deve aparecer como token isolado
+        return hay.split(/\W+/).indexOf(q) !== -1;
+      }
+      return hay.includes(q);
+    }).slice(0, 20);
+    _renderBusca(res, query);
+  }
+
+  function _onBuscaInput(e) {
+    var q = e.target.value;
+    clearTimeout(_buscaTimer);
+    if (q.length >= 3) {
+      _buscaTimer = setTimeout(function () { _executarBusca(q); }, 280);
+    } else {
+      var div  = document.getElementById('m-busca-resultados');
+      var hint = document.getElementById('m-busca-hint');
+      if (div)  div.innerHTML = '';
+      if (hint) hint.style.display = 'block';
+    }
+  }
+
+  function _abrirBusca(valorInicial) {
+    abrirModal('modal-busca');
+    setTimeout(function () {
+      var inp = document.getElementById('m-busca-input');
+      if (!inp) return;
+      inp.focus();
+      if (valorInicial) { inp.value = valorInicial; _executarBusca(valorInicial); }
+    }, 80);
+  }
+
+  // Input do modal de busca
+  var _buscaMainInput = document.getElementById('m-busca-input');
+  if (_buscaMainInput) {
+    _buscaMainInput.addEventListener('input', _onBuscaInput);
+    _buscaMainInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && this.value.trim()) _executarBusca(this.value);
+      if (e.key === 'Escape') fecharModal('modal-busca');
+    });
+  }
+
+  // Input do drawer → abre modal com o texto
+  var _buscaDrawerInput = document.getElementById('m-busca-drawer');
+  if (_buscaDrawerInput) {
+    _buscaDrawerInput.addEventListener('keydown', function (e) {
+      var q = this.value;
+      if (e.key === 'Enter' && q.trim()) {
+        fecharDrawer();
+        setTimeout(function () { _abrirBusca(q); }, 180);
+      }
+    });
+    _buscaDrawerInput.addEventListener('input', function () {
+      if (this.value.length >= 3) {
+        var q = this.value;
+        fecharDrawer();
+        setTimeout(function () { _abrirBusca(q); }, 180);
+      }
+    });
+  }
+
+  // Fechar busca ao clicar em resultado (SPA cuida da navegação)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('._ga-busca-res')) fecharModal('modal-busca');
+  });
+
+  // ── TOGGLE MODO DE BUSCA (Contém / Palavra inteira) ──────────────
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-busca-modo]');
+    if (!btn) return;
+    _buscaModo = btn.dataset.buscaModo;
+    // Atualiza estilos dos botões
+    document.querySelectorAll('[data-busca-modo]').forEach(function (b) {
+      var ativo = b.dataset.buscaModo === _buscaModo;
+      b.style.background   = ativo ? '#1A3A5C' : 'transparent';
+      b.style.color        = ativo ? '#fff'     : '#6B6B6B';
+      b.style.borderColor  = ativo ? '#1A3A5C'  : '#DCDCDC';
+    });
+    // Re-executa busca se já há query digitada
+    var inp = document.getElementById('m-busca-input');
+    if (inp && inp.value.trim()) _executarBusca(inp.value.trim());
+  });
+
+  // Atualiza dropdown bar após cada SPA nav (re-hook em navegarSPA é feito abaixo)
+  var _navegarSPA_orig = navegarSPA;
+  navegarSPA = async function (url) {
+    await _navegarSPA_orig(url);
+    _atualizarBarraDropdown();
+  };
 
 })();

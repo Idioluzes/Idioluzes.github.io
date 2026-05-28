@@ -94,3 +94,40 @@
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms
 }
+
+/* ── Modo Escuro — <html class="dark"> ────────────────────────────
+   Paleta: fundo #0F1923 · superfície #1A2B3C · texto #E8E4DC
+   Acento claro #7BB3E0 para contraste no fundo escuro              */
+
+html.dark body             { background-color: #0F1923; }
+html.dark .bg-fundo        { background-color: #0F1923; }
+html.dark .bg-fundo-sec    { background-color: #1A2B3C; }
+html.dark .bg-white        { background-color: #1E2F40; }
+html.dark header.bg-fundo  { background-color: #0D1520; border-color: #1E3040; }
+
+html.dark .text-texto      { color: #E8E4DC; }
+html.dark .text-texto-sec  { color: #8B9BAA; }
+html.dark .text-acento     { color: #7BB3E0; }
+html.dark .text-link       { color: #60A5FA; }
+
+html.dark .hover\:text-acento:hover              { color: #7BB3E0; }
+html.dark .group:hover .group-hover\:text-acento { color: #7BB3E0; }
+html.dark .hover\:bg-blue-50:hover               { background-color: #1E2F40; }
+html.dark .hover\:text-white:hover               { color: #fff; }
+
+html.dark .border-borda    { border-color: #2A3D50; }
+html.dark .border-acento   { border-color: #7BB3E0; }
+html.dark .hover\:border-acento:hover            { border-color: #7BB3E0; }
+html.dark .divide-borda > :not([hidden]) ~ :not([hidden]) { border-color: #2A3D50; }
+
+html.dark .hover\:shadow-md:hover {
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,.55), 0 2px 4px -1px rgba(0,0,0,.4);
+}
+
+/* Transição suave apenas durante o toggle — classe adicionada via JS */
+.ga-tema-transicao *,
+.ga-tema-transicao *::before,
+.ga-tema-transicao *::after {
+  transition: background-color 200ms ease, color 200ms ease,
+              border-color 200ms ease, box-shadow 200ms ease !important;
+}
