@@ -71,10 +71,22 @@
       // Botão fechar drawer
       var btnClose = drawerHead && drawerHead.querySelector('button');
       if (btnClose) btnClose.style.color = dark ? '#8B9BAA' : '#6B6B6B';
-      // Links do menu
-      drawer.querySelectorAll('ul li a').forEach(function (a) {
+      // Links do menu principal
+      drawer.querySelectorAll('ul li a:not(._drawer-sub)').forEach(function (a) {
         a.style.color = dark ? '#E8E4DC' : '#1C1C1E';
         a.style.borderColor = dark ? '#2A3D50' : '#f0f0f0';
+      });
+      // Botões de seção accordion
+      drawer.querySelectorAll('[data-drawer-toggle]').forEach(function (btn) {
+        btn.style.color = dark ? '#E8E4DC' : '#1C1C1E';
+        btn.style.borderColor = dark ? '#2A3D50' : '#f0f0f0';
+        btn.style.background = 'transparent';
+      });
+      // Sub-itens das seções
+      drawer.querySelectorAll('._drawer-sub').forEach(function (a) {
+        a.style.background   = dark ? '#0A1018' : '#F9F7F4';
+        a.style.color        = dark ? '#8B9BAA' : '#6B6B6B';
+        a.style.borderColor  = dark ? '#1E2F3C' : '#f5f5f5';
       });
       // Links "cinzas" (Apoiar, Configurações)
       var linksSecondary = drawer.querySelectorAll('ul li a[data-modal]');
@@ -171,11 +183,48 @@
       </div>
     </div>
     <ul style="list-style:none;margin:0;padding:12px 0;flex:1;">
-      <li><a href="/t1/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Tomo I — Ruptura</a></li>
-      <li><a href="/t2/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Tomo II — Edificação</a></li>
-      <li><a href="/t3/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Tomo III — Consolidação</a></li>
-      <li><a href="/faq/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">FAQ</a></li>
-      <li><a href="/sobre/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Sobre</a></li>
+      <li><a href="/biblia/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Bíblia</a></li>
+
+      <li>
+        <button data-drawer-toggle="m-dl-loja" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
+          Loja
+          <svg data-arrow width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform .2s;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <ul id="m-dl-loja" style="display:none;list-style:none;padding:0;margin:0;">
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Bíblia Impressa</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Imersão Hotmart</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Doação</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <button data-drawer-toggle="m-dl-redes" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
+          Redes
+          <svg data-arrow width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform .2s;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <ul id="m-dl-redes" style="display:none;list-style:none;padding:0;margin:0;">
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">WhatsApp</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Instagram</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">App</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">YouTube</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <button data-drawer-toggle="m-dl-cosmo" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
+          Cosmovisão
+          <svg data-arrow width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform .2s;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <ul id="m-dl-cosmo" style="display:none;list-style:none;padding:0;margin:0;">
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Jornada</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Pirâmide Ateia</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Dicionário Bíblico</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Grande Ateu</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Salvação</a></li>
+          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Declaração de Fé Genuína</a></li>
+        </ul>
+      </li>
+
       <li><a href="#" data-modal="modal-apoiar" style="display:block;padding:14px 20px;color:#6B6B6B;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Apoiar</a></li>
       <li><a href="#" data-modal="modal-config" style="display:block;padding:14px 20px;color:#6B6B6B;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;">Configurações</a></li>
     </ul>
@@ -657,6 +706,21 @@
   // ── EVENT DELEGATION ─────────────────────────────────────────────
 
   document.addEventListener('click', function (e) {
+
+    // Accordion do drawer (Loja / Redes / Cosmovisão)
+    var tog = e.target.closest('[data-drawer-toggle]');
+    if (tog) {
+      e.preventDefault();
+      var subId = tog.getAttribute('data-drawer-toggle');
+      var sub   = document.getElementById(subId);
+      if (sub) {
+        var isOpen = sub.style.display !== 'none';
+        sub.style.display = isOpen ? 'none' : 'block';
+        var arrow = tog.querySelector('[data-arrow]');
+        if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
+      }
+      return;
+    }
 
     // Dark mode toggle
     const dt = e.target.closest('[data-dark-toggle]');
