@@ -389,7 +389,7 @@
         <!-- A Bíblia -->
         <nav aria-label="A Bíblia">
           <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">A Bíblia</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1.5px;">
             <li><a href="/biblia/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Conheça a Bíblia</a></li>
             <li><a href="/t1/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Tomo I — Ruptura</a></li>
             <li><a href="/t2/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Tomo II — Edificação</a></li>
@@ -400,7 +400,7 @@
         <!-- Cosmovisão -->
         <nav aria-label="Cosmovisão">
           <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">Cosmovisão</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1.5px;">
             <li><a href="/jornada/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Jornada Ateia</a></li>
             <li><a href="/piramide/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Pirâmide Ateia</a></li>
             <li><a href="/dicionario/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Dicionário Bíblico</a></li>
@@ -411,7 +411,7 @@
         <!-- Projeto -->
         <nav aria-label="Projeto">
           <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">Projeto</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1.5px;">
             <li><a href="/sobre/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Sobre</a></li>
             <li><a href="/faq/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">FAQ</a></li>
             <li><a href="/sitemap.xml" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Sitemap</a></li>
