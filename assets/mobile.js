@@ -65,8 +65,8 @@
       // Cabeçalho do drawer
       var drawerHead = drawer.querySelector('div:first-child');
       if (drawerHead) drawerHead.style.borderColor = dark ? '#1E3040' : '#DCDCDC';
-      // Título
-      var titulo = drawerHead && drawerHead.querySelector('span');
+      // Título (agora é um <a>, mas também aceita <span> por compatibilidade)
+      var titulo = drawerHead && (drawerHead.querySelector('a') || drawerHead.querySelector('span'));
       if (titulo) titulo.style.color = dark ? '#7BB3E0' : '#1A3A5C';
       // Botão fechar drawer
       var btnClose = drawerHead && drawerHead.querySelector('button');
@@ -179,7 +179,7 @@
   <!-- DRAWER LATERAL ESQUERDO -->
   <nav id="m-drawer" aria-label="Menu lateral" style="position:fixed;top:0;left:0;bottom:0;width:80%;max-width:300px;background:#fff;z-index:201;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DCDCDC;">
-      <span style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A3A5C;font-size:1.1rem;">Grande Ateu</span>
+      <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A3A5C;font-size:1.1rem;text-decoration:none;">Grande Ateu</a>
       <button id="m-drawer-close" aria-label="Fechar menu" style="background:none;border:none;cursor:pointer;padding:4px;color:#6B6B6B;">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
@@ -1403,13 +1403,11 @@
     } catch(e) {}
     // 2. Volta ao tema claro
     aplicarTema(false);
-    // 3. Volta leitura ao padrão
+    // 3. Volta leitura ao padrão — re-aplica CSS defaults explicitamente
+    //    (não zera o elemento; injeta os valores padrão para evitar quirks de fonte)
     _gaLeitura = Object.assign({}, _LEITURA_DEF);
-    // Remove estilo injetado (volta ao CSS base)
-    var el = document.getElementById('ga-leitura-style');
-    if (el) el.textContent = '';
+    _aplicarLeitura(_gaLeitura);
     _sincronizarBotoesLeitura(_gaLeitura);
-    _atualizarPreviaLeitura(_gaLeitura);
   }
 
   // Event delegation para botões de personalização
