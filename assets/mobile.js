@@ -376,55 +376,55 @@
 
   <!-- FOOTER RICO — visível no mobile E desktop (SEO: links internos para o Googlebot) -->
   <footer id="ga-footer" style="background:#1A3A5C;color:#fff;font-family:sans-serif;">
-    <div style="max-width:1152px;margin:0 auto;padding:28px 24px 18px;">
+    <div style="max-width:1152px;margin:0 auto;padding:14px 24px 10px;">
 
-      <div id="ga-ft-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:18px 20px;">
+      <div id="ga-ft-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px 20px;align-items:start;">
 
         <!-- Marca -->
         <div>
-          <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:#fff;text-decoration:none;display:block;margin-bottom:4px;">Grande Ateu</a>
-          <p style="font-size:.75rem;color:#93c5fd;line-height:1.5;margin:0;">A Bíblia Ateia — 3 tomos, 38 livros, 873 passagens.<br>Uma cosmovisão fundamentada na razão e na Legítima Verdade.</p>
+          <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-size:.97rem;font-weight:700;color:#fff;text-decoration:none;display:block;margin-bottom:3px;">Grande Ateu</a>
+          <p style="font-size:.7rem;color:#93c5fd;line-height:1.4;margin:0;">A Bíblia Ateia — 3 tomos, 38 livros, 873 passagens.<br>Uma cosmovisão fundamentada na razão e na Legítima Verdade.</p>
         </div>
 
         <!-- A Bíblia -->
         <nav aria-label="A Bíblia">
-          <p style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 7px;">A Bíblia</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;">
-            <li><a href="/biblia/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Conheça a Bíblia</a></li>
-            <li><a href="/t1/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Tomo I — Ruptura</a></li>
-            <li><a href="/t2/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Tomo II — Edificação</a></li>
-            <li><a href="/t3/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Tomo III — Consolidação</a></li>
+          <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">A Bíblia</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+            <li><a href="/biblia/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Conheça a Bíblia</a></li>
+            <li><a href="/t1/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Tomo I — Ruptura</a></li>
+            <li><a href="/t2/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Tomo II — Edificação</a></li>
+            <li><a href="/t3/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Tomo III — Consolidação</a></li>
           </ul>
         </nav>
 
         <!-- Cosmovisão -->
         <nav aria-label="Cosmovisão">
-          <p style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 7px;">Cosmovisão</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;">
-            <li><a href="/jornada/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Jornada Ateia</a></li>
-            <li><a href="/piramide/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Pirâmide Ateia</a></li>
-            <li><a href="/dicionario/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Dicionário Bíblico</a></li>
-            <li><a href="/declaracao/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Declaração de Fé</a></li>
+          <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">Cosmovisão</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+            <li><a href="/jornada/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Jornada Ateia</a></li>
+            <li><a href="/piramide/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Pirâmide Ateia</a></li>
+            <li><a href="/dicionario/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Dicionário Bíblico</a></li>
+            <li><a href="/declaracao/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Declaração de Fé</a></li>
           </ul>
         </nav>
 
         <!-- Projeto -->
         <nav aria-label="Projeto">
-          <p style="font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 7px;">Projeto</p>
-          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px;">
-            <li><a href="/sobre/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Sobre</a></li>
-            <li><a href="/faq/" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">FAQ</a></li>
-            <li><a href="/sitemap.xml" style="color:#bfdbfe;text-decoration:none;font-size:.77rem;">Sitemap</a></li>
-            <li><a href="#" data-placeholder style="color:#bfdbfe;text-decoration:none;font-size:.77rem;display:flex;align-items:center;gap:5px;"><svg width="12" height="12" viewBox="0 0 24 24" fill="#FF6600" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="19" r="3"/><path d="M4 4a16 16 0 0116 16" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M4 11a9 9 0 019 9" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>RSS</a></li>
+          <p style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 5px;">Projeto</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:3px;">
+            <li><a href="/sobre/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Sobre</a></li>
+            <li><a href="/faq/" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">FAQ</a></li>
+            <li><a href="/sitemap.xml" style="color:#bfdbfe;text-decoration:none;font-size:.73rem;">Sitemap</a></li>
+            <li><a href="#" data-placeholder style="color:#bfdbfe;text-decoration:none;font-size:.73rem;display:flex;align-items:center;gap:5px;"><svg width="11" height="11" viewBox="0 0 24 24" fill="#FF6600" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="19" r="3"/><path d="M4 4a16 16 0 0116 16" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" fill="none"/><path d="M4 11a9 9 0 019 9" stroke="#FF6600" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>RSS</a></li>
           </ul>
         </nav>
 
       </div>
 
       <!-- Rodapé do footer -->
-      <div style="margin-top:18px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;">
-        <span style="font-size:.68rem;color:#93c5fd;">© 2026 Grande Ateu — Todos os direitos reservados.</span>
-        <span style="font-size:.68rem;color:#93c5fd;">grandeateu.com</span>
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px;">
+        <span style="font-size:.64rem;color:#93c5fd;">© 2026 Grande Ateu — Todos os direitos reservados.</span>
+        <span style="font-size:.64rem;color:#93c5fd;">grandeateu.com</span>
       </div>
 
     </div>
