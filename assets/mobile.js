@@ -383,7 +383,7 @@
         <!-- Marca -->
         <div>
           <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-size:.97rem;font-weight:700;color:#fff;text-decoration:none;display:block;margin-bottom:3px;">Grande Ateu</a>
-          <p style="font-size:.7rem;color:#93c5fd;line-height:1.4;margin:0;">A Bíblia Ateia — 3 tomos, 38 livros, 873 passagens.<br>Uma cosmovisão fundamentada na razão e na Legítima Verdade.</p>
+          <p style="font-size:.7rem;color:#93c5fd;line-height:1.1;margin:0;">A Bíblia Ateia — 3 tomos, 38 livros, 873 passagens.<br>Uma cosmovisão fundamentada na razão e na Legítima Verdade.</p>
         </div>
 
         <!-- A Bíblia -->
