@@ -183,7 +183,16 @@
       </div>
     </div>
     <ul style="list-style:none;margin:0;padding:12px 0;flex:1;">
-      <li><a href="/biblia/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Bíblia</a></li>
+      <li>
+        <button data-drawer-toggle="m-dl-biblia" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
+          Bíblia
+          <svg data-arrow width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform .2s;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <ul id="m-dl-biblia" style="display:none;list-style:none;padding:0;margin:0;">
+          <li><a href="/biblia/" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Conheça</a></li>
+          <li><a href="/biblia/#leitura" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Leitura</a></li>
+        </ul>
+      </li>
 
       <li>
         <button data-drawer-toggle="m-dl-loja" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
