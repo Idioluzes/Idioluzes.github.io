@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <script>try{if(localStorage.gaTheme==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Jornada Ateia — as 5 etapas da evolução filosófica: Crente, Agnóstico, Cético, Ateu e Grande Ateu. Grande Ateu."/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="googlebot" content="index, follow"/>
+  <meta property="og:title" content="Jornada Ateia | Grande Ateu"/>
+  <meta property="og:description" content="As 5 etapas da evolução filosófica rumo à cosmovisão ateísta: da crença ingênua à Grande Ateidade."/>
+  <meta property="og:type" content="article"/>
+  <meta property="og:url" content="https://grandeateu.com/jornada/"/>
+  <meta property="og:locale" content="pt_BR"/>
+  <link rel="canonical" href="https://grandeateu.com/jornada/"/>
+  <title>Jornada Ateia | Grande Ateu</title>
+  <link rel="stylesheet" href="/assets/tailwind.min.css"/>
+  <link rel="stylesheet" href="/assets/custom.css"/>
+</head>
+<body class="font-sans antialiased bg-fundo text-texto">
+
+  <header class="bg-fundo border-b border-borda sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center justify-between h-16" aria-label="Navegação principal">
+        <div class="flex items-center gap-3">
+          <button id="menu-btn" class="md:hidden p-2 -ml-2" aria-label="Abrir menu" aria-expanded="false">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <a href="/" class="font-serif text-xl font-bold text-acento">Grande Ateu <span class="text-texto-sec text-sm font-sans font-normal">| A Bíblia</span></a>
+        </div>
+        <!-- Desktop: nav + dropdowns -->
+        <ul class="hidden md:flex items-center gap-5 text-sm font-semibold text-texto">
+
+          <!-- BÍBLIA -->
+          <li style="position:relative;">
+            <button id="btn-biblia" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">
+              Bíblia Online <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="drop-biblia" style="display:none;position:absolute;top:calc(100% + 10px);left:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:160px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="/biblia/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Conheça</a>
+              <a href="/t1/An/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Leia</a>
+            </div>
+          </li>
+
+          <!-- LOJA -->
+          <li style="position:relative;">
+            <button id="btn-loja" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">
+              Loja <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="drop-loja" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:180px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Bíblia Impressa</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Imersão Hotmart</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Doação</a>
+            </div>
+          </li>
+
+          <!-- REDES -->
+          <li style="position:relative;">
+            <button id="btn-redes" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">
+              Redes <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="drop-redes" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:150px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="#" data-placeholder style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                WhatsApp
+              </a>
+              <a href="#" data-placeholder style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#E1306C" style="flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                Instagram
+              </a>
+              <a href="#" data-placeholder style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A3A5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="#1A3A5C" stroke="none"/></svg>
+                App
+              </a>
+              <a href="#" data-placeholder style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000" style="flex-shrink:0;"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                YouTube
+              </a>
+            </div>
+          </li>
+
+          <!-- COSMOVISÃO -->
+          <li style="position:relative;">
+            <button id="btn-cosmo" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">
+              Cosmovisão <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div id="drop-cosmo" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:215px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="/jornada/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Jornada</a>
+              <a href="/piramide/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Pirâmide Ateia</a>
+              <a href="/dicionario/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Dicionário Bíblico</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Grande Ateu</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Salvação</a>
+              <a href="/declaracao/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Declaração de Fé Genuína</a>
+            </div>
+          </li>
+
+          <!-- Bandeiras -->
+          <li class="flex items-center gap-2">
+            <a href="/" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fidioluzes.github.io" title="English"><img src="/assets/flags/us.svg" alt="EN" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https%3A%2F%2Fidioluzes.github.io" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https%3A%2F%2Fidioluzes.github.io" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https%3A%2F%2Fidioluzes.github.io" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="24" height="17" style="border-radius:2px;display:block;"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile drawer (injected by mobile.js) -->
+  <div id="drawer-overlay" style="display:none;"></div>
+  <aside id="mobile-drawer" aria-hidden="true"></aside>
+
+  <main>
+
+    <!-- HERO -->
+    <section style="background:#1A3A5C;" class="text-white py-14 sm:py-20 px-4" aria-labelledby="jornada-titulo">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="font-sans text-xs uppercase tracking-widest text-blue-200 mb-4">Cosmovisão</p>
+        <h1 id="jornada-titulo" class="font-serif text-4xl sm:text-5xl font-bold leading-tight mb-4">Jornada Ateia</h1>
+        <p class="font-sans text-base text-blue-100 max-w-xl mx-auto leading-relaxed">As cinco etapas da evolução filosófica: do pensamento crente à cosmovisão plena do Grande Ateu.</p>
+      </div>
+    </section>
+
+    <!-- LINHA DO TEMPO VISUAL -->
+    <section class="py-16 px-4">
+      <div class="max-w-3xl mx-auto">
+
+        <!-- Barra de progresso visual -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:64px;overflow-x:auto;padding:8px 0;">
+
+          <!-- Etapa 1: Crente -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#795548;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.15);">1</div>
+            <span style="font-family:sans-serif;font-size:.7rem;font-weight:700;color:#795548;text-transform:uppercase;letter-spacing:.06em;text-align:center;">Crente</span>
+          </div>
+          <div style="flex:1;min-width:24px;height:3px;background:linear-gradient(to right,#795548,#FF9800);margin-bottom:24px;"></div>
+
+          <!-- Etapa 2: Agnóstico -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#FF9800;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.15);">2</div>
+            <span style="font-family:sans-serif;font-size:.7rem;font-weight:700;color:#FF9800;text-transform:uppercase;letter-spacing:.06em;text-align:center;">Agnóstico</span>
+          </div>
+          <div style="flex:1;min-width:24px;height:3px;background:linear-gradient(to right,#FF9800,#009688);margin-bottom:24px;"></div>
+
+          <!-- Etapa 3: Cético -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#009688;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.15);">3</div>
+            <span style="font-family:sans-serif;font-size:.7rem;font-weight:700;color:#009688;text-transform:uppercase;letter-spacing:.06em;text-align:center;">Cético</span>
+          </div>
+          <div style="flex:1;min-width:24px;height:3px;background:linear-gradient(to right,#009688,#2196F3);margin-bottom:24px;"></div>
+
+          <!-- Etapa 4: Ateu -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:80px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#2196F3;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.15);">4</div>
+            <span style="font-family:sans-serif;font-size:.7rem;font-weight:700;color:#2196F3;text-transform:uppercase;letter-spacing:.06em;text-align:center;">Ateu</span>
+          </div>
+          <div style="flex:1;min-width:24px;height:3px;background:linear-gradient(to right,#2196F3,#673AB7);margin-bottom:24px;"></div>
+
+          <!-- Etapa 5: Grande Ateu -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:88px;">
+            <div style="width:44px;height:44px;border-radius:50%;background:#673AB7;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:1rem;box-shadow:0 2px 8px rgba(0,0,0,.15);">5</div>
+            <span style="font-family:sans-serif;font-size:.7rem;font-weight:700;color:#673AB7;text-transform:uppercase;letter-spacing:.06em;text-align:center;">Grande Ateu</span>
+          </div>
+
+        </div>
+
+        <!-- ETAPAS DETALHADAS -->
+        <div style="display:flex;flex-direction:column;gap:48px;">
+
+          <!-- ── ETAPA 1: CRENTE ────────────────────────────────── -->
+          <article id="crente" style="border-left:4px solid #795548;padding-left:24px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#795548;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:.95rem;flex-shrink:0;">1</div>
+              <div>
+                <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:#795548;font-weight:700;margin-bottom:2px;">Etapa I</p>
+                <h2 style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#1C1C1E;line-height:1.2;">Crente</h2>
+              </div>
+            </div>
+            <p style="font-family:sans-serif;font-size:.95rem;color:#444;line-height:1.75;margin-bottom:20px;">O indivíduo aceita dogmas religiosos por tradição familiar ou cultural, sem questionamento crítico. A fé é herdada, não construída. As respostas são dadas antes mesmo das perguntas serem feitas.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#795548;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Aceita a existência de Deus como verdade inquestionável</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#795548;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Guia-se por textos sagrados e autoridades religiosas</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#795548;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Sente desconforto ou culpa diante de dúvidas filosóficas</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- ── ETAPA 2: AGNÓSTICO ─────────────────────────────── -->
+          <article id="agnostico" style="border-left:4px solid #FF9800;padding-left:24px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#FF9800;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:.95rem;flex-shrink:0;">2</div>
+              <div>
+                <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:#FF9800;font-weight:700;margin-bottom:2px;">Etapa II</p>
+                <h2 style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#1C1C1E;line-height:1.2;">Agnóstico</h2>
+              </div>
+            </div>
+            <p style="font-family:sans-serif;font-size:.95rem;color:#444;line-height:1.75;margin-bottom:20px;">As primeiras dúvidas surgem. O indivíduo reconhece que não tem certeza sobre a existência de Deus e suspende o julgamento. É uma fase de abertura intelectual, ainda que marcada pela incerteza e pelo desconforto da transição.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#FF9800;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Reconhece a impossibilidade de provar ou refutar a existência divina</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#FF9800;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Começa a questionar dogmas e narrativas religiosas</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#FF9800;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Vive em ambiguidade filosófica sem posição definida</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- ── ETAPA 3: CÉTICO ────────────────────────────────── -->
+          <article id="cetico" style="border-left:4px solid #009688;padding-left:24px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#009688;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:.95rem;flex-shrink:0;">3</div>
+              <div>
+                <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:#009688;font-weight:700;margin-bottom:2px;">Etapa III</p>
+                <h2 style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#1C1C1E;line-height:1.2;">Cético</h2>
+              </div>
+            </div>
+            <p style="font-family:sans-serif;font-size:.95rem;color:#444;line-height:1.75;margin-bottom:20px;">O pensamento crítico se consolida. O indivíduo exige evidências para toda afirmação, questiona ativamente a religião e desenvolve instrumentos racionais para avaliar alegações sobrenaturais. A razão passa a ser a principal ferramenta de navegação.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#009688;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Aplica pensamento crítico e método científico às questões religiosas</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#009688;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Rejeita alegações sobrenaturais por ausência de evidências</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#009688;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Estuda filosofia, lógica e epistemologia de forma sistemática</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- ── ETAPA 4: ATEU ──────────────────────────────────── -->
+          <article id="ateu" style="border-left:4px solid #2196F3;padding-left:24px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#2196F3;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:.95rem;flex-shrink:0;">4</div>
+              <div>
+                <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:#2196F3;font-weight:700;margin-bottom:2px;">Etapa IV</p>
+                <h2 style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#1C1C1E;line-height:1.2;">Ateu</h2>
+              </div>
+            </div>
+            <p style="font-family:sans-serif;font-size:.95rem;color:#444;line-height:1.75;margin-bottom:20px;">A posição filosófica se firma: sem evidências suficientes, não há razão para crer em deuses. O ateísmo é adotado não como fé, mas como conclusão racional. O indivíduo reconstrói sua ética e visão de mundo sem alicerce sobrenatural.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#2196F3;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Não crê na existência de deuses por ausência de evidências</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#2196F3;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Constrói ética secular baseada na razão e no bem-estar humano</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#2196F3;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Busca propósito e significado na realidade natural e nas relações humanas</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- ── ETAPA 5: GRANDE ATEU ───────────────────────────── -->
+          <article id="grande-ateu" style="border-left:4px solid #673AB7;padding-left:24px;">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:#673AB7;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Georgia,serif;font-weight:700;font-size:.95rem;flex-shrink:0;">5</div>
+              <div>
+                <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:#673AB7;font-weight:700;margin-bottom:2px;">Etapa V</p>
+                <h2 style="font-family:Georgia,serif;font-size:1.6rem;font-weight:700;color:#1C1C1E;line-height:1.2;">Grande Ateu</h2>
+              </div>
+            </div>
+            <p style="font-family:sans-serif;font-size:.95rem;color:#444;line-height:1.75;margin-bottom:20px;">A culminação da jornada. O Grande Ateu não apenas rejeita o teísmo — ele abraça uma cosmovisão coerente, fundamentada na Legítima Verdade, nos 11 Princípios e nos 111 Valores da Pirâmide Ateia. É um estilo de vida filosófico, ético e intelectualmente rigoroso.</p>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#673AB7;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Integra plenamente a Pirâmide Ateia como estrutura de vida</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#673AB7;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Atua como referência filosófica e dissemina a cosmovisão ateísta</span>
+              </li>
+              <li style="display:flex;align-items:flex-start;gap:10px;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#673AB7;margin-top:6px;flex-shrink:0;display:block;"></span>
+                <span style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.6;">Vive a Legítima Verdade como fundamento de todas as suas decisões</span>
+              </li>
+            </ul>
+          </article>
+
+        </div><!-- /etapas -->
+
+        <!-- CTA -->
+        <div style="margin-top:64px;padding:32px;background:#F3F0FA;border-radius:12px;text-align:center;border:1px solid #D1C4E9;">
+          <p style="font-family:sans-serif;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:#673AB7;font-weight:700;margin-bottom:10px;">Próximo passo</p>
+          <h3 style="font-family:Georgia,serif;font-size:1.4rem;font-weight:700;color:#1C1C1E;margin-bottom:10px;">Explore a estrutura completa</h3>
+          <p style="font-family:sans-serif;font-size:.9rem;color:#555;line-height:1.7;margin-bottom:24px;">Conheça a Pirâmide Ateia — o fundamento, os princípios e os valores que sustentam a cosmovisão do Grande Ateu.</p>
+          <a href="/piramide/" style="display:inline-block;background:#673AB7;color:#fff;font-family:sans-serif;font-size:.85rem;font-weight:700;padding:12px 28px;border-radius:8px;text-decoration:none;letter-spacing:.04em;">Ver Pirâmide Ateia</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/assets/mobile.js"></script>
+  <script src="/assets/analytics.js"></script>
+
+</body>
+</html>
