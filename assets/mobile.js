@@ -248,7 +248,10 @@
 
   const mobileStyle = document.createElement('style');
   mobileStyle.textContent = [
+    // Botão de busca: escondido por padrão, visível só no mobile
+    '#m-busca-hdr{display:none;}',
     '@media(max-width:767px){',
+    '#m-busca-hdr{display:flex!important;align-items:center;}',
     'footer[role="contentinfo"]{display:none!important;}',
     // Garante que o nav desktop (com botões de busca/tema injetados) nunca apareça no mobile
     'header nav > ul{display:none!important;}',
@@ -382,6 +385,26 @@
 
   fixHamburgerPosition();
   window.addEventListener('resize', fixHamburgerPosition);
+
+  // ── BOTÃO DE BUSCA NO HEADER MOBILE ─────────────────────────────
+  // Injetado como último filho da <nav> do header.
+  // flex justify-between faz ele ir automaticamente para o lado direito.
+  // CSS acima garante display:none no desktop e display:flex no mobile.
+
+  function _injetarBuscaMobileHeader() {
+    if (document.getElementById('m-busca-hdr')) return;
+    var nav = document.querySelector('header nav');
+    if (!nav) return;
+    var btn = document.createElement('button');
+    btn.id = 'm-busca-hdr';
+    btn.setAttribute('aria-label', 'Buscar');
+    btn.title = 'Buscar';
+    btn.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>';
+    btn.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;';
+    btn.addEventListener('click', function () { _abrirBusca(''); });
+    nav.appendChild(btn);
+  }
+  _injetarBuscaMobileHeader();
 
   // ── LINKS DE BANDEIRA — dinâmicos ────────────────────────────────
   // Funciona tanto no site original quanto dentro do translate.goog.
