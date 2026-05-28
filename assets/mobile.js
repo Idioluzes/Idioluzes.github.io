@@ -1412,4 +1412,45 @@
     _atualizarBarraDropdown();
   };
 
+// ── DROPDOWNS DO HEADER DESKTOP — hover com delay 150ms ──────────────────────
+(function () {
+  var allIds = ['biblia', 'loja', 'redes', 'cosmo'];
+  var timers = {};
+
+  function fecharTodos() {
+    allIds.forEach(function (d) {
+      var el = document.getElementById('drop-' + d);
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  allIds.forEach(function (id) {
+    var btn  = document.getElementById('btn-' + id);
+    var drop = document.getElementById('drop-' + id);
+    if (!btn || !drop) return;
+    var li = btn.parentElement; // <li> pai
+
+    li.addEventListener('mouseenter', function () {
+      clearTimeout(timers[id]);
+      fecharTodos();
+      drop.style.display = 'block';
+    });
+    li.addEventListener('mouseleave', function () {
+      timers[id] = setTimeout(function () {
+        drop.style.display = 'none';
+      }, 150);
+    });
+    drop.addEventListener('mouseenter', function () {
+      clearTimeout(timers[id]);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var dentro = allIds.some(function (d) {
+      return e.target.closest('#btn-' + d) || e.target.closest('#drop-' + d);
+    });
+    if (!dentro) fecharTodos();
+  });
+})();
+
 })();

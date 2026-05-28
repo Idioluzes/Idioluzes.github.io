@@ -1,79 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8"/>
-  <script>try{if(localStorage.gaTheme==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
-  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="De Progressu Humano — Glória 1. Mors finis naturalis est, non transitus — et hoc liberat."/>
-  <meta name="robots" content="index, follow"/>
-  <meta name="googlebot" content="index, follow"/>
-  <meta name="GPTBot" content="index, follow"/>
-  <meta name="ClaudeBot" content="index, follow"/>
-  <meta name="bingbot" content="index, follow"/>
-  <meta name="PerplexityBot" content="index, follow"/>
-  <meta name="Google-Extended" content="index, follow"/>
-  <meta property="og:title" content="Gl 1 · De Progressu Humano | Grande Ateu"/>
-  <meta property="og:description" content="De Progressu Humano — Glória 1. Mors finis naturalis est, non transitus — et hoc liberat."/>
-  <meta property="og:type" content="article"/>
-  <meta property="og:url" content="https://grandeateu.com/t3/Gl/1/"/>
-  <meta property="og:locale" content="pt_BR"/>
-  <link rel="canonical" href="https://grandeateu.com/t3/Gl/1/"/>
-  <link rel="alternate" hreflang="pt-BR" href="https://grandeateu.com/t3/Gl/1/"/>
-  <title>Gl 1 · De Progressu Humano | Grande Ateu</title>
-  <link rel="stylesheet" href="/assets/tailwind.min.css"/>
-  <link rel="stylesheet" href="/assets/custom.css"/>
-  <script type="application/ld+json">
-  {
-  "@context": "https://schema.org",
-  "@type": "Chapter",
-  "name": "De Progressu Humano",
-  "description": "Mors finis naturalis est, non transitus — et hoc liberat.",
-  "inLanguage": "pt-BR",
-  "isPartOf": {
-    "@type": "Book",
-    "name": "Glória — Grande Ateu",
-    "url": "https://grandeateu.com/t3/Gl/"
-  },
-  "url": "https://grandeateu.com/t3/Gl/1/",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Início",
-        "item": "https://grandeateu.com/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Tomo III",
-        "item": "https://grandeateu.com/t3/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "Glória",
-        "item": "https://grandeateu.com/t3/Gl/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 4,
-        "name": "Cap. 1",
-        "item": "https://grandeateu.com/t3/Gl/1/"
-      }
-    ]
-  }
-}
-  </script>
-</head>
-<body class="font-sans antialiased bg-fundo text-texto">
-  <header class="bg-fundo border-b border-borda sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <nav class="flex items-center justify-between h-16" aria-label="Navegação principal">
-        <a href="/" class="font-serif text-xl font-bold text-acento">Grande Ateu <span class="hidden sm:inline text-texto-sec text-sm font-sans font-normal">| A Bíblia Ateia</span></a>
-                <!-- Desktop: nav + dropdowns -->
+#!/usr/bin/env python3
+# _update_nav.py — substitui o nav antigo (gap-6 / Tomo I/II/III) pelo novo com dropdowns em todos os index.html
+import os, re
+
+NEW_NAV = '''        <!-- Desktop: nav + dropdowns -->
         <ul class="hidden md:flex items-center gap-5 text-sm font-semibold text-texto">
 
           <!-- BÍBLIA -->
@@ -147,105 +76,37 @@
             <a href="https://translate.google.com/translate?sl=pt&tl=de&u=https%3A%2F%2Fidioluzes.github.io" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="24" height="17" style="border-radius:2px;display:block;"></a>
             <a href="https://translate.google.com/translate?sl=pt&tl=fr&u=https%3A%2F%2Fidioluzes.github.io" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="24" height="17" style="border-radius:2px;display:block;"></a>
           </li>
-        </ul>
-        <button id="menu-btn" class="md:hidden p-2" aria-label="Abrir menu" aria-expanded="false">
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-        </button>
-      </nav>
-      <div id="menu-mobile" class="hidden md:hidden pb-4">
-        <ul class="flex flex-col gap-3 text-sm font-semibold">
-          <li><a href="/t1/">Tomo I — Ruptura</a></li>
-          <li><a href="/t2/">Tomo II — Edificação</a></li>
-          <li><a href="/t3/">Tomo III — Consolidação</a></li>
-          <li><a href="/faq/">FAQ</a></li>
-          <li><a href="/sobre/">Sobre</a></li>
-        </ul>
-      </div>
-    </div>
-  </header>
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+        </ul>'''
 
-    <nav aria-label="Breadcrumb" class="mb-8 text-xs text-texto-sec">
-      <ol class="flex items-center gap-1 flex-wrap">
-        <li><a href="/" class="hover:text-acento">Início</a></li>
-        <li aria-hidden="true" class="mx-1">›</li>
-        <li><a href="/t3/" class="hover:text-acento">Tomo III</a></li>
-        <li aria-hidden="true" class="mx-1">›</li>
-        <li><a href="/t3/Gl/" class="hover:text-acento">Gl</a></li>
-        <li aria-hidden="true" class="mx-1">›</li>
-        <li class="text-texto font-semibold">Cap. 1</li>
-      </ol>
-    </nav>
+PATTERN = re.compile(
+    r'<ul class="hidden md:flex items-center gap-6 text-sm font-semibold text-texto">.*?</ul>',
+    re.DOTALL
+)
 
-    <div class="mb-10 pb-8 border-b border-borda">
-      <p class="font-mono text-xs text-texto-sec mb-3">Gl · capítulo 1 · /t3/Gl/1/</p>
-      <h1 class="font-serif text-4xl font-bold text-acento mb-3">De Progressu Humano</h1>
-      <p class="font-serif text-lg italic text-texto-sec">Mors finis naturalis est, non transitus — et hoc liberat.</p>
-    </div>
+ROOT = r'C:\Users\noteb\OneDrive\Área de Trabalho\RAÍZ\1 BACKUP SÓ HD\8 VisualStudioCode\grandeateu'
+SKIP = {os.path.join(ROOT, 'index.html')}  # homepage already updated
 
-    <section aria-label="Passagens do capítulo 1">
+updated = 0
+unchanged = 0
+skipped = 0
 
-      <div class="flex gap-4 py-5 border-b border-borda" id="p1">
-        <a href="/t3/Gl/1/1/" class="font-mono text-xs text-texto-sec hover:text-acento shrink-0 w-6 text-right pt-0.5">1</a>
-        <p class="font-serif text-base leading-relaxed text-texto">Lux mentis non ex precibus, sed ex studio et labore venit. Conscientia humana flos longissimae evolutionis est.</p>
-      </div>
-      <div class="flex gap-4 py-5 border-b border-borda" id="p2">
-        <a href="/t3/Gl/1/2/" class="font-mono text-xs text-texto-sec hover:text-acento shrink-0 w-6 text-right pt-0.5">2</a>
-        <p class="font-serif text-base leading-relaxed text-texto">Ethica sine deo non solum possibilis sed necessaria est.</p>
-      </div>
-      <div class="flex gap-4 py-5 border-b border-borda" id="p3">
-        <a href="/t3/Gl/1/3/" class="font-mono text-xs text-texto-sec hover:text-acento shrink-0 w-6 text-right pt-0.5">3</a>
-        <p class="font-serif text-base leading-relaxed text-texto">Dubium primum et necessarium est passum ad intelligentiam. Veritas non quaerit angulos nec timet lucem. Conscientia humana flos longissimae evolutionis est.</p>
-      </div>
-      <div class="flex gap-4 py-5 border-b border-borda" id="p4">
-        <a href="/t3/Gl/1/4/" class="font-mono text-xs text-texto-sec hover:text-acento shrink-0 w-6 text-right pt-0.5">4</a>
-        <p class="font-serif text-base leading-relaxed text-texto">Tempus praeteritum non redit; praesens est thesaurus noster.</p>
-      </div>
-      <div class="flex gap-4 py-5 border-b border-borda" id="p5">
-        <a href="/t3/Gl/1/5/" class="font-mono text-xs text-texto-sec hover:text-acento shrink-0 w-6 text-right pt-0.5">5</a>
-        <p class="font-serif text-base leading-relaxed text-texto">Qui legit et cogitat, liberior fit quam qui orat.</p>
-      </div>
-    </section>
+for dirpath, dirnames, filenames in os.walk(ROOT):
+    dirnames[:] = [d for d in dirnames if not d.startswith('.')]
+    for fn in filenames:
+        if fn != 'index.html':
+            continue
+        fp = os.path.join(dirpath, fn)
+        if fp in SKIP:
+            skipped += 1
+            continue
+        with open(fp, 'r', encoding='utf-8') as f:
+            content = f.read()
+        new_content = PATTERN.sub(NEW_NAV, content)
+        if new_content != content:
+            with open(fp, 'w', encoding='utf-8') as f:
+                f.write(new_content)
+            updated += 1
+        else:
+            unchanged += 1
 
-    <nav class="mt-12 pt-8 border-t border-borda flex items-center justify-between" aria-label="Capítulos">
-      <a href="/t3/Po/" class="text-sm font-semibold text-link hover:underline">← Poemas</a>
-      <a href="/t3/Gl/" class="text-xs text-texto-sec hover:text-acento">Gl</a>
-      <a href="/t3/Gl/2/" class="text-sm font-semibold text-link hover:underline">Capítulo 2 →</a>
-    </nav>
-
-  </main>
-  <footer class="bg-acento text-white py-12 px-4 mt-16" role="contentinfo">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm font-sans">
-      <div>
-        <p class="font-serif text-lg font-bold mb-2">Grande Ateu</p>
-        <p class="text-blue-200 leading-relaxed">A Bíblia Ateia — 3 tomos · 38 livros originais.</p>
-      </div>
-      <nav aria-label="Tomos">
-        <p class="font-semibold mb-3 uppercase tracking-wider text-xs text-blue-200">Tomos</p>
-        <ul class="space-y-2">
-          <li><a href="/t1/" class="text-blue-100 hover:text-white transition-colors">Tomo I — Ruptura</a></li>
-          <li><a href="/t2/" class="text-blue-100 hover:text-white transition-colors">Tomo II — Edificação</a></li>
-          <li><a href="/t3/" class="text-blue-100 hover:text-white transition-colors">Tomo III — Consolidação</a></li>
-        </ul>
-      </nav>
-      <nav aria-label="Site">
-        <p class="font-semibold mb-3 uppercase tracking-wider text-xs text-blue-200">Site</p>
-        <ul class="space-y-2">
-          <li><a href="/faq/" class="text-blue-100 hover:text-white transition-colors">FAQ</a></li>
-          <li><a href="/sobre/" class="text-blue-100 hover:text-white transition-colors">Sobre</a></li>
-          <li><a href="/sitemap.xml" class="text-blue-100 hover:text-white transition-colors">Sitemap</a></li>
-        </ul>
-      </nav>
-    </div>
-    <div class="max-w-6xl mx-auto mt-10 pt-6 border-t border-blue-800 text-blue-300 text-xs text-center">
-      © 2025 Grande Ateu — Todos os direitos reservados.
-    </div>
-  </footer>
-  <script>
-    const btn = document.getElementById('menu-btn');
-    const menu = document.getElementById('menu-mobile');
-    btn.addEventListener('click', () => { const aberto = menu.classList.toggle('hidden'); btn.setAttribute('aria-expanded', !aberto); });
-  </script>
-  <script src="/assets/mobile.js"></script>
-<script src="/assets/analytics.js"></script></body>
-</html>
+print(f'Updated: {updated} | Unchanged: {unchanged} | Skipped (homepage): {skipped}')
