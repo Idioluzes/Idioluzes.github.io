@@ -89,6 +89,30 @@
       if (darkBtn) darkBtn.style.color = dark ? '#8B9BAA' : '#6B6B6B';
     }
 
+    // Modal leitura
+    var leit = document.getElementById('modal-leitura');
+    if (leit) {
+      var leitInner = leit.querySelector('div');
+      if (leitInner) {
+        leitInner.style.background = dark ? '#0D1520' : '#fff';
+        var leitHead = leitInner.querySelector('div:first-child');
+        if (leitHead) leitHead.style.borderColor = dark ? '#1E3040' : '#DCDCDC';
+        var leitTitle = leitHead && leitHead.querySelector('span');
+        if (leitTitle) leitTitle.style.color = dark ? '#7BB3E0' : '#1A3A5C';
+        var leitClose = leitHead && leitHead.querySelector('button');
+        if (leitClose) leitClose.style.color = dark ? '#8B9BAA' : '#6B6B6B';
+        var prev = document.getElementById('leitura-previa');
+        if (prev) {
+          prev.style.background   = dark ? '#1A2B3C' : '#F9F7F4';
+          prev.style.borderColor  = dark ? '#2A3D50'  : '#DCDCDC';
+          var pp = document.getElementById('leitura-previa-p');
+          if (pp) pp.style.color = dark ? '#E8E4DC' : '#1C1C1E';
+        }
+      }
+    }
+    // Sincroniza cores dos botões de personalização conforme tema
+    if (typeof _gaLeitura !== 'undefined') _sincronizarBotoesLeitura(_gaLeitura);
+
     // Modais
     ['modal-apoiar', 'modal-config'].forEach(function (id) {
       var modal = document.getElementById(id);
@@ -221,6 +245,64 @@
     </div>
   </div>
 
+  <!-- MODAL: PERSONALIZAR LEITURA -->
+  <div id="modal-leitura" style="display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.65);padding:16px;align-items:flex-start;justify-content:center;">
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:400px;margin-top:56px;max-height:85vh;overflow-y:auto;font-family:sans-serif;">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #DCDCDC;">
+        <span style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A3A5C;font-size:1.1rem;">Personalizar Leitura</span>
+        <button data-fechar="modal-leitura" style="background:none;border:none;cursor:pointer;color:#6B6B6B;font-size:1.4rem;line-height:1;">✕</button>
+      </div>
+      <div style="padding:16px 20px 22px;display:flex;flex-direction:column;gap:18px;">
+
+        <div>
+          <p style="margin:0 0 8px;font-size:.7rem;color:#9B9B9B;font-weight:700;text-transform:uppercase;letter-spacing:.07em;">Fonte</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button data-leitura-fonte="playfair" style="background:#1A3A5C;color:#fff;border:1px solid #1A3A5C;border-radius:8px;padding:6px 11px;font-size:.76rem;cursor:pointer;font-weight:600;font-family:'Playfair Display',serif;">Padrão</button>
+            <button data-leitura-fonte="pt-serif" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 11px;font-size:.76rem;cursor:pointer;font-weight:600;font-family:'PT Serif',serif;">PT Serif</button>
+            <button data-leitura-fonte="spectral" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 11px;font-size:.76rem;cursor:pointer;font-weight:600;font-family:'Spectral',serif;">Spectral</button>
+            <button data-leitura-fonte="neuton"   style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 11px;font-size:.76rem;cursor:pointer;font-weight:600;font-family:'Neuton',serif;">Neuton</button>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin:0 0 8px;font-size:.7rem;color:#9B9B9B;font-weight:700;text-transform:uppercase;letter-spacing:.07em;">Tamanho do Texto</p>
+          <div style="display:flex;gap:6px;">
+            <button data-leitura-tamanho="pq" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 14px;font-size:.75rem;cursor:pointer;font-weight:600;">PEQ</button>
+            <button data-leitura-tamanho="md" style="background:#1A3A5C;color:#fff;border:1px solid #1A3A5C;border-radius:8px;padding:6px 14px;font-size:.75rem;cursor:pointer;font-weight:600;">MED</button>
+            <button data-leitura-tamanho="gr" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 14px;font-size:.75rem;cursor:pointer;font-weight:600;">GRA</button>
+            <button data-leitura-tamanho="ex" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 14px;font-size:.75rem;cursor:pointer;font-weight:600;">EXT</button>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin:0 0 8px;font-size:.7rem;color:#9B9B9B;font-weight:700;text-transform:uppercase;letter-spacing:.07em;">Espaço entre Linhas</p>
+          <div style="display:flex;gap:6px;">
+            <button data-leitura-linha="min" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MIN</button>
+            <button data-leitura-linha="med" style="background:#1A3A5C;color:#fff;border:1px solid #1A3A5C;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MED</button>
+            <button data-leitura-linha="max" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MAX</button>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin:0 0 8px;font-size:.7rem;color:#9B9B9B;font-weight:700;text-transform:uppercase;letter-spacing:.07em;">Espaço entre Letras</p>
+          <div style="display:flex;gap:6px;">
+            <button data-leitura-letra="min" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MIN</button>
+            <button data-leitura-letra="med" style="background:#1A3A5C;color:#fff;border:1px solid #1A3A5C;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MED</button>
+            <button data-leitura-letra="max" style="background:#F9F7F4;color:#1A3A5C;border:1px solid #DCDCDC;border-radius:8px;padding:6px 18px;font-size:.75rem;cursor:pointer;font-weight:600;">MAX</button>
+          </div>
+        </div>
+
+        <div>
+          <p style="margin:0 0 8px;font-size:.7rem;color:#9B9B9B;font-weight:700;text-transform:uppercase;letter-spacing:.07em;">Prévia</p>
+          <div id="leitura-previa" style="background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:14px 16px;">
+            <p id="leitura-previa-p" style="margin:0;color:#1C1C1E;font-family:'Playfair Display',Georgia,serif;font-size:1rem;line-height:1.7;letter-spacing:0em;">A razão é o único farol verdadeiro.<br>Sem ela, apenas a névoa do dogma permanece.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- BOTTOM NAV — só mobile (3 botões: Home · Apoiar · Config) -->
   <nav id="m-bottom-nav" aria-label="Navegação mobile" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1A3A5C;border-top:1px solid #2a4f7a;height:60px;">
     <div style="display:flex;align-items:stretch;height:100%;max-width:480px;margin:0 auto;">
@@ -248,10 +330,10 @@
 
   const mobileStyle = document.createElement('style');
   mobileStyle.textContent = [
-    // Botão de busca: escondido por padrão, visível só no mobile
-    '#m-busca-hdr{display:none;}',
+    // Wrapper de botões do header: escondido por padrão, visível só no mobile
+    '#m-hdr-btns{display:none;}',
     '@media(max-width:767px){',
-    '#m-busca-hdr{display:flex!important;align-items:center;}',
+    '#m-hdr-btns{display:flex!important;align-items:center;}',
     'footer[role="contentinfo"]{display:none!important;}',
     // Garante que o nav desktop (com botões de busca/tema injetados) nunca apareça no mobile
     'header nav > ul{display:none!important;}',
@@ -293,6 +375,18 @@
     btnDark.style.cssText = _icoStyle;
     liDark.appendChild(btnDark);
     desktopUl.appendChild(liDark);
+
+    // Botão Personalizar Leitura (desktop)
+    var COG_SVG = '<svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>';
+    var liCfg = document.createElement('li');
+    var btnCfgDesk = document.createElement('button');
+    btnCfgDesk.setAttribute('aria-label', 'Personalizar leitura');
+    btnCfgDesk.title = 'Personalizar leitura';
+    btnCfgDesk.setAttribute('data-modal', 'modal-leitura');
+    btnCfgDesk.innerHTML = COG_SVG;
+    btnCfgDesk.style.cssText = _icoStyle;
+    liCfg.appendChild(btnCfgDesk);
+    desktopUl.appendChild(liCfg);
   }
 
   // ── HELPERS ──────────────────────────────────────────────────────
@@ -395,14 +489,33 @@
     if (document.getElementById('m-busca-hdr')) return;
     var nav = document.querySelector('header nav');
     if (!nav) return;
-    var btn = document.createElement('button');
-    btn.id = 'm-busca-hdr';
-    btn.setAttribute('aria-label', 'Buscar');
-    btn.title = 'Buscar';
-    btn.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>';
-    btn.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;';
-    btn.addEventListener('click', function () { _abrirBusca(''); });
-    nav.appendChild(btn);
+
+    // Wrapper para agrupar lupa + engrenagem lado a lado
+    var wrap = document.createElement('div');
+    wrap.id = 'm-hdr-btns';
+    wrap.style.cssText = 'display:flex;align-items:center;gap:2px;';
+
+    // Botão de busca
+    var btnS = document.createElement('button');
+    btnS.id = 'm-busca-hdr';
+    btnS.setAttribute('aria-label', 'Buscar');
+    btnS.title = 'Buscar';
+    btnS.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>';
+    btnS.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;display:flex;align-items:center;';
+    btnS.addEventListener('click', function () { _abrirBusca(''); });
+
+    // Botão de personalização
+    var btnC = document.createElement('button');
+    btnC.id = 'm-config-hdr';
+    btnC.setAttribute('aria-label', 'Personalizar leitura');
+    btnC.title = 'Personalizar leitura';
+    btnC.setAttribute('data-modal', 'modal-leitura');
+    btnC.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>';
+    btnC.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;display:flex;align-items:center;';
+
+    wrap.appendChild(btnS);
+    wrap.appendChild(btnC);
+    nav.appendChild(wrap);
   }
   _injetarBuscaMobileHeader();
 
@@ -556,7 +669,13 @@
     if (el) {
       e.preventDefault();
       fecharDrawer();
-      setTimeout(() => abrirModal(el.dataset.modal), 150);
+      setTimeout(function() {
+        abrirModal(el.dataset.modal);
+        if (el.dataset.modal === 'modal-leitura') {
+          _sincronizarBotoesLeitura(_gaLeitura);
+          _atualizarPreviaLeitura(_gaLeitura);
+        }
+      }, 150);
       return;
     }
 
@@ -569,7 +688,7 @@
     if (ph) { e.preventDefault(); alert('Em breve.'); return; }
 
     // Fechar modal ao clicar no overlay (fora do conteúdo interno)
-    if (e.target.id === 'modal-apoiar' || e.target.id === 'modal-config') {
+    if (e.target.id === 'modal-apoiar' || e.target.id === 'modal-config' || e.target.id === 'modal-leitura') {
       fecharModal(e.target.id);
     }
   });
@@ -1106,6 +1225,114 @@
     var inp = document.getElementById('m-busca-input');
     if (inp && inp.value.trim()) _executarBusca(inp.value.trim());
   });
+
+  // ── PERSONALIZAÇÃO DE LEITURA ────────────────────────────────────
+  // Fontes, tamanho, espaçamento entre linhas e letras.
+  // Persistido em localStorage como 'gaLeitura'.
+  // Aplicado via <style id="ga-leitura-style"> injetado no <head>.
+
+  var _LEITURA_DEF = { fonte: 'playfair', tamanho: 'md', linha: 'med', letra: 'med' };
+  var _gaLeitura   = Object.assign({}, _LEITURA_DEF);
+
+  var _FONTE_MAP   = {
+    'playfair': "'Playfair Display', Georgia, serif",
+    'pt-serif': "'PT Serif', Georgia, serif",
+    'spectral': "'Spectral', Georgia, serif",
+    'neuton':   "'Neuton', Georgia, serif"
+  };
+  var _SIZE_MAP  = { 'pq': '0.87rem', 'md': '1rem',   'gr': '1.14rem', 'ex': '1.3rem' };
+  var _LH_MAP    = { 'min': '1.5',    'med': '1.7',    'max': '2.1' };
+  var _LS_MAP    = { 'min': '-0.02em','med': '0em',    'max': '0.06em' };
+
+  function _carregarLeitura() {
+    try {
+      var s = localStorage.getItem('gaLeitura');
+      if (s) {
+        var parsed = JSON.parse(s);
+        _gaLeitura = Object.assign({}, _LEITURA_DEF, parsed);
+      }
+    } catch(e) {}
+  }
+
+  function _salvarLeitura() {
+    try { localStorage.setItem('gaLeitura', JSON.stringify(_gaLeitura)); } catch(e) {}
+  }
+
+  function _gerarCSSLeitura(cfg) {
+    var font = _FONTE_MAP[cfg.fonte]   || _FONTE_MAP['playfair'];
+    var size = _SIZE_MAP[cfg.tamanho]  || '1rem';
+    var lh   = _LH_MAP[cfg.linha]     || '1.7';
+    var ls   = _LS_MAP[cfg.letra]     || '0em';
+    // .font-serif: aplica fonte a todos os elementos serif (títulos e passagens)
+    // main p.font-serif: aplica tamanho/espaçamento só ao texto das passagens
+    return '.font-serif{font-family:' + font + '!important;}' +
+      'main p.font-serif,main blockquote p{font-size:' + size + '!important;line-height:' + lh + '!important;letter-spacing:' + ls + '!important;}';
+  }
+
+  function _aplicarLeitura(cfg) {
+    var el = document.getElementById('ga-leitura-style');
+    if (!el) {
+      el = document.createElement('style');
+      el.id = 'ga-leitura-style';
+      document.head.appendChild(el);
+    }
+    el.textContent = _gerarCSSLeitura(cfg);
+    _atualizarPreviaLeitura(cfg);
+  }
+
+  function _atualizarPreviaLeitura(cfg) {
+    var pp = document.getElementById('leitura-previa-p');
+    if (!pp) return;
+    pp.style.fontFamily    = _FONTE_MAP[cfg.fonte]  || _FONTE_MAP['playfair'];
+    pp.style.fontSize      = _SIZE_MAP[cfg.tamanho] || '1rem';
+    pp.style.lineHeight    = _LH_MAP[cfg.linha]     || '1.7';
+    pp.style.letterSpacing = _LS_MAP[cfg.letra]     || '0em';
+  }
+
+  function _sincronizarBotoesLeitura(cfg) {
+    var dark = isDark();
+    var grupos = [
+      ['data-leitura-fonte',   'fonte'],
+      ['data-leitura-tamanho', 'tamanho'],
+      ['data-leitura-linha',   'linha'],
+      ['data-leitura-letra',   'letra']
+    ];
+    grupos.forEach(function(g) {
+      document.querySelectorAll('[' + g[0] + ']').forEach(function(btn) {
+        var ativo = btn.getAttribute(g[0]) === cfg[g[1]];
+        btn.style.background  = ativo ? '#1A3A5C' : (dark ? '#1A2B3C' : '#F9F7F4');
+        btn.style.color       = ativo ? '#fff'     : (dark ? '#7BB3E0' : '#1A3A5C');
+        btn.style.borderColor = ativo ? '#1A3A5C'  : (dark ? '#2A3D50' : '#DCDCDC');
+      });
+    });
+  }
+
+  // Event delegation para botões de personalização
+  document.addEventListener('click', function(e) {
+    var grupos = [
+      ['data-leitura-fonte',   'fonte'],
+      ['data-leitura-tamanho', 'tamanho'],
+      ['data-leitura-linha',   'linha'],
+      ['data-leitura-letra',   'letra']
+    ];
+    for (var i = 0; i < grupos.length; i++) {
+      var par = grupos[i];
+      var btn = e.target.closest('[' + par[0] + ']');
+      if (btn) {
+        _gaLeitura[par[1]] = btn.getAttribute(par[0]);
+        _salvarLeitura();
+        _aplicarLeitura(_gaLeitura);
+        _sincronizarBotoesLeitura(_gaLeitura);
+        return;
+      }
+    }
+  });
+
+  // Inicialização: carrega do localStorage e aplica
+  _carregarLeitura();
+  if (_gaLeitura.fonte !== 'playfair' || _gaLeitura.tamanho !== 'md' || _gaLeitura.linha !== 'med' || _gaLeitura.letra !== 'med') {
+    _aplicarLeitura(_gaLeitura);
+  }
 
   // Atualiza dropdown bar após cada SPA nav (re-hook em navegarSPA é feito abaixo)
   var _navegarSPA_orig = navegarSPA;
