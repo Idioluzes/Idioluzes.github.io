@@ -227,10 +227,10 @@
         <ul id="m-dl-cosmo" style="display:none;list-style:none;padding:0;margin:0;">
           <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Jornada</a></li>
           <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Pirâmide Ateia</a></li>
-          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Dicionário Bíblico</a></li>
+          <li><a href="/dicionario/" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Dicionário Bíblico</a></li>
           <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Grande Ateu</a></li>
           <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Salvação</a></li>
-          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Declaração de Fé Genuína</a></li>
+          <li><a href="/declaracao/" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Declaração de Fé Genuína</a></li>
         </ul>
       </li>
 
