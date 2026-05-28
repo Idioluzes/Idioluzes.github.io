@@ -304,19 +304,17 @@
   </div>
 
   <!-- BOTTOM NAV — só mobile (3 botões: Home · Apoiar · Config) -->
-  <nav id="m-bottom-nav" aria-label="Navegação mobile" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1A3A5C;border-top:1px solid #2a4f7a;height:60px;">
+  <nav id="m-bottom-nav" aria-label="Navegação mobile" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1A3A5C;border-top:1px solid #2a4f7a;height:50px;">
     <div style="display:flex;align-items:stretch;height:100%;max-width:480px;margin:0 auto;">
-      <a href="/" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:white;text-decoration:none;font-family:sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;padding:8px 4px;">
+      <a href="/" aria-label="Início" style="flex:1;display:flex;align-items:center;justify-content:center;color:white;text-decoration:none;padding:4px;">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12L12 3l9 9M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9"/></svg>
-        Home
       </a>
-      <a href="#" data-modal="modal-apoiar" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#93c5fd;text-decoration:none;font-family:sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;padding:8px 4px;">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"/></svg>
+      <a href="#" data-modal="modal-apoiar" style="flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:7px;color:#93c5fd;text-decoration:none;font-family:sans-serif;font-size:12px;font-weight:700;letter-spacing:.02em;padding:4px 8px;">
         Apoiar
+        <svg width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z"/></svg>
       </a>
-      <a href="#" data-modal="modal-config" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#93c5fd;text-decoration:none;font-family:sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;padding:8px 4px;">
+      <a href="#" data-modal="modal-config" aria-label="Configurações" style="flex:1;display:flex;align-items:center;justify-content:center;color:#93c5fd;text-decoration:none;padding:4px;">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-        Configurações
       </a>
     </div>
   </nav>`;
@@ -422,7 +420,7 @@
     const nav = document.getElementById('m-bottom-nav');
     const visivel = isMobile();
     nav.style.display = visivel ? 'block' : 'none';
-    document.body.style.paddingBottom = visivel ? '60px' : '';
+    document.body.style.paddingBottom = visivel ? '50px' : '';
   }
   toggleBottomNav();
   window.addEventListener('resize', toggleBottomNav);
@@ -493,7 +491,7 @@
     // Wrapper para agrupar lupa + engrenagem lado a lado
     var wrap = document.createElement('div');
     wrap.id = 'm-hdr-btns';
-    wrap.style.cssText = 'display:flex;align-items:center;gap:2px;';
+    wrap.style.cssText = 'align-items:center;gap:2px;'; // display controlado pelo CSS (#m-hdr-btns)
 
     // Botão de busca
     var btnS = document.createElement('button');
