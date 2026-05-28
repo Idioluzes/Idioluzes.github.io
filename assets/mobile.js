@@ -374,6 +374,61 @@
     </div>
   </div>
 
+  <!-- FOOTER RICO — visível no mobile E desktop (SEO: links internos para o Googlebot) -->
+  <footer id="ga-footer" style="background:#1A3A5C;color:#fff;font-family:sans-serif;">
+    <div style="max-width:1152px;margin:0 auto;padding:48px 24px 28px;">
+
+      <div id="ga-ft-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px 24px;">
+
+        <!-- Marca -->
+        <div>
+          <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:700;color:#fff;text-decoration:none;display:block;margin-bottom:8px;">Grande Ateu</a>
+          <p style="font-size:.82rem;color:#93c5fd;line-height:1.65;margin:0;">A Bíblia Ateia — 3 tomos, 38 livros, 873 passagens.<br>Uma cosmovisão fundamentada na razão e na Legítima Verdade.</p>
+        </div>
+
+        <!-- A Bíblia -->
+        <nav aria-label="A Bíblia">
+          <p style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 14px;">A Bíblia</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="/biblia/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Conheça a Bíblia</a></li>
+            <li><a href="/t1/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Tomo I — Ruptura</a></li>
+            <li><a href="/t2/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Tomo II — Edificação</a></li>
+            <li><a href="/t3/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Tomo III — Consolidação</a></li>
+          </ul>
+        </nav>
+
+        <!-- Cosmovisão -->
+        <nav aria-label="Cosmovisão">
+          <p style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 14px;">Cosmovisão</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="/jornada/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Jornada Ateia</a></li>
+            <li><a href="/piramide/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Pirâmide Ateia</a></li>
+            <li><a href="/dicionario/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Dicionário Bíblico</a></li>
+            <li><a href="/declaracao/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Declaração de Fé</a></li>
+          </ul>
+        </nav>
+
+        <!-- Projeto -->
+        <nav aria-label="Projeto">
+          <p style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#93c5fd;margin:0 0 14px;">Projeto</p>
+          <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+            <li><a href="/sobre/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Sobre</a></li>
+            <li><a href="/faq/" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">FAQ</a></li>
+            <li><a href="/sitemap.xml" style="color:#bfdbfe;text-decoration:none;font-size:.83rem;">Sitemap</a></li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <!-- Rodapé do footer -->
+      <div style="margin-top:36px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;">
+        <span style="font-size:.72rem;color:#93c5fd;">© 2026 Grande Ateu — Todos os direitos reservados.</span>
+        <span style="font-size:.72rem;color:#93c5fd;">grandeateu.com</span>
+      </div>
+
+    </div>
+  </footer>
+
   <!-- BOTTOM NAV — só mobile (3 botões: Home · Apoiar · Config) -->
   <nav id="m-bottom-nav" aria-label="Navegação mobile" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;background:#1A3A5C;border-top:1px solid #2a4f7a;height:50px;">
     <div style="display:flex;align-items:stretch;height:100%;max-width:480px;margin:0 auto;">
@@ -401,11 +456,19 @@
   mobileStyle.textContent = [
     // Wrapper de botões do header: escondido por padrão, visível só no mobile
     '#m-hdr-btns{display:none;}',
+    // Footer antigo (estático) sempre oculto — o novo #ga-footer é o canônico
+    'footer[role="contentinfo"]{display:none!important;}',
+    // Footer responsivo: 2 colunas no mobile (marca ocupa linha inteira)
     '@media(max-width:767px){',
     '#m-hdr-btns{display:flex!important;align-items:center;}',
-    'footer[role="contentinfo"]{display:none!important;}',
-    // Garante que o nav desktop (com botões de busca/tema injetados) nunca apareça no mobile
+    // Garante que o nav desktop nunca apareça no mobile
     'header nav > ul{display:none!important;}',
+    '#ga-ft-grid{grid-template-columns:1fr 1fr!important;}',
+    '#ga-ft-grid>div:first-child{grid-column:1/-1!important;}',
+    '}',
+    // Telas muito pequenas: coluna única
+    '@media(max-width:380px){',
+    '#ga-ft-grid{grid-template-columns:1fr!important;}',
     '}'
   ].join('');
   document.head.appendChild(mobileStyle);
