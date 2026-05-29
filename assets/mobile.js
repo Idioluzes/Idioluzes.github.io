@@ -1025,17 +1025,35 @@
   function _abreviarSelTomo() {
     var sel = document.getElementById('m-sel-tomo');
     if (!sel || !sel.value) return;
+    // Restaura todas as options para texto completo
     Array.from(sel.options).forEach(function (o) { o.textContent = _TOMO_FULL[o.value] || o.textContent; });
-    var opt = sel.options[sel.selectedIndex];
-    if (opt && _TOMO_SHORT[opt.value]) opt.textContent = _TOMO_SHORT[opt.value];
+    var idx = sel.selectedIndex;
+    var opt = idx >= 0 ? sel.options[idx] : null;
+    if (!opt || !_TOMO_SHORT[opt.value]) return;
+    // Altera o texto
+    opt.textContent = _TOMO_SHORT[opt.value];
+    // Remove e re-insere a option para forçar o Chrome a atualizar o estado fechado
+    var ref = opt.nextSibling;
+    sel.removeChild(opt);
+    sel.insertBefore(opt, ref || null);
+    sel.selectedIndex = idx;
   }
 
   function _abreviarSelPass() {
     var sel = document.getElementById('m-sel-pass');
     if (!sel || !sel.value) return;
+    // Restaura todas para PASS.N
     Array.from(sel.options).forEach(function (o) { if (o.value) o.textContent = 'PASS.' + o.value; });
-    var opt = sel.options[sel.selectedIndex];
-    if (opt && opt.value) opt.textContent = opt.value; // só o número
+    var idx = sel.selectedIndex;
+    var opt = idx >= 0 ? sel.options[idx] : null;
+    if (!opt || !opt.value) return;
+    // Altera para só o número
+    opt.textContent = opt.value;
+    // Remove e re-insere para forçar re-render
+    var ref = opt.nextSibling;
+    sel.removeChild(opt);
+    sel.insertBefore(opt, ref || null);
+    sel.selectedIndex = idx;
   }
 
   // ── BARRA DE DROPDOWN (Tomo › Livro › Cap › Passagem) ───────────
