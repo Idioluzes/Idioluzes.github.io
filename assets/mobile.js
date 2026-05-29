@@ -860,11 +860,8 @@
     // Linhas de borda no limite do container
     if (lineL) lineL.style.left = r.left  + 'px';
     if (lineR) lineR.style.left = r.right + 'px';
-    // Centraliza a barra no espaço entre a linha direita e a borda do viewport
-    var gap  = window.innerWidth - r.right; // espaço disponível à direita
-    var barW = 38;                           // largura de cada ícone
-    var off  = Math.max(4, (gap - barW) / 2); // centralizado, mínimo 4px
-    if (bar) bar.style.left = (r.right + off) + 'px';
+    // Posiciona a barra colada à linha de conteúdo com pequeno respiro
+    if (bar) bar.style.left = (r.right + 4) + 'px';
   }
 
   window.addEventListener('resize', _posicionarSocialBar, { passive: true });
@@ -891,16 +888,15 @@
       if (_btnPrevRef) { _btnPrevRef.style.borderRadius='0 6px 6px 0'; _btnPrevRef.style.width='36px'; _btnPrevRef.style.height='54px'; }
       if (_btnNextRef) { _btnNextRef.style.borderRadius='6px 0 0 6px'; _btnNextRef.style.width='36px'; _btnNextRef.style.height='54px'; }
     } else {
-      // Desktop: circular, centralizado na margem vazia ao lado do <main>
+      // Desktop: retangular igual ao mobile, centralizado na margem ao lado do <main>
       var rect = mainEl.getBoundingClientRect();
-      var btnW = 44; // px
-      // Empurra o wrap para dentro: os botões ficam no meio da margem livre
+      var btnW = 36; // mesma largura do mobile
       var padL = Math.max(0, Math.round(rect.left  / 2 - btnW / 2));
       var padR = Math.max(0, Math.round((window.innerWidth - rect.right) / 2 - btnW / 2));
       wrap.style.paddingLeft  = padL + 'px';
       wrap.style.paddingRight = padR + 'px';
-      if (_btnPrevRef) { _btnPrevRef.style.borderRadius='50%'; _btnPrevRef.style.width=btnW+'px'; _btnPrevRef.style.height=btnW+'px'; }
-      if (_btnNextRef) { _btnNextRef.style.borderRadius='50%'; _btnNextRef.style.width=btnW+'px'; _btnNextRef.style.height=btnW+'px'; }
+      if (_btnPrevRef) { _btnPrevRef.style.borderRadius='0 6px 6px 0'; _btnPrevRef.style.width=btnW+'px'; _btnPrevRef.style.height='54px'; }
+      if (_btnNextRef) { _btnNextRef.style.borderRadius='6px 0 0 6px'; _btnNextRef.style.width=btnW+'px'; _btnNextRef.style.height='54px'; }
     }
   }
 
@@ -915,15 +911,15 @@
     var footer  = document.getElementById('ga-footer');
     var viewH   = window.innerHeight;
     var isMob   = window.innerWidth < 768;
-    var btnH    = isMob ? 54 : 44;
+    var btnH    = 54; // mesma altura em mobile e desktop
     var navH    = isMob ? 50 : 0;   // barra inferior fixa só no mobile
 
     // Limite inferior: topo do footer OU topo da bottom nav — o que vier primeiro
     var footerTop = footer ? footer.getBoundingClientRect().top : viewH;
     var limiteInf = Math.min(footerTop, viewH - navH);
 
-    // Centro ideal: meio exato do viewport
-    var centroIdeal = viewH / 2;
+    // Centro ideal: 35% a partir do topo (tanto mobile quanto desktop)
+    var centroIdeal = viewH * 0.35;
 
     // Centro máximo: não pode passar de limiteInf - metade do botão - 8px de margem
     var centroMax = limiteInf - btnH / 2 - 8;
