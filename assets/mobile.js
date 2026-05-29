@@ -202,17 +202,7 @@
         </ul>
       </li>
 
-      <li>
-        <button data-drawer-toggle="m-dl-loja" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
-          Loja
-          <svg data-arrow width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="flex-shrink:0;transition:transform .2s;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
-        </button>
-        <ul id="m-dl-loja" style="display:none;list-style:none;padding:0;margin:0;">
-          <li><a href="/loja/#produto-biblia" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Bíblia Impressa</a></li>
-          <li><a href="/loja/#produto-curso" class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f5f5f5;background:#F9F7F4;">Imersão Hotmart</a></li>
-          <li><a href="#" data-placeholder class="_drawer-sub" style="display:block;padding:11px 20px 11px 32px;color:#6B6B6B;font-family:sans-serif;font-size:.85rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;background:#F9F7F4;">Doação</a></li>
-        </ul>
-      </li>
+      <li><a href="/loja/" style="display:block;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Loja</a></li>
 
       <li>
         <button data-drawer-toggle="m-dl-redes" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 20px;color:#1C1C1E;font-family:sans-serif;font-size:.9rem;font-weight:600;background:none;border:none;border-bottom:1px solid #f0f0f0;cursor:pointer;">
@@ -988,6 +978,29 @@
     navegarSPA(window.location.pathname);
   });
 
+  // ── ABREVIAÇÃO DOS SELECTS DE TOMO E PASSAGEM ───────────────────
+  // Após seleção: Tomo I → I  |  PASS.3 → 3
+  // Ao abrir (focus): restaura texto completo para o usuário ver todas as opções
+
+  var _TOMO_FULL  = { 't1': 'Tomo I', 't2': 'Tomo II', 't3': 'Tomo III' };
+  var _TOMO_SHORT = { 't1': 'I',      't2': 'II',       't3': 'III'      };
+
+  function _abreviarSelTomo() {
+    var sel = document.getElementById('m-sel-tomo');
+    if (!sel || !sel.value) return;
+    Array.from(sel.options).forEach(function (o) { o.textContent = _TOMO_FULL[o.value] || o.textContent; });
+    var opt = sel.options[sel.selectedIndex];
+    if (opt && _TOMO_SHORT[opt.value]) opt.textContent = _TOMO_SHORT[opt.value];
+  }
+
+  function _abreviarSelPass() {
+    var sel = document.getElementById('m-sel-pass');
+    if (!sel || !sel.value) return;
+    Array.from(sel.options).forEach(function (o) { if (o.value) o.textContent = 'PASS.' + o.value; });
+    var opt = sel.options[sel.selectedIndex];
+    if (opt && opt.value) opt.textContent = opt.value; // só o número
+  }
+
   // ── BARRA DE DROPDOWN (Tomo › Livro › Cap › Passagem) ───────────
   // Injetada dentro do <header> — fica sticky junto com ele.
   // Visível em qualquer página /t1/ /t2/ /t3/ e seus filhos.
@@ -1086,6 +1099,10 @@
       }
     }
     // Se só tomo (sem livro), os selects dependentes ficam como "—" (já resetados acima)
+
+    // Abrevia selects após popular (mostra só I/II/III e número da pass)
+    _abreviarSelTomo();
+    _abreviarSelPass();
   }
 
   function _atualizarBarraDropdown() {
@@ -1151,6 +1168,12 @@
 
     // ── Cascade listeners ────────────────────────────────────────────
 
+    // Focus: restaura texto completo para o usuário ver todas as opções no picker
+    selTomo.addEventListener('focus', function () {
+      Array.from(this.options).forEach(function (o) { o.textContent = _TOMO_FULL[o.value] || o.textContent; });
+    });
+    selTomo.addEventListener('blur', function () { _abreviarSelTomo(); });
+
     selTomo.addEventListener('change', function () {
       var t = this.value;
       if (!t) return;
@@ -1167,6 +1190,7 @@
       } else {
         navegarSPA('/' + t + '/');
       }
+      _abreviarSelTomo();
     });
 
     selLivro.addEventListener('change', function () {
@@ -1195,9 +1219,16 @@
       if (c) { _popularPassagens(t, l, c, 0); navegarSPA('/' + t + '/' + l + '/' + c + '/'); }
     });
 
+    // Focus: restaura "PASS.N" para o usuário ver todas as opções
+    selPass.addEventListener('focus', function () {
+      Array.from(this.options).forEach(function (o) { if (o.value) o.textContent = 'PASS.' + o.value; });
+    });
+    selPass.addEventListener('blur', function () { _abreviarSelPass(); });
+
     selPass.addEventListener('change', function () {
       var t = selTomo.value, l = selLivro.value, c = selCap.value, p = this.value;
       if (p) navegarSPA('/' + t + '/' + l + '/' + c + '/' + p + '/');
+      _abreviarSelPass();
     });
 
     // Carrega navdata e popula conforme URL atual
@@ -1552,7 +1583,7 @@
 
 // ── DROPDOWNS DO HEADER DESKTOP — hover com delay 150ms ──────────────────────
 (function () {
-  var allIds = ['biblia', 'loja', 'redes', 'cosmo'];
+  var allIds = ['biblia', 'redes', 'cosmo'];
   var timers = {};
 
   function fecharTodos() {
