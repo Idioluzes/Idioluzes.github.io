@@ -888,11 +888,15 @@
       if (_btnPrevRef) { _btnPrevRef.style.borderRadius='0 6px 6px 0'; _btnPrevRef.style.width='36px'; _btnPrevRef.style.height='54px'; }
       if (_btnNextRef) { _btnNextRef.style.borderRadius='6px 0 0 6px'; _btnNextRef.style.width='36px'; _btnNextRef.style.height='54px'; }
     } else {
-      // Desktop: retangular igual ao mobile, centralizado na margem ao lado do <main>
-      var rect = mainEl.getBoundingClientRect();
-      var btnW = 36; // mesma largura do mobile
-      var padL = Math.max(0, Math.round(rect.left  / 2 - btnW / 2));
-      var padR = Math.max(0, Math.round((window.innerWidth - rect.right) / 2 - btnW / 2));
+      // Desktop: retangular, 4px DENTRO da linha de conteúdo
+      // Usa o mesmo container do header para consistência a qualquer zoom
+      var cnt  = document.querySelector('header .max-w-6xl') || document.querySelector('header > div');
+      var rect = cnt ? cnt.getBoundingClientRect() : mainEl.getBoundingClientRect();
+      var btnW = 36;
+      // paddingLeft  = distância da borda esq do viewport até 4px dentro do conteúdo
+      // paddingRight = distância da borda dir do viewport até 4px dentro do conteúdo
+      var padL = Math.max(0, Math.round(rect.left  + 4));
+      var padR = Math.max(0, Math.round(window.innerWidth - rect.right + 4));
       wrap.style.paddingLeft  = padL + 'px';
       wrap.style.paddingRight = padR + 'px';
       if (_btnPrevRef) { _btnPrevRef.style.borderRadius='0 6px 6px 0'; _btnPrevRef.style.width=btnW+'px'; _btnPrevRef.style.height='54px'; }
@@ -918,8 +922,8 @@
     var footerTop = footer ? footer.getBoundingClientRect().top : viewH;
     var limiteInf = Math.min(footerTop, viewH - navH);
 
-    // Centro ideal: 35% a partir do topo (tanto mobile quanto desktop)
-    var centroIdeal = viewH * 0.35;
+    // Centro ideal: 65% a partir do topo (tanto mobile quanto desktop)
+    var centroIdeal = viewH * 0.65;
 
     // Centro máximo: não pode passar de limiteInf - metade do botão - 8px de margem
     var centroMax = limiteInf - btnH / 2 - 8;
