@@ -1149,8 +1149,11 @@
     var selCap   = mkSel('m-sel-cap',   true);
     var selPass  = mkSel('m-sel-pass',  true);
 
-    // Livro recebe flex:2 para acomodar "Sigla — Nome" sem comprimir os outros
-    selLivro.style.flex = '2';
+    // Proporções ajustadas: Tomo e Pass abreviados (I/II/3) precisam de menos espaço
+    selTomo.style.flex  = '0.7';
+    selLivro.style.flex = '3';    // mais espaço para "Sigla — Nome completo"
+    selCap.style.flex   = '1.2';
+    selPass.style.flex  = '0.7';
 
     // Tomo options (fixos — sem option vazio)
     [['t1','Tomo I'],['t2','Tomo II'],['t3','Tomo III']].forEach(function (t) {
