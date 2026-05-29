@@ -504,9 +504,10 @@
     liDark.appendChild(btnDark);
     desktopUl.appendChild(liDark);
 
-    // Botão Apoiar ♥ (desktop) — inserido antes das bandeiras de idioma
+    // Botão Apoiar ♥ + substitui bandeiras múltiplas por dropdown compacto
     var flagsLi = desktopUl.querySelector('li.flex');
     if (flagsLi) {
+      // 1. Apoiar antes das bandeiras
       var liApoiar = document.createElement('li');
       var aApoiar  = document.createElement('a');
       aApoiar.href = '/apoiar/';
@@ -518,6 +519,23 @@
       aApoiar.addEventListener('mouseout',  function(){ aApoiar.style.opacity='.75'; });
       liApoiar.appendChild(aApoiar);
       desktopUl.insertBefore(liApoiar, flagsLi);
+
+      // 2. Substitui as 5 bandeiras por 1 bandeira + dropdown vertical
+      var novoFlagsLi = document.createElement('li');
+      novoFlagsLi.style.cssText = 'position:relative;';
+      novoFlagsLi.innerHTML =
+        '<button id="btn-flags" title="Idioma / Language" style="background:none;border:none;cursor:pointer;padding:2px 3px;display:flex;align-items:center;gap:3px;opacity:.85;transition:opacity .15s;">' +
+          '<img id="flag-active" src="/assets/flags/br.svg" alt="PT" width="24" height="17" style="border-radius:2px;display:block;">' +
+          '<svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="opacity:.55;flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>' +
+        '</button>' +
+        '<div id="drop-flags" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 8px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">' +
+          '<a href="/" data-translate="pt" title="Português" style="display:block;padding:4px 2px;"><img src="/assets/flags/br.svg" alt="PT" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
+          '<a href="#" data-translate="en" title="English"   style="display:block;padding:4px 2px;"><img src="/assets/flags/us.svg" alt="EN" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
+          '<a href="#" data-translate="es" title="Español"   style="display:block;padding:4px 2px;"><img src="/assets/flags/es.svg" alt="ES" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
+          '<a href="#" data-translate="de" title="Deutsch"   style="display:block;padding:4px 2px;"><img src="/assets/flags/de.svg" alt="DE" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
+          '<a href="#" data-translate="fr" title="Français"  style="display:block;padding:4px 2px;"><img src="/assets/flags/fr.svg" alt="FR" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
+        '</div>';
+      desktopUl.replaceChild(novoFlagsLi, flagsLi);
     }
 
     // Botão Personalizar Leitura (desktop)
@@ -693,16 +711,29 @@
   }
 
   function atualizarBandeiras() {
-    // Drawer (data-translate)
+    // Drawer + dropdown de bandeiras (data-translate) — atualiza todos os links
     document.querySelectorAll('[data-translate]').forEach(function (a) {
       a.href = getTranslateUrl(a.dataset.translate);
     });
-    // Desktop nav — <img alt="EN/ES/DE/FR/PT"> dentro de <a>
-    var mapa = { EN: 'en', ES: 'es', DE: 'de', FR: 'fr', PT: 'pt' };
-    document.querySelectorAll('nav a > img[alt]').forEach(function (img) {
-      var lang = mapa[img.alt];
-      if (lang) img.parentElement.href = getTranslateUrl(lang);
-    });
+    // Atualiza a bandeira ativa no dropdown (mostra o idioma atual)
+    var flagActive = document.getElementById('flag-active');
+    if (flagActive) {
+      var _langToFlag = { en: ['us','EN'], es: ['es','ES'], de: ['de','DE'], fr: ['fr','FR'] };
+      var _noTrans = window.location.hostname.endsWith('.translate.goog');
+      if (_noTrans) {
+        try {
+          var _tl = new URL(window.location.href).searchParams.get('_x_tr_tl') || 'pt';
+          if (_langToFlag[_tl]) {
+            flagActive.src = '/assets/flags/' + _langToFlag[_tl][0] + '.svg';
+            flagActive.alt = _langToFlag[_tl][1];
+          } else {
+            flagActive.src = '/assets/flags/br.svg'; flagActive.alt = 'PT';
+          }
+        } catch(e) { flagActive.src = '/assets/flags/br.svg'; flagActive.alt = 'PT'; }
+      } else {
+        flagActive.src = '/assets/flags/br.svg'; flagActive.alt = 'PT';
+      }
+    }
   }
   atualizarBandeiras();
 
@@ -1650,7 +1681,7 @@
 
 // ── DROPDOWNS DO HEADER DESKTOP — hover com delay 150ms ──────────────────────
 (function () {
-  var allIds = ['biblia', 'redes', 'cosmo'];
+  var allIds = ['biblia', 'redes', 'cosmo', 'flags'];
   var timers = {};
 
   function fecharTodos() {
