@@ -745,6 +745,39 @@
     }
   }
 
+  // ── REPOSICIONAMENTO VERTICAL — impede overlap com footer ────────
+  // Ajusta o top do wrap a cada scroll, mantendo os botões acima
+  // do footer (e da barra inferior) sem nunca ultrapassá-los.
+
+  function _reposicionarBotoesNavVertical() {
+    var wrap = document.getElementById('m-nav-flutuante');
+    if (!wrap) return;
+
+    var footer  = document.getElementById('ga-footer');
+    var viewH   = window.innerHeight;
+    var isMob   = window.innerWidth < 768;
+    var btnH    = isMob ? 54 : 44;
+    var navH    = isMob ? 50 : 0;   // barra inferior fixa só no mobile
+
+    // Limite inferior: topo do footer OU topo da bottom nav — o que vier primeiro
+    var footerTop = footer ? footer.getBoundingClientRect().top : viewH;
+    var limiteInf = Math.min(footerTop, viewH - navH);
+
+    // Centro ideal: meio exato do viewport
+    var centroIdeal = viewH / 2;
+
+    // Centro máximo: não pode passar de limiteInf - metade do botão - 8px de margem
+    var centroMax = limiteInf - btnH / 2 - 8;
+
+    // Clamp: nunca acima de btnH/2, nunca abaixo de centroMax
+    var centro = Math.min(centroIdeal, Math.max(btnH / 2, centroMax));
+
+    wrap.style.top       = centro + 'px';
+    wrap.style.transform = 'translateY(-50%)';
+  }
+
+  window.addEventListener('scroll', _reposicionarBotoesNavVertical, { passive: true });
+
   function iniciarBotoesNavegacao() {
     var antigo = document.getElementById('m-nav-flutuante');
     if (antigo) antigo.remove();
@@ -794,11 +827,15 @@
     else            { wrap.appendChild(document.createElement('span')); }
 
     document.body.appendChild(wrap);
-    _posicionarNavFlutuante(); // aplica estilo/posição corretos para o breakpoint atual
+    _posicionarNavFlutuante();        // horizontal (padding esquerda/direita)
+    _reposicionarBotoesNavVertical(); // vertical   (top, clampado ao footer)
   }
 
   iniciarBotoesNavegacao();
-  window.addEventListener('resize', _posicionarNavFlutuante);
+  window.addEventListener('resize', function () {
+    _posicionarNavFlutuante();
+    _reposicionarBotoesNavVertical();
+  });
 
   // ── EVENT DELEGATION ─────────────────────────────────────────────
 
@@ -1589,6 +1626,8 @@
   navegarSPA = async function (url) {
     await _navegarSPA_orig(url);
     _atualizarBarraDropdown();
+    // Re-avalia posição vertical após troca de conteúdo (novo conteúdo pode ser mais curto)
+    setTimeout(_reposicionarBotoesNavVertical, 120);
   };
 
 // ── DROPDOWNS DO HEADER DESKTOP — hover com delay 150ms ──────────────────────
