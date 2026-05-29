@@ -1171,10 +1171,15 @@
 
     // ── Cascade listeners ────────────────────────────────────────────
 
-    // Focus: restaura texto completo para o usuário ver todas as opções no picker
-    selTomo.addEventListener('focus', function () {
-      Array.from(this.options).forEach(function (o) { o.textContent = _TOMO_FULL[o.value] || o.textContent; });
-    });
+    // mousedown: desktop — captura o texto ANTES do browser renderizar o dropdown
+    // touchstart: mobile — idem para toque
+    // focus: fallback para teclado/acessibilidade
+    function _restoreTomo() {
+      Array.from(selTomo.options).forEach(function (o) { o.textContent = _TOMO_FULL[o.value] || o.textContent; });
+    }
+    selTomo.addEventListener('mousedown',  _restoreTomo);
+    selTomo.addEventListener('touchstart', _restoreTomo, { passive: true });
+    selTomo.addEventListener('focus',      _restoreTomo);
     selTomo.addEventListener('blur', function () { _abreviarSelTomo(); });
 
     selTomo.addEventListener('change', function () {
@@ -1222,10 +1227,12 @@
       if (c) { _popularPassagens(t, l, c, 0); navegarSPA('/' + t + '/' + l + '/' + c + '/'); }
     });
 
-    // Focus: restaura "PASS.N" para o usuário ver todas as opções
-    selPass.addEventListener('focus', function () {
-      Array.from(this.options).forEach(function (o) { if (o.value) o.textContent = 'PASS.' + o.value; });
-    });
+    function _restorePass() {
+      Array.from(selPass.options).forEach(function (o) { if (o.value) o.textContent = 'PASS.' + o.value; });
+    }
+    selPass.addEventListener('mousedown',  _restorePass);
+    selPass.addEventListener('touchstart', _restorePass, { passive: true });
+    selPass.addEventListener('focus',      _restorePass);
     selPass.addEventListener('blur', function () { _abreviarSelPass(); });
 
     selPass.addEventListener('change', function () {
