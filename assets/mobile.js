@@ -174,21 +174,15 @@
 
   const html = `
   <!-- OVERLAY DO DRAWER -->
-  <div id="m-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;"></div>
+  <div id="m-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;"></div>
 
   <!-- DRAWER LATERAL ESQUERDO -->
-  <nav id="m-drawer" aria-label="Menu lateral" style="position:fixed;top:0;left:0;bottom:0;width:80%;max-width:300px;background:#fff;z-index:201;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto;">
+  <nav id="m-drawer" aria-label="Menu lateral" style="position:fixed;top:0;left:0;bottom:0;width:75%;background:#fff;z-index:201;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow-y:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DCDCDC;">
       <a href="/" style="font-family:'Playfair Display',Georgia,serif;font-weight:700;color:#1A3A5C;font-size:1.1rem;text-decoration:none;">Grande Ateu</a>
       <button id="m-drawer-close" aria-label="Fechar menu" style="background:none;border:none;cursor:pointer;padding:4px;color:#6B6B6B;">
         <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
-    </div>
-    <div style="padding:10px 16px;border-bottom:1px solid #DCDCDC;">
-      <div style="display:flex;align-items:center;gap:8px;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:7px 10px;">
-        <svg width="14" height="14" fill="none" stroke="#6B6B6B" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        <input id="m-busca-drawer" type="search" placeholder="Buscar passagens..." autocomplete="off" style="border:none;background:transparent;outline:none;font-family:sans-serif;font-size:.88rem;width:100%;color:#1C1C1E;"/>
-      </div>
     </div>
     <ul style="list-style:none;margin:0;padding:12px 0;flex:1;">
       <li>
@@ -266,12 +260,21 @@
       <li><a href="/apoiar/" style="display:block;padding:14px 20px;color:#6B6B6B;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:1px solid #f0f0f0;">Apoiar</a></li>
       <li><a href="#" data-modal="modal-config" style="display:block;padding:14px 20px;color:#6B6B6B;font-family:sans-serif;font-size:.9rem;font-weight:600;text-decoration:none;">Configurações</a></li>
     </ul>
-    <div style="padding:16px 20px;border-top:1px solid #DCDCDC;display:flex;gap:14px;align-items:center;">
-      <a href="#" data-translate="pt" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="#" data-translate="en" title="English"><img src="/assets/flags/us.svg" alt="EN" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="#" data-translate="es" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="#" data-translate="de" title="Deutsch"><img src="/assets/flags/de.svg" alt="DE" width="30" height="21" style="border-radius:2px;display:block;"></a>
-      <a href="#" data-translate="fr" title="Français"><img src="/assets/flags/fr.svg" alt="FR" width="30" height="21" style="border-radius:2px;display:block;"></a>
+    <div style="padding:12px 20px;border-top:1px solid #DCDCDC;display:flex;align-items:center;gap:10px;">
+      <!-- Bandeira única com dropdown de idiomas -->
+      <div style="position:relative;">
+        <button id="m-flag-btn" title="Idioma" style="background:none;border:none;cursor:pointer;padding:2px;display:flex;align-items:center;gap:4px;">
+          <img id="m-flag-active" src="/assets/flags/br.svg" alt="PT" width="28" height="20" style="border-radius:2px;display:block;">
+          <svg width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="opacity:.5;flex-shrink:0;color:#6B6B6B;"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+        <div id="m-flag-drop" style="display:none;position:absolute;bottom:calc(100% + 6px);left:0;background:#fff;border:1px solid #DCDCDC;border-radius:8px;padding:6px 8px;z-index:400;box-shadow:0 4px 12px rgba(0,0,0,.12);">
+          <a href="#" data-translate="pt" title="Português" style="display:block;padding:4px 2px;"><img src="/assets/flags/br.svg" alt="PT" width="28" height="20" style="border-radius:2px;display:block;"></a>
+          <a href="#" data-translate="en" title="English"   style="display:block;padding:4px 2px;"><img src="/assets/flags/us.svg" alt="EN" width="28" height="20" style="border-radius:2px;display:block;"></a>
+          <a href="#" data-translate="es" title="Español"   style="display:block;padding:4px 2px;"><img src="/assets/flags/es.svg" alt="ES" width="28" height="20" style="border-radius:2px;display:block;"></a>
+          <a href="#" data-translate="de" title="Deutsch"   style="display:block;padding:4px 2px;"><img src="/assets/flags/de.svg" alt="DE" width="28" height="20" style="border-radius:2px;display:block;"></a>
+          <a href="#" data-translate="fr" title="Français"  style="display:block;padding:4px 2px;"><img src="/assets/flags/fr.svg" alt="FR" width="28" height="20" style="border-radius:2px;display:block;"></a>
+        </div>
+      </div>
       <button data-dark-toggle aria-label="${_temaTitulo}" title="${_temaTitulo}" style="background:none;border:none;cursor:pointer;color:#6B6B6B;padding:4px;display:flex;align-items:center;margin-left:auto;">${_temaIcone}</button>
     </div>
   </nav>
@@ -567,6 +570,17 @@
           '<a href="#" data-translate="fr" title="Français"  style="display:block;padding:4px 2px;"><img src="/assets/flags/fr.svg" alt="FR" width="28" height="20" style="border-radius:2px;display:block;"></a>' +
         '</div>';
       desktopUl.replaceChild(novoFlagsLi, flagsLi);
+
+      // Click handler para abrir/fechar o dropdown de bandeiras desktop
+      var btnFlags = document.getElementById('btn-flags');
+      var dropFlags = document.getElementById('drop-flags');
+      if (btnFlags && dropFlags) {
+        btnFlags.addEventListener('click', function (e) {
+          e.stopPropagation();
+          dropFlags.style.display = dropFlags.style.display === 'none' ? 'block' : 'none';
+        });
+        document.addEventListener('click', function () { dropFlags.style.display = 'none'; });
+      }
     }
 
     // Botão Personalizar Leitura (desktop)
@@ -688,16 +702,7 @@
     wrap.id = 'm-hdr-btns';
     wrap.style.cssText = 'align-items:center;gap:2px;'; // display controlado pelo CSS (#m-hdr-btns)
 
-    // Botão de busca
-    var btnS = document.createElement('button');
-    btnS.id = 'm-busca-hdr';
-    btnS.setAttribute('aria-label', 'Buscar');
-    btnS.title = 'Buscar';
-    btnS.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>';
-    btnS.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;display:flex;align-items:center;';
-    btnS.addEventListener('click', function () { _abrirBusca(''); });
-
-    // Botão de personalização
+    // Botão de personalização de leitura (único — busca só no header desktop)
     var btnC = document.createElement('button');
     btnC.id = 'm-config-hdr';
     btnC.setAttribute('aria-label', 'Personalizar leitura');
@@ -706,7 +711,6 @@
     btnC.innerHTML = '<svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>';
     btnC.style.cssText = 'background:none;border:none;cursor:pointer;padding:6px;color:inherit;line-height:1;display:flex;align-items:center;';
 
-    wrap.appendChild(btnS);
     wrap.appendChild(btnC);
     nav.appendChild(wrap);
   }
@@ -772,6 +776,16 @@
 
   document.getElementById('m-drawer-close').addEventListener('click', fecharDrawer);
   document.getElementById('m-overlay').addEventListener('click', fecharDrawer);
+
+  // ── DROPDOWN DE BANDEIRAS NO DRAWER ──────────────────────────────
+  var _mFlagBtn  = document.getElementById('m-flag-btn');
+  var _mFlagDrop = document.getElementById('m-flag-drop');
+  if (_mFlagBtn && _mFlagDrop) {
+    _mFlagBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      _mFlagDrop.style.display = _mFlagDrop.style.display === 'none' ? 'block' : 'none';
+    });
+  }
 
   // ── BOTÕES FLUTUANTES PREV / NEXT ────────────────────────────────
   // Lê o <nav aria-label="Livros|Capítulos|Passagens"> do <main>
