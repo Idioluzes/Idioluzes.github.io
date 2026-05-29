@@ -499,6 +499,20 @@
     // Telas muito pequenas: coluna única
     '@media(max-width:380px){',
     '#ga-ft-grid{grid-template-columns:1fr!important;}',
+    '}',
+    // ── HOVER SUTIL — NAV DESKTOP ──────────────────────────────────
+    '@media(min-width:768px){',
+    // Transição em todos os itens de topo
+    'header nav>ul>li>a,header nav>ul>li>button{transition:color .15s,opacity .15s;}',
+    // Links de topo (Loja, etc.): cor acento + sublinhado discreto no hover
+    'header nav>ul>li>a:hover{color:#1A3A5C!important;text-decoration:underline!important;text-underline-offset:3px;text-decoration-color:rgba(26,58,92,.45)!important;}',
+    // Botões de topo (Bíblia, Redes, Dia Ruim?, etc.): cor acento no hover
+    'header nav>ul>li>button:hover{color:#1A3A5C!important;opacity:.8;}',
+    // Ícones injetados (busca, dark-mode, leitura): sobem de .75 para 1 no hover
+    'header nav>ul>li>button[aria-label]:hover{opacity:1!important;color:inherit!important;}',
+    // Sub-itens dos dropdowns: highlight de fundo levinho
+    '[id^="drop-"] a{transition:background .12s,color .12s;}',
+    '[id^="drop-"] a:hover{background:rgba(26,58,92,.07)!important;color:#1A3A5C!important;}',
     '}'
   ].join('');
   document.head.appendChild(mobileStyle);
