@@ -148,6 +148,9 @@
         <p class="font-sans text-xs uppercase tracking-widest text-blue-200 mb-4">Cosmovisão</p>
         <h1 id="jornada-titulo" class="font-serif text-4xl sm:text-5xl font-bold leading-tight mb-4">Jornada Ateia</h1>
         <p class="font-sans text-base text-blue-100 max-w-xl mx-auto leading-relaxed">As cinco etapas da evolução filosófica: do pensamento crente à cosmovisão plena do Grande Ateu.</p>
+        <div style="margin-top:28px;">
+          <button id="quiz-abrir" style="background:#fff;color:#1A3A5C;font-family:sans-serif;font-size:.9rem;font-weight:700;padding:13px 32px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.06em;box-shadow:0 2px 12px rgba(0,0,0,.2);">O QUE VOCÊ É? →</button>
+        </div>
       </div>
     </section>
 
@@ -342,8 +345,214 @@
 
   </main>
 
+  <!-- QUIZ: O QUE VOCÊ É? -->
+  <div id="quiz-oqve" role="dialog" aria-modal="true" aria-label="Quiz: O que você é?" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,.65);align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#fff;border-radius:16px;max-width:540px;width:100%;max-height:90vh;overflow-y:auto;padding:36px 32px;position:relative;box-shadow:0 24px 64px rgba(0,0,0,.35);">
+      <button id="quiz-fechar" aria-label="Fechar" style="position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;color:#bbb;font-size:1.5rem;line-height:1;padding:4px 8px;">&times;</button>
+
+      <!-- TELA: PERGUNTA -->
+      <div id="quiz-tela-p">
+        <div style="text-align:center;margin-bottom:28px;">
+          <p style="font-family:sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:#673AB7;font-weight:700;margin:0 0 8px;">Cosmovisão · Jornada</p>
+          <h2 style="font-family:Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1C1E;margin:0;">O que você é?</h2>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:26px;">
+          <div style="flex:1;height:5px;background:#f0f0f0;border-radius:3px;overflow:hidden;">
+            <div id="quiz-barra" style="height:100%;background:linear-gradient(to right,#673AB7,#2196F3);border-radius:3px;transition:width .3s ease;width:0%;"></div>
+          </div>
+          <span id="quiz-cont" style="font-family:sans-serif;font-size:.72rem;color:#bbb;white-space:nowrap;min-width:36px;text-align:right;">1/11</span>
+        </div>
+        <p id="quiz-etiq" style="font-family:sans-serif;font-size:.58rem;text-transform:uppercase;letter-spacing:.14em;color:#009688;font-weight:700;margin:0 0 10px;"></p>
+        <p id="quiz-enun" style="font-family:Georgia,serif;font-size:1.1rem;line-height:1.72;color:#1C1C1E;margin:0 0 36px;min-height:90px;"></p>
+        <div style="display:flex;gap:10px;">
+          <button id="quiz-sim" style="flex:1;padding:15px 12px;border-radius:10px;border:2px solid #009688;background:#009688;color:#fff;font-family:sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.06em;">CONCORDO</button>
+          <button id="quiz-nao" style="flex:1;padding:15px 12px;border-radius:10px;border:2px solid #e0e0e0;background:#f9f9f9;color:#555;font-family:sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.06em;">DISCORDO</button>
+        </div>
+      </div>
+
+      <!-- TELA: RESULTADO -->
+      <div id="quiz-tela-r" style="display:none;">
+        <div style="text-align:center;margin-bottom:24px;">
+          <p style="font-family:sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:#673AB7;font-weight:700;margin:0 0 8px;">Resultado</p>
+          <h2 style="font-family:Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1C1E;margin:0 0 20px;">O que você é?</h2>
+          <div id="quiz-r-icone" style="width:88px;height:88px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:#fff;"></div>
+          <p style="font-family:sans-serif;font-size:.58rem;text-transform:uppercase;letter-spacing:.16em;color:#aaa;font-weight:700;margin:0 0 5px;">Você está na etapa</p>
+          <h3 id="quiz-r-titulo" style="font-family:Georgia,serif;font-size:2rem;font-weight:700;margin:0 0 14px;"></h3>
+          <p id="quiz-r-desc" style="font-family:sans-serif;font-size:.875rem;color:#555;line-height:1.75;max-width:380px;margin:0 auto;"></p>
+        </div>
+        <div style="background:#f8f8f8;border-radius:10px;padding:16px 18px;margin-bottom:22px;">
+          <p style="font-family:sans-serif;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:#aaa;font-weight:700;margin:0 0 12px;">Pontuação por categoria</p>
+          <div id="quiz-r-scores" style="display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+        <div style="position:relative;margin:0 4px 5px;">
+          <div style="height:8px;border-radius:4px;background:linear-gradient(to right,#795548 0%,#FF9800 33%,#009688 66%,#2196F3 100%);"></div>
+          <div id="quiz-r-dot" style="position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #333;transform:translateX(-50%);left:50%;transition:left .6s cubic-bezier(.34,1.56,.64,1);pointer-events:none;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:.56rem;color:#ccc;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 4px 26px;">
+          <span>Crente</span><span>Agnóstico</span><span>Cético</span><span>Ateu</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <a id="quiz-r-link" href="#crente" style="display:inline-flex;align-items:center;background:#1A3A5C;color:#fff;font-family:sans-serif;font-size:.8rem;font-weight:700;padding:12px 22px;border-radius:8px;text-decoration:none;letter-spacing:.04em;">Ver minha etapa na Jornada</a>
+          <button id="quiz-reiniciar" style="display:inline-flex;align-items:center;background:#f4f4f4;border:none;color:#555;font-family:sans-serif;font-size:.8rem;font-weight:700;padding:12px 22px;border-radius:8px;cursor:pointer;letter-spacing:.04em;">Refazer o teste</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="/assets/mobile.js"></script>
   <script src="/assets/analytics.js"></script>
+  <script>
+  (function () {
+    var qs = [
+      { n:1,  t:'O universo é incriado.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:2,  t:'Prefiro meditação, automotivação ou reflexão interior ao invés de rezas ou orações.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:3,  t:'Escolas, creches, hospitais e centros de reabilitação têm mais relevância numa sociedade do que igrejas e templos.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:4,  t:'Me incomoda profundamente candidatos políticos que baseiam suas propostas em torno de sua devoção ou credo ao invés de soluções práticas.',
+        sim:{cr:0,ag:1,ce:1,at:1}, nao:{cr:1,ag:0,ce:0,at:0} },
+      { n:5,  t:'Não pertenço a credo algum.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:6,  t:'Não tenho receio de visitar países com crenças diferentes das que estou acostumado — como Japão, China, Índia, Catar, Marrocos ou Egito.',
+        sim:{cr:0,ag:1,ce:1,at:1}, nao:{cr:1,ag:0,ce:0,at:0} },
+      { n:7,  t:'Se possível fosse, gostaria de viver em um país abertamente Ateísta.',
+        sim:{cr:0,ag:0,ce:0,at:1}, nao:{cr:1,ag:1,ce:1,at:0} },
+      { n:8,  t:'[Não fui] ou [Fui batizado no passado], mas isso não tem relevância alguma pra mim hoje.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:9,  t:'O sofrimento do mundo tem explicações exclusivamente naturalistas e humanas.',
+        sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
+      { n:10, t:'Depois de ler a Bíblia Palavra do Grande Ateu, minha vida tem mais sentido e propósito como ser humano.',
+        sim:{cr:0,ag:0,ce:0,at:1}, nao:{cr:1,ag:1,ce:1,at:0} },
+      { n:11, t:'Nos últimos meses frequentei, paguei dízimo ou fiz oferta junto a uma igreja.',
+        sim:{cr:1,ag:1,ce:0,at:0}, nao:{cr:0,ag:0,ce:1,at:1} }
+    ];
+
+    var cats = [
+      { k:'cr', label:'Crente',    cor:'#795548', etapa:'I',   ancora:'#crente',
+        desc:'Sua visão de mundo ainda está fortemente ancorada em tradições e crenças religiosas. A jornada de questionamento está aberta — e todo Grande Ateu começou aqui.' },
+      { k:'ag', label:'Agnóstico', cor:'#FF9800', etapa:'II',  ancora:'#agnostico',
+        desc:'Você questiona, mas ainda sem conclusões firmes. A incerteza que você carrega é honesta — e é o primeiro passo real da jornada filosófica.' },
+      { k:'ce', label:'Cético',    cor:'#009688', etapa:'III', ancora:'#cetico',
+        desc:'O pensamento crítico guia suas escolhas. Você exige evidências, rejeita dogmas e recusa alegações sem fundamento. Você está entre os mais lúcidos da jornada.' },
+      { k:'at', label:'Ateu',      cor:'#2196F3', etapa:'IV',  ancora:'#ateu',
+        desc:'Sua posição filosófica está assentada: sem evidências, não há razão para crer. Você constrói ética e propósito sem alicerces sobrenaturais — bem-vindo à etapa IV.' }
+    ];
+
+    var pctEspectro = { cr:0, ag:0.33, ce:0.66, at:1.0 };
+
+    var idx, score;
+    var overlay = document.getElementById('quiz-oqve');
+    var telaP   = document.getElementById('quiz-tela-p');
+    var telaR   = document.getElementById('quiz-tela-r');
+
+    function abrir() {
+      idx = 0;
+      score = { cr:0, ag:0, ce:0, at:0 };
+      telaP.style.display = '';
+      telaR.style.display = 'none';
+      document.getElementById('quiz-barra').style.width = '0%';
+      renderPerg();
+      overlay.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function fechar() {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+
+    function renderPerg() {
+      var q = qs[idx];
+      document.getElementById('quiz-etiq').textContent = 'Afirmação ' + q.n;
+      document.getElementById('quiz-enun').textContent = q.t;
+      document.getElementById('quiz-cont').textContent = (idx + 1) + '/11';
+      document.getElementById('quiz-barra').style.width = (idx / qs.length * 100) + '%';
+    }
+
+    function responder(sim) {
+      var pts = sim ? qs[idx].sim : qs[idx].nao;
+      score.cr += pts.cr; score.ag += pts.ag;
+      score.ce += pts.ce; score.at += pts.at;
+      idx++;
+      if (idx < qs.length) { renderPerg(); return; }
+      mostrarRes();
+    }
+
+    function mostrarRes() {
+      document.getElementById('quiz-barra').style.width = '100%';
+      document.getElementById('quiz-cont').textContent = '11/11';
+
+      // Vencedor: tie-break favorece at > ce > ag > cr
+      var ordem = ['at', 'ce', 'ag', 'cr'];
+      var melhor = cats[0];
+      var maxPts = -1;
+      for (var i = 0; i < ordem.length; i++) {
+        if (score[ordem[i]] > maxPts) {
+          maxPts = score[ordem[i]];
+          for (var j = 0; j < cats.length; j++) {
+            if (cats[j].k === ordem[i]) { melhor = cats[j]; break; }
+          }
+        }
+      }
+
+      var ic = document.getElementById('quiz-r-icone');
+      ic.style.background = melhor.cor;
+      ic.textContent = melhor.etapa;
+
+      var t = document.getElementById('quiz-r-titulo');
+      t.textContent = melhor.label;
+      t.style.color = melhor.cor;
+      document.getElementById('quiz-r-desc').textContent = melhor.desc;
+
+      // Barras de pontuação
+      var cont = document.getElementById('quiz-r-scores');
+      cont.innerHTML = '';
+      cats.forEach(function (c) {
+        var pts = score[c.k];
+        var pct = Math.round(pts / 11 * 100);
+        var dest = c.k === melhor.k;
+        var row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+        row.innerHTML =
+          '<span style="font-family:sans-serif;font-size:.7rem;font-weight:' + (dest ? '700' : '500') + ';color:' + (dest ? c.cor : '#aaa') + ';min-width:70px;text-align:right;">' + c.label + '</span>' +
+          '<div style="flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden;">' +
+            '<div style="height:100%;width:' + pct + '%;background:' + c.cor + ';border-radius:3px;opacity:' + (dest ? '1' : '.45') + ';"></div>' +
+          '</div>' +
+          '<span style="font-family:sans-serif;font-size:.7rem;font-weight:' + (dest ? '700' : '400') + ';color:' + (dest ? c.cor : '#ccc') + ';min-width:18px;">' + pts + '</span>';
+        cont.appendChild(row);
+      });
+
+      // Posição no espectro: média ponderada pelos scores
+      var posNum = score.cr * pctEspectro.cr + score.ag * pctEspectro.ag + score.ce * pctEspectro.ce + score.at * pctEspectro.at;
+      var posDen = score.cr + score.ag + score.ce + score.at || 1;
+      var posPct = Math.round(Math.min(posNum / posDen, 0.97) * 100);
+
+      var dot = document.getElementById('quiz-r-dot');
+      dot.style.borderColor = melhor.cor;
+      dot.style.left = '50%';
+      setTimeout(function () { dot.style.left = posPct + '%'; }, 80);
+
+      document.getElementById('quiz-r-link').href = melhor.ancora;
+
+      telaP.style.display = 'none';
+      telaR.style.display = '';
+    }
+
+    document.getElementById('quiz-abrir').addEventListener('click', abrir);
+    document.getElementById('quiz-fechar').addEventListener('click', fechar);
+    document.getElementById('quiz-sim').addEventListener('click', function () { responder(true); });
+    document.getElementById('quiz-nao').addEventListener('click', function () { responder(false); });
+    document.getElementById('quiz-reiniciar').addEventListener('click', abrir);
+    document.getElementById('quiz-r-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      var alvo = document.querySelector(this.getAttribute('href'));
+      fechar();
+      if (alvo) setTimeout(function () { alvo.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 120);
+    });
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) fechar(); });
+  })();
+  </script>
 
 </body>
 </html>
