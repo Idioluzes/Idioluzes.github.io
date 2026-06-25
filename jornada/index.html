@@ -377,6 +377,7 @@
             </div>
             <div id="quiz-live-dot-l" style="position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #795548;transform:translateX(-50%);left:0%;transition:left .4s ease,border-color .4s;pointer-events:none;"></div>
             <div id="quiz-live-dot-r" style="position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #2196F3;transform:translateX(-50%);left:100%;transition:left .4s ease,border-color .4s;pointer-events:none;"></div>
+            <div id="quiz-live-needle" style="display:none;position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:#1A3A5C;transform:translateX(-50%);transition:left .4s ease;pointer-events:none;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.3);"></div>
           </div>
           <div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:.56rem;color:#ccc;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 4px;">
             <span>Crente</span><span>Agnóstico</span><span>Cético</span><span>Ateu</span>
@@ -389,38 +390,53 @@
         </div>
       </div>
 
-      <!-- TELA: RESULTADO -->
-      <div id="quiz-tela-r" style="display:none;">
-        <div style="text-align:center;margin-bottom:20px;">
-          <p style="font-family:sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:#673AB7;font-weight:700;margin:0 0 8px;">Resultado · Faixa detectada</p>
-          <h2 style="font-family:Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1C1E;margin:0 0 16px;">O que você é?</h2>
-          <p style="font-family:sans-serif;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 6px;">Você está entre</p>
-          <h3 id="quiz-r-bino" style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1C1C1E;margin:0 0 14px;"></h3>
-          <p id="quiz-r-desc" style="font-family:sans-serif;font-size:.875rem;color:#555;line-height:1.75;max-width:380px;margin:0 auto;"></p>
-        </div>
-
-        <!-- Espectro com hachura de range -->
-        <div style="position:relative;margin:16px 9px 6px;">
+      <!-- TELA: TRANSIÇÃO (Fase 1 → Fase 2) -->
+      <div id="quiz-tela-t" style="display:none;text-align:center;">
+        <p style="font-family:sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:#673AB7;font-weight:700;margin:0 0 8px;">Diagnóstico inicial concluído</p>
+        <h2 style="font-family:Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">O que você é?</h2>
+        <p style="font-family:sans-serif;font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 6px;">Você está entre</p>
+        <h3 id="quiz-t-bino" style="font-family:Georgia,serif;font-size:1.75rem;font-weight:700;color:#1C1C1E;margin:0 0 22px;"></h3>
+        <div style="position:relative;margin:0 9px 6px;">
           <div style="position:relative;height:10px;border-radius:5px;overflow:hidden;">
             <div style="position:absolute;inset:0;background:linear-gradient(to right,#795548,#FF9800,#009688,#2196F3);"></div>
-            <div id="quiz-r-dim-l" style="position:absolute;top:0;left:0;height:100%;background:rgba(255,255,255,.82);width:50%;transition:width .5s ease;"></div>
-            <div id="quiz-r-dim-r" style="position:absolute;top:0;right:0;height:100%;background:rgba(255,255,255,.82);width:50%;transition:width .5s ease;"></div>
-            <div id="quiz-r-stripe" style="position:absolute;top:0;height:100%;background:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,.38) 3px,rgba(255,255,255,.38) 7px);left:0%;width:0%;transition:left .5s ease,width .5s ease;pointer-events:none;"></div>
+            <div id="quiz-t-dim-l" style="position:absolute;top:0;left:0;height:100%;background:rgba(255,255,255,.82);width:50%;"></div>
+            <div id="quiz-t-dim-r" style="position:absolute;top:0;right:0;height:100%;background:rgba(255,255,255,.82);width:50%;"></div>
+            <div id="quiz-t-stripe" style="position:absolute;top:0;height:100%;background:repeating-linear-gradient(45deg,transparent,transparent 3px,rgba(255,255,255,.38) 3px,rgba(255,255,255,.38) 7px);left:0%;width:0%;pointer-events:none;"></div>
           </div>
-          <div id="quiz-r-dot-l" style="position:absolute;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #795548;transform:translateX(-50%);left:0%;transition:left .5s ease,border-color .4s;pointer-events:none;"></div>
-          <div id="quiz-r-dot-r" style="position:absolute;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #2196F3;transform:translateX(-50%);left:100%;transition:left .5s ease,border-color .4s;pointer-events:none;"></div>
+          <div id="quiz-t-dot-l" style="position:absolute;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #795548;transform:translateX(-50%);left:0%;pointer-events:none;"></div>
+          <div id="quiz-t-dot-r" style="position:absolute;top:-6px;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid #2196F3;transform:translateX(-50%);left:100%;pointer-events:none;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:.56rem;color:#ccc;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 4px 22px;">
+          <span>Crente</span><span>Agnóstico</span><span>Cético</span><span>Ateu</span>
+        </div>
+        <p id="quiz-t-info" style="font-family:sans-serif;font-size:.82rem;color:#888;line-height:1.65;margin:0 0 24px;"></p>
+        <button id="quiz-continuar" style="background:#1A3A5C;color:#fff;font-family:sans-serif;font-size:.88rem;font-weight:700;padding:13px 32px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.04em;">Continuar →</button>
+      </div>
+
+      <!-- TELA: RESULTADO FINAL (Fase 2 concluída) -->
+      <div id="quiz-tela-r" style="display:none;">
+        <div style="text-align:center;margin-bottom:20px;">
+          <p style="font-family:sans-serif;font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:#673AB7;font-weight:700;margin:0 0 8px;">Resultado final</p>
+          <h2 style="font-family:Georgia,serif;font-size:1.55rem;font-weight:700;color:#1C1C1E;margin:0 0 20px;">O que você é?</h2>
+          <div id="quiz-r-icone" style="width:88px;height:88px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:#fff;"></div>
+          <h3 id="quiz-r-cat" style="font-family:Georgia,serif;font-size:2rem;font-weight:700;margin:0 0 14px;"></h3>
+          <p id="quiz-r-desc" style="font-family:sans-serif;font-size:.875rem;color:#555;line-height:1.75;max-width:380px;margin:0 auto 12px;"></p>
+          <p id="quiz-r-ext" style="display:none;font-family:sans-serif;font-size:.78rem;color:#b71c1c;background:#ffebee;border-radius:8px;padding:10px 14px;line-height:1.6;margin:0 0 8px;text-align:left;"></p>
+        </div>
+
+        <!-- Espectro com ponto único -->
+        <div style="position:relative;margin:16px 9px 6px;">
+          <div style="height:8px;border-radius:4px;background:linear-gradient(to right,#795548,#FF9800,#009688,#2196F3);"></div>
+          <div id="quiz-r-dot" style="position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid #333;transform:translateX(-50%);left:50%;transition:left .7s cubic-bezier(.34,1.56,.64,1);pointer-events:none;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-family:sans-serif;font-size:.56rem;color:#ccc;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 4px 20px;">
           <span>Crente</span><span>Agnóstico</span><span>Cético</span><span>Ateu</span>
         </div>
 
-        <!-- Pontuação por categoria -->
-        <div style="background:#f8f8f8;border-radius:10px;padding:16px 18px;margin-bottom:16px;">
-          <p style="font-family:sans-serif;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:#aaa;font-weight:700;margin:0 0 12px;">Pontuação por categoria</p>
+        <div style="background:#f8f8f8;border-radius:10px;padding:16px 18px;margin-bottom:18px;">
+          <p style="font-family:sans-serif;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:#aaa;font-weight:700;margin:0 0 12px;">Pontuação — fase 2</p>
           <div id="quiz-r-scores" style="display:flex;flex-direction:column;gap:8px;"></div>
         </div>
-
-        <p style="font-family:sans-serif;font-size:.78rem;color:#bbb;line-height:1.65;text-align:center;margin:0 0 20px;">Estas 11 questões identificam sua faixa no espectro. As próximas etapas do teste definirão sua posição exata.</p>
 
         <div style="display:flex;justify-content:center;">
           <button id="quiz-reiniciar" style="display:inline-flex;align-items:center;background:#f4f4f4;border:none;color:#555;font-family:sans-serif;font-size:.8rem;font-weight:700;padding:12px 28px;border-radius:8px;cursor:pointer;letter-spacing:.04em;">Refazer o teste</button>
@@ -433,7 +449,8 @@
   <script src="/assets/analytics.js"></script>
   <script>
   (function () {
-    var qs = [
+    // ── FASE 1: detecta binômio ──────────────────────────────────────
+    var qs1 = [
       { n:1,  t:'O universo é incriado.',
         sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} },
       { n:2,  t:'Prefiro meditação, automotivação ou reflexão interior ao invés de rezas ou orações.',
@@ -458,71 +475,134 @@
         sim:{cr:0,ag:0,ce:1,at:1}, nao:{cr:1,ag:1,ce:0,at:0} }
     ];
 
-    var cats = [
-      { k:'cr', label:'Crente',    cor:'#795548' },
-      { k:'ag', label:'Agnóstico', cor:'#FF9800' },
-      { k:'ce', label:'Cético',    cor:'#009688' },
-      { k:'at', label:'Ateu',      cor:'#2196F3' }
-    ];
+    // ── FASE 2: perguntas específicas por binômio ────────────────────
+    var qs2 = {
+      'cr-ag': [
+        { n:12, t:'Participo ativamente das atividades de minha igreja.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1} },
+        { n:13, t:'Considero-me servo fiel de Cristo.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1} },
+        { n:14, t:'Entendo que as divindades de outros credos não são deuses de verdade.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1} },
+        { n:15, t:'Não creio em Deus, mas levo a sério ao menos uma das seguintes: tarot, astrologia, bruxaria, ufologia, feitiçaria, reencarnação, espíritos ou paranormalidade.',
+          sim:{cr:0,ag:1}, nao:{cr:1,ag:0} },
+        { n:16, t:'Percebo cada vez mais distância entre o discurso da minha liderança e a prática da fé que digo professar.',
+          sim:{cr:0,ag:1}, nao:{cr:1,ag:0} },
+        { n:17, t:'Conheço algum descrente que sei ser mais íntegro e justo que a maioria dos irmãos com que convivo.',
+          sim:{cr:0,ag:1}, nao:{cr:1,ag:0} },
+        { n:18, t:'Já presenciei escândalo em minha igreja e permaneci firme, sem abalar nem esfriar minha fé.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1} },
+        { n:19, t:'Não tenho interesse em casar com quem tem credo diferente do meu.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1}, ext:true },
+        { n:20, t:'Morreria em nome de Jesus.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1}, ext:true },
+        { n:21, t:'Se Deus me pedisse, eu mataria em seu divino nome.',
+          sim:{cr:1,ag:0}, nao:{cr:0,ag:1}, ext:true }
+      ],
+      'ag-ce': [
+        { n:12, t:'No fundo, desejo ir para o paraíso que está no céu.',
+          sim:{ag:1,ce:0}, nao:{ag:0,ce:1} }
+      ],
+      'ce-at': [
+        { n:12, t:'A Bíblia Sagrada é a Palavra do Grande Ateu.',
+          sim:{ce:0,at:1}, nao:{ce:1,at:0} },
+        { n:13, t:'O Santo Povo Ateu é guiado por nove Princípios Basilares.',
+          sim:{ce:0,at:1}, nao:{ce:1,at:0} },
+        { n:14, t:'Aspiro, um dia, me tornar um Grande Ateu.',
+          sim:{ce:0,at:1}, nao:{ce:1,at:0} }
+      ]
+    };
 
-    // Binômios válidos: apenas adjacentes
+    var catInfo = {
+      cr: { label:'Crente',    cor:'#795548', etapa:'I',   pos:10,
+        desc:'Você mantém uma fé ativa e pratica sua religião com convicção. Sua cosmovisão está fundamentada em princípios teístas e você se identifica com uma tradição religiosa.' },
+      ag: { label:'Agnóstico', cor:'#FF9800', etapa:'II',  pos:33,
+        desc:'Você transita entre a crença e a dúvida. Não rejeita totalmente a ideia de Deus, mas também não se sente mais plenamente comprometido com uma religião. A incerteza filosófica é sua marca.' },
+      ce: { label:'Cético',    cor:'#009688', etapa:'III', pos:66,
+        desc:'O pensamento crítico é seu guia. Você exige evidências, rejeita dogmas e avalia alegações com rigor racional. Provavelmente não crê em Deus, mas não assumiu o ateísmo como posição definitiva.' },
+      at: { label:'Ateu',      cor:'#2196F3', etapa:'IV',  pos:90,
+        desc:'Sua posição está assentada: sem evidências suficientes, não há razão para crer em deuses. Você constrói ética, propósito e visão de mundo sem qualquer alicerce sobrenatural.' }
+    };
+
     var binos = [
-      { cats:['cr','ag'], left:0,  right:50,  cor1:'#795548', cor2:'#FF9800',
-        label:'Crente – Agnóstico',
-        desc:'Você demonstra traços de crença com questionamentos surgindo. Há um apego a tradições religiosas, mas a dúvida começa a se abrir.' },
-      { cats:['ag','ce'], left:25, right:75,  cor1:'#FF9800', cor2:'#009688',
-        label:'Agnóstico – Cético',
-        desc:'Você questiona ativamente e exige evidências, mas ainda mantém certa incerteza filosófica sobre questões últimas.' },
-      { cats:['ce','at'], left:50, right:100, cor1:'#009688', cor2:'#2196F3',
-        label:'Cético – Ateu',
-        desc:'Seu pensamento crítico é sólido e você provavelmente não crê em deuses. A distinção entre Cético e Ateu será definida nas próximas etapas.' }
+      { key:'cr-ag', cats:['cr','ag'], left:0,  right:50,  cor1:'#795548', cor2:'#FF9800',
+        label:'Crente – Agnóstico' },
+      { key:'ag-ce', cats:['ag','ce'], left:25, right:75,  cor1:'#FF9800', cor2:'#009688',
+        label:'Agnóstico – Cético' },
+      { key:'ce-at', cats:['ce','at'], left:50, right:100, cor1:'#009688', cor2:'#2196F3',
+        label:'Cético – Ateu' }
     ];
 
-    var idx, score;
+    var fase, idx1, idx2, score1, score2, extremista, binoCurrent, qsF2, totalQs;
+
     var overlay = document.getElementById('quiz-oqve');
     var telaP   = document.getElementById('quiz-tela-p');
+    var telaT   = document.getElementById('quiz-tela-t');
     var telaR   = document.getElementById('quiz-tela-r');
 
-    // Retorna o binômio adjacente com maior soma de pontos
-    function getBino() {
+    function g(id) { return document.getElementById(id); }
+
+    function getBino1() {
       var best = binos[0], bestSum = -1;
       binos.forEach(function (b) {
-        var s = score[b.cats[0]] + score[b.cats[1]];
+        var s = score1[b.cats[0]] + score1[b.cats[1]];
         if (s > bestSum) { bestSum = s; best = b; }
       });
       return best;
     }
 
-    function aplicarHachura(b, prefixo) {
-      var p = prefixo || '';
-      document.getElementById('quiz' + p + '-dim-l').style.width  = b.left + '%';
-      document.getElementById('quiz' + p + '-dim-r').style.width  = (100 - b.right) + '%';
-      document.getElementById('quiz' + p + '-stripe').style.left  = b.left + '%';
-      document.getElementById('quiz' + p + '-stripe').style.width = (b.right - b.left) + '%';
-      var dotL = document.getElementById('quiz' + p + '-dot-l');
-      var dotR = document.getElementById('quiz' + p + '-dot-r');
-      dotL.style.left = b.left + '%';
-      dotL.style.borderColor = b.cor1;
-      dotR.style.left = b.right + '%';
-      dotR.style.borderColor = b.cor2;
+    function aplicarHachuraT(b) {
+      g('quiz-t-dim-l').style.width  = b.left + '%';
+      g('quiz-t-dim-r').style.width  = (100 - b.right) + '%';
+      g('quiz-t-stripe').style.left  = b.left + '%';
+      g('quiz-t-stripe').style.width = (b.right - b.left) + '%';
+      g('quiz-t-dot-l').style.left   = b.left + '%';
+      g('quiz-t-dot-l').style.borderColor = b.cor1;
+      g('quiz-t-dot-r').style.left   = b.right + '%';
+      g('quiz-t-dot-r').style.borderColor = b.cor2;
     }
 
-    function atualizarLive() {
-      if (idx === 0) return;
-      var b = getBino();
-      document.getElementById('quiz-live').style.display = '';
-      document.getElementById('quiz-live-lbl').textContent = b.label;
-      aplicarHachura(b, '-live');
+    function atualizarLiveFase1() {
+      if (idx1 === 0) return;
+      var b = getBino1();
+      g('quiz-live').style.display = '';
+      g('quiz-live-lbl').textContent = b.label;
+      g('quiz-live-dim-l').style.width  = b.left + '%';
+      g('quiz-live-dim-r').style.width  = (100 - b.right) + '%';
+      g('quiz-live-stripe').style.left  = b.left + '%';
+      g('quiz-live-stripe').style.width = (b.right - b.left) + '%';
+      g('quiz-live-dot-l').style.left   = b.left + '%';
+      g('quiz-live-dot-l').style.borderColor = b.cor1;
+      g('quiz-live-dot-r').style.left   = b.right + '%';
+      g('quiz-live-dot-r').style.borderColor = b.cor2;
+    }
+
+    function atualizarNeedleFase2() {
+      var b = binoCurrent;
+      var k1 = b.cats[0], k2 = b.cats[1];
+      var total = score2[k1] + score2[k2];
+      if (total === 0) return;
+      var pct2 = score2[k2] / total;
+      var pos  = b.left + pct2 * (b.right - b.left);
+      var needle = g('quiz-live-needle');
+      needle.style.display = '';
+      needle.style.left    = pos + '%';
     }
 
     function abrir() {
-      idx = 0;
-      score = { cr:0, ag:0, ce:0, at:0 };
-      document.getElementById('quiz-live').style.display = 'none';
-      document.getElementById('quiz-barra').style.width  = '0%';
-      telaP.style.display = '';
-      telaR.style.display = 'none';
-      renderPerg();
+      fase = 1;
+      idx1 = 0; idx2 = 0;
+      score1 = {cr:0,ag:0,ce:0,at:0};
+      score2 = {cr:0,ag:0,ce:0,at:0};
+      extremista = 0;
+      binoCurrent = null; qsF2 = null; totalQs = 11;
+
+      g('quiz-live').style.display   = 'none';
+      g('quiz-live-needle').style.display = 'none';
+      g('quiz-barra').style.width    = '0%';
+
+      telaP.style.display = ''; telaT.style.display = 'none'; telaR.style.display = 'none';
+      renderPergunta();
       overlay.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     }
@@ -532,69 +612,141 @@
       document.body.style.overflow = '';
     }
 
-    function renderPerg() {
-      var q = qs[idx];
-      document.getElementById('quiz-etiq').textContent = 'Afirmação ' + q.n;
-      document.getElementById('quiz-enun').textContent = q.t;
-      document.getElementById('quiz-cont').textContent = (idx + 1) + '/11';
-      document.getElementById('quiz-barra').style.width = (idx / qs.length * 100) + '%';
+    function renderPergunta() {
+      var q;
+      if (fase === 1) {
+        q = qs1[idx1];
+        g('quiz-cont').textContent = (idx1 + 1) + '/' + totalQs;
+        g('quiz-barra').style.width = (idx1 / totalQs * 100) + '%';
+      } else {
+        q = qsF2[idx2];
+        g('quiz-cont').textContent = (11 + idx2 + 1) + '/' + totalQs;
+        g('quiz-barra').style.width = ((11 + idx2) / totalQs * 100) + '%';
+      }
+      g('quiz-etiq').textContent = 'Afirmação ' + q.n;
+      g('quiz-enun').textContent = q.t;
     }
 
     function responder(sim) {
-      var pts = sim ? qs[idx].sim : qs[idx].nao;
-      score.cr += pts.cr; score.ag += pts.ag;
-      score.ce += pts.ce; score.at += pts.at;
-      idx++;
-      if (idx < qs.length) {
-        renderPerg();
-        atualizarLive();
-        return;
+      if (fase === 1) {
+        var pts = sim ? qs1[idx1].sim : qs1[idx1].nao;
+        score1.cr += pts.cr; score1.ag += pts.ag; score1.ce += pts.ce; score1.at += pts.at;
+        idx1++;
+        if (idx1 < qs1.length) { renderPergunta(); atualizarLiveFase1(); return; }
+        atualizarLiveFase1();
+        mostrarTransicao();
+      } else {
+        var q   = qsF2[idx2];
+        var pts2 = sim ? q.sim : q.nao;
+        for (var k in pts2) score2[k] = (score2[k] || 0) + pts2[k];
+        if (sim && q.ext) extremista++;
+        idx2++;
+        if (idx2 < qsF2.length) { renderPergunta(); atualizarNeedleFase2(); return; }
+        mostrarResultado();
       }
-      mostrarRes();
     }
 
-    function mostrarRes() {
-      document.getElementById('quiz-barra').style.width = '100%';
-      document.getElementById('quiz-cont').textContent  = '11/11';
+    function mostrarTransicao() {
+      var b = getBino1();
+      binoCurrent = b;
+      qsF2 = qs2[b.key];
+      totalQs = 11 + qsF2.length;
 
-      var b = getBino();
+      var n = qsF2.length;
+      g('quiz-t-bino').textContent = b.label;
+      g('quiz-t-info').textContent = 'Responda mais ' + n + ' questão' + (n > 1 ? 'ões' : '') + ' para definir sua classificação exata.';
+      aplicarHachuraT(b);
 
-      // Título e descrição do binômio
-      document.getElementById('quiz-r-bino').textContent = b.label;
-      document.getElementById('quiz-r-desc').textContent = b.desc;
+      telaP.style.display = 'none'; telaT.style.display = ''; telaR.style.display = 'none';
+    }
 
-      // Hachura no espectro do resultado (com pequeno delay pro transition disparar)
-      document.getElementById('quiz-r-dot-l').style.left = '50%';
-      document.getElementById('quiz-r-dot-r').style.left = '50%';
-      setTimeout(function () { aplicarHachura(b, '-r'); }, 80);
+    function iniciarFase2() {
+      fase = 2;
+      idx2 = 0;
+      score2 = {cr:0,ag:0,ce:0,at:0};
+      extremista = 0;
 
-      // Barras de pontuação por categoria
-      var cont = document.getElementById('quiz-r-scores');
+      var b = binoCurrent;
+      g('quiz-live').style.display = '';
+      g('quiz-live-lbl').textContent = 'Refinando: ' + b.label;
+      g('quiz-live-dim-l').style.width  = b.left + '%';
+      g('quiz-live-dim-r').style.width  = (100 - b.right) + '%';
+      g('quiz-live-stripe').style.left  = b.left + '%';
+      g('quiz-live-stripe').style.width = (b.right - b.left) + '%';
+      g('quiz-live-dot-l').style.left   = b.left + '%';
+      g('quiz-live-dot-l').style.borderColor = b.cor1;
+      g('quiz-live-dot-r').style.left   = b.right + '%';
+      g('quiz-live-dot-r').style.borderColor = b.cor2;
+      g('quiz-live-needle').style.display = 'none';
+
+      telaP.style.display = ''; telaT.style.display = 'none'; telaR.style.display = 'none';
+      renderPergunta();
+    }
+
+    function getFinalCat() {
+      var b  = binoCurrent;
+      var k1 = b.cats[0], k2 = b.cats[1];
+      if (score2[k1] > score2[k2]) return k1;
+      if (score2[k2] > score2[k1]) return k2;
+      if (score1[k1] > score1[k2]) return k1;
+      if (score1[k2] > score1[k1]) return k2;
+      return k2;
+    }
+
+    function mostrarResultado() {
+      g('quiz-barra').style.width = '100%';
+      g('quiz-cont').textContent  = totalQs + '/' + totalQs;
+
+      var catKey = getFinalCat();
+      var cat    = catInfo[catKey];
+
+      g('quiz-r-icone').style.background = cat.cor;
+      g('quiz-r-icone').textContent = cat.etapa;
+
+      var titulo = g('quiz-r-cat');
+      titulo.textContent = cat.label;
+      titulo.style.color = cat.cor;
+
+      g('quiz-r-desc').textContent = cat.desc;
+
+      var extEl = g('quiz-r-ext');
+      if (catKey === 'cr' && extremista >= 2) {
+        extEl.textContent = 'Atenção: suas respostas indicam traços de fundamentalismo religioso. Convicções que justificam violência ou discriminação em nome da fé merecem reflexão crítica.';
+        extEl.style.display = '';
+      } else {
+        extEl.style.display = 'none';
+      }
+
+      var dot = g('quiz-r-dot');
+      dot.style.borderColor = cat.cor;
+      dot.style.left = '50%';
+      setTimeout(function () { dot.style.left = cat.pos + '%'; }, 80);
+
+      var cont = g('quiz-r-scores');
       cont.innerHTML = '';
-      cats.forEach(function (c) {
-        var pts  = score[c.k];
-        var pct  = Math.round(pts / 11 * 100);
-        var dest = b.cats.indexOf(c.k) >= 0;
+      binoCurrent.cats.forEach(function (k) {
+        var c    = catInfo[k];
+        var pts  = score2[k] || 0;
+        var pct  = Math.round(pts / qsF2.length * 100);
+        var dest = k === catKey;
         var row  = document.createElement('div');
         row.style.cssText = 'display:flex;align-items:center;gap:8px;';
         row.innerHTML =
           '<span style="font-family:sans-serif;font-size:.7rem;font-weight:' + (dest?'700':'500') + ';color:' + (dest?c.cor:'#aaa') + ';min-width:70px;text-align:right;">' + c.label + '</span>' +
-          '<div style="flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden;">' +
-            '<div style="height:100%;width:' + pct + '%;background:' + c.cor + ';border-radius:3px;opacity:' + (dest?'1':'.35') + ';"></div>' +
-          '</div>' +
+          '<div style="flex:1;height:6px;background:#eee;border-radius:3px;overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:' + c.cor + ';border-radius:3px;opacity:' + (dest?'1':'.35') + ';"></div></div>' +
           '<span style="font-family:sans-serif;font-size:.7rem;font-weight:' + (dest?'700':'400') + ';color:' + (dest?c.cor:'#ccc') + ';min-width:18px;">' + pts + '</span>';
         cont.appendChild(row);
       });
 
-      telaP.style.display = 'none';
-      telaR.style.display = '';
+      telaP.style.display = 'none'; telaT.style.display = 'none'; telaR.style.display = '';
     }
 
-    document.getElementById('quiz-abrir').addEventListener('click', abrir);
-    document.getElementById('quiz-fechar').addEventListener('click', fechar);
-    document.getElementById('quiz-sim').addEventListener('click', function () { responder(true); });
-    document.getElementById('quiz-nao').addEventListener('click', function () { responder(false); });
-    document.getElementById('quiz-reiniciar').addEventListener('click', abrir);
+    g('quiz-abrir').addEventListener('click', abrir);
+    g('quiz-fechar').addEventListener('click', fechar);
+    g('quiz-sim').addEventListener('click', function () { responder(true); });
+    g('quiz-nao').addEventListener('click', function () { responder(false); });
+    g('quiz-continuar').addEventListener('click', iniciarFase2);
+    g('quiz-reiniciar').addEventListener('click', abrir);
     overlay.addEventListener('click', function (e) { if (e.target === overlay) fechar(); });
   })();
   </script>
