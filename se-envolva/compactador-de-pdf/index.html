@@ -97,12 +97,12 @@
 
     <!-- ESTADO: INICIAL -->
     <div id="estado-inicial">
-      <input type="file" id="entrada-pdf" accept=".pdf" style="display:none;">
-      <div id="zona-clique"
-           style="border:2px dashed #DCDCDC;border-radius:16px;padding:56px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
-           onclick="document.getElementById('entrada-pdf').click()"
-           onmouseover="this.style.borderColor='#1A3A5C';this.style.background='#f5f8ff'"
-           onmouseout="this.style.borderColor='#DCDCDC';this.style.background=''">
+      <!-- input fora do label para evitar duplo disparo em alguns browsers -->
+      <input type="file" id="entrada-pdf" accept=".pdf" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
+      <label for="entrada-pdf" id="zona-clique"
+             style="display:block;border:2px dashed #DCDCDC;border-radius:16px;padding:56px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
+             onmouseover="this.style.borderColor='#1A3A5C';this.style.background='#f5f8ff'"
+             onmouseout="this.style.borderColor='#DCDCDC';this.style.background=''">
         <div style="width:64px;height:64px;background:#f0f4ff;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
           <svg width="28" height="28" fill="none" stroke="#1A3A5C" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0L8 8m4-4l4 4"/>
@@ -111,7 +111,7 @@
         </div>
         <p style="font-family:Georgia,serif;font-size:1.15rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Escolher PDF</p>
         <p style="font-family:sans-serif;font-size:.82rem;color:#aaa;margin:0;">Clique aqui e selecione o arquivo no seu computador</p>
-      </div>
+      </label>
     </div>
 
     <!-- ESTADO: CARREGANDO MOTOR -->
@@ -130,9 +130,9 @@
 
     <!-- ESTADO: RESULTADO -->
     <div id="estado-resultado" style="display:none;">
-      <div style="background:#f0fff4;border:1px solid #86efac;border-radius:14px;padding:28px 24px;margin-bottom:20px;text-align:center;">
-        <div style="font-size:2rem;margin-bottom:8px;">✓</div>
-        <p style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#166534;margin:0 0 16px;">PDF compactado com sucesso!</p>
+      <div id="resultado-box" style="border-radius:14px;padding:28px 24px;margin-bottom:20px;text-align:center;">
+        <div id="resultado-icone" style="font-size:2rem;margin-bottom:8px;"></div>
+        <p id="resultado-titulo" style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;margin:0 0 16px;"></p>
         <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px;">
           <div>
             <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Original</p>
@@ -140,18 +140,19 @@
           </div>
           <div style="display:flex;align-items:center;color:#ccc;font-size:1.2rem;">→</div>
           <div>
-            <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Compactado</p>
-            <p id="tamanho-final" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;color:#166534;margin:0;"></p>
+            <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Resultado</p>
+            <p id="tamanho-final" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;margin:0;"></p>
           </div>
           <div>
             <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Redução</p>
-            <p id="reducao" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;color:#166534;margin:0;"></p>
+            <p id="reducao" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;margin:0;"></p>
           </div>
         </div>
-        <button id="btn-baixar" style="background:#1A3A5C;color:#fff;font-family:sans-serif;font-size:.9rem;font-weight:700;padding:14px 32px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.04em;">Baixar PDF compactado</button>
+        <p id="resultado-obs" style="font-family:sans-serif;font-size:.78rem;margin:0 0 18px;"></p>
+        <button id="btn-baixar" style="background:#1A3A5C;color:#fff;font-family:sans-serif;font-size:.9rem;font-weight:700;padding:14px 32px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.04em;"></button>
       </div>
       <div style="text-align:center;">
-        <button id="btn-outro" style="background:none;border:none;font-family:sans-serif;font-size:.82rem;color:#aaa;cursor:pointer;text-decoration:underline;">Compactar outro arquivo</button>
+        <button id="btn-outro" style="background:none;border:none;font-family:sans-serif;font-size:.82rem;color:#aaa;cursor:pointer;text-decoration:underline;">Processar outro arquivo</button>
       </div>
     </div>
 
@@ -206,9 +207,10 @@
   <script src="/assets/analytics.js"></script>
   <script type="module">
   (function () {
-    var mupdfCarregado = null;
-    var bytesResultado = null;
-    var nomeArquivo    = '';
+    var mupdfCarregado  = null;
+    var bytesResultado  = null;
+    var bytesOriginais  = null;
+    var nomeArquivo     = '';
 
     function mb(bytes) {
       if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
@@ -221,11 +223,56 @@
       });
     }
 
+    function mostrarResultado(tamanhoOriginal) {
+      var reducao = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
+      var box     = document.getElementById('resultado-box');
+      var titulo  = document.getElementById('resultado-titulo');
+      var icone   = document.getElementById('resultado-icone');
+      var obs     = document.getElementById('resultado-obs');
+      var btnBaixar = document.getElementById('btn-baixar');
+
+      document.getElementById('tamanho-original').textContent = mb(tamanhoOriginal);
+      document.getElementById('tamanho-final').textContent    = mb(bytesResultado.length);
+      document.getElementById('reducao').textContent          = reducao > 0 ? '-' + reducao + '%' : (reducao === 0 ? '0%' : '+' + Math.abs(reducao) + '%');
+
+      if (reducao >= 1) {
+        // Houve compressão real
+        box.style.background = '#f0fff4';
+        box.style.border     = '1px solid #86efac';
+        icone.textContent    = '✓';
+        titulo.style.color   = '#166534';
+        titulo.textContent   = 'PDF compactado com sucesso!';
+        document.getElementById('tamanho-final').style.color = '#166534';
+        document.getElementById('reducao').style.color       = '#166534';
+        obs.textContent  = '';
+        btnBaixar.textContent = 'Baixar PDF compactado';
+        btnBaixar.style.display = '';
+      } else {
+        // PDF já estava otimizado — imagens provavelmente já em JPEG, deflate não ganha
+        box.style.background = '#f8f9ff';
+        box.style.border     = '1px solid #c7d2fe';
+        icone.textContent    = 'ℹ';
+        titulo.style.color   = '#3730a3';
+        titulo.textContent   = 'PDF já está otimizado';
+        document.getElementById('tamanho-final').style.color = '#555';
+        document.getElementById('reducao').style.color       = '#888';
+        obs.style.color   = '#6b7280';
+        obs.textContent   = 'Este PDF contém imagens já comprimidas (JPEG/ZIP) — não há ganho adicional com compressão lossless.';
+        // Esconde botão de download quando não há redução
+        btnBaixar.style.display = 'none';
+      }
+
+      mostrar('estado-resultado');
+    }
+
     async function processar(file) {
-      nomeArquivo = file.name.replace(/\.pdf$/i, '') || 'documento';
+      // Reseta o input para garantir que o mesmo arquivo pode ser selecionado novamente
+      try { document.getElementById('entrada-pdf').value = ''; } catch(e) {}
+
+      nomeArquivo     = file.name.replace(/\.pdf$/i, '') || 'documento';
       var tamanhoOriginal = file.size;
 
-      // Carregar motor MuPDF (somente uma vez)
+      // Carregar motor MuPDF (somente na primeira vez)
       if (!mupdfCarregado) {
         mostrar('estado-carregando');
         try {
@@ -241,12 +288,10 @@
       document.getElementById('nome-arquivo').textContent = file.name;
 
       try {
-        // Lê o arquivo
         var arrayBuf = await file.arrayBuffer();
         var uint8    = new Uint8Array(arrayBuf);
 
-        // Abre e compacta com MuPDF
-        // saveToBuffer recebe string de opções (não objeto)
+        // Abre e compacta — saveToBuffer recebe string de opções
         var doc = mupdfCarregado.Document.openDocument(uint8, 'application/pdf');
         var buf = doc.saveToBuffer('compress,compress-images,compress-fonts,garbage=4');
 
@@ -255,14 +300,7 @@
         buf.destroy();
         doc.destroy();
 
-        // Calcula redução
-        var reducao = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
-
-        document.getElementById('tamanho-original').textContent = mb(tamanhoOriginal);
-        document.getElementById('tamanho-final').textContent    = mb(bytesResultado.length);
-        document.getElementById('reducao').textContent          = reducao > 0 ? '-' + reducao + '%' : '+' + Math.abs(reducao) + '%';
-
-        mostrar('estado-resultado');
+        mostrarResultado(tamanhoOriginal);
       } catch (e) {
         mostrar('estado-erro');
         document.getElementById('msg-erro').textContent = 'O arquivo pode estar corrompido ou protegido por senha.';
@@ -282,12 +320,18 @@
 
     function reiniciar() {
       bytesResultado = null;
+      bytesOriginais = null;
       document.getElementById('entrada-pdf').value = '';
       mostrar('estado-inicial');
     }
 
-    // Eventos
-    document.getElementById('entrada-pdf').addEventListener('change', function (e) {
+    // Usar tanto 'change' quanto 'input' para máxima compatibilidade
+    var inputEl = document.getElementById('entrada-pdf');
+    inputEl.addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (file) processar(file);
+    });
+    inputEl.addEventListener('input', function (e) {
       var file = e.target.files && e.target.files[0];
       if (file) processar(file);
     });
@@ -296,7 +340,7 @@
     document.getElementById('btn-outro').addEventListener('click', reiniciar);
     document.getElementById('btn-tentar-novamente').addEventListener('click', reiniciar);
 
-    // Drag and drop na zona
+    // Drag and drop — sem filtro de MIME (alguns PDFs chegam como octet-stream)
     var zona = document.getElementById('zona-clique');
     zona.addEventListener('dragover', function (e) {
       e.preventDefault();
@@ -312,7 +356,7 @@
       zona.style.borderColor = '#DCDCDC';
       zona.style.background  = '';
       var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if (file && file.type === 'application/pdf') processar(file);
+      if (file) processar(file);
     });
   })();
   </script>
