@@ -97,10 +97,22 @@
 
     <!-- ESTADO: INICIAL -->
     <div id="estado-inicial">
+
+      <!-- Seletor de qualidade -->
+      <div style="margin-bottom:20px;text-align:center;">
+        <p style="font-family:sans-serif;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin:0 0 10px;">Nível de compressão</p>
+        <div style="display:inline-flex;border:1px solid #DCDCDC;border-radius:8px;overflow:hidden;">
+          <button class="btn-qual" data-q="85" style="background:none;border:none;padding:8px 18px;font-family:sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:#888;transition:background .15s,color .15s;">Leve</button>
+          <button class="btn-qual" data-q="65" style="background:#1A3A5C;border:none;padding:8px 18px;font-family:sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:#fff;transition:background .15s,color .15s;">Moderada</button>
+          <button class="btn-qual" data-q="40" style="background:none;border:none;padding:8px 18px;font-family:sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;color:#888;transition:background .15s,color .15s;">Máxima</button>
+        </div>
+        <p id="qual-desc" style="font-family:sans-serif;font-size:.72rem;color:#bbb;margin:8px 0 0;">Re-encoda imagens em JPEG 65% — bom equilíbrio entre tamanho e visual</p>
+      </div>
+
       <!-- input fora do label para evitar duplo disparo em alguns browsers -->
       <input type="file" id="entrada-pdf" accept=".pdf" style="position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;">
       <label for="entrada-pdf" id="zona-clique"
-             style="display:block;border:2px dashed #DCDCDC;border-radius:16px;padding:56px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
+             style="display:block;border:2px dashed #DCDCDC;border-radius:16px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
              onmouseover="this.style.borderColor='#1A3A5C';this.style.background='#f5f8ff'"
              onmouseout="this.style.borderColor='#DCDCDC';this.style.background=''">
         <div style="width:64px;height:64px;background:#f0f4ff;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
@@ -124,8 +136,8 @@
     <!-- ESTADO: PROCESSANDO -->
     <div id="estado-processando" style="display:none;text-align:center;padding:48px 0;">
       <div style="width:56px;height:56px;border:3px solid #f0f0f0;border-top-color:#1A3A5C;border-radius:50%;margin:0 auto 24px;animation:girar 0.9s linear infinite;"></div>
-      <p style="font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Compactando…</p>
-      <p id="nome-arquivo" style="font-family:sans-serif;font-size:.8rem;color:#aaa;margin:0;"></p>
+      <p id="proc-titulo" style="font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Processando…</p>
+      <p id="proc-detalhe" style="font-family:sans-serif;font-size:.8rem;color:#aaa;margin:0;"></p>
     </div>
 
     <!-- ESTADO: RESULTADO -->
@@ -207,36 +219,161 @@
   <script src="/assets/analytics.js"></script>
   <script type="module">
   (function () {
-    var mupdfCarregado  = null;
-    var bytesResultado  = null;
-    var bytesOriginais  = null;
-    var nomeArquivo     = '';
+    var mupdf         = null;
+    var bytesResultado = null;
+    var nomeArquivo   = '';
+    var qualidade     = 65; // JPEG quality padrão
 
+    var QUAL_DESC = {
+      85: 'Re-encoda imagens em JPEG 85% — visual quase idêntico ao original',
+      65: 'Re-encoda imagens em JPEG 65% — bom equilíbrio entre tamanho e visual',
+      40: 'Re-encoda imagens em JPEG 40% — máxima redução, qualidade visivelmente menor'
+    };
+
+    // ---------- Seletor de qualidade ----------
+    document.querySelectorAll('.btn-qual').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        qualidade = parseInt(btn.dataset.q, 10);
+        document.querySelectorAll('.btn-qual').forEach(function (b) {
+          b.style.background = 'none';
+          b.style.color      = '#888';
+        });
+        btn.style.background = '#1A3A5C';
+        btn.style.color      = '#fff';
+        document.getElementById('qual-desc').textContent = QUAL_DESC[qualidade];
+      });
+    });
+
+    // ---------- Helpers ----------
     function mb(bytes) {
       if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
       return Math.round(bytes / 1024) + ' KB';
     }
 
     function mostrar(id) {
-      ['estado-inicial','estado-carregando','estado-processando','estado-resultado','estado-erro'].forEach(function (s) {
-        document.getElementById(s).style.display = s === id ? '' : 'none';
-      });
+      ['estado-inicial','estado-carregando','estado-processando','estado-resultado','estado-erro']
+        .forEach(function (s) {
+          document.getElementById(s).style.display = s === id ? '' : 'none';
+        });
     }
 
-    function mostrarResultado(tamanhoOriginal) {
-      var reducao = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
-      var box     = document.getElementById('resultado-box');
-      var titulo  = document.getElementById('resultado-titulo');
-      var icone   = document.getElementById('resultado-icone');
-      var obs     = document.getElementById('resultado-obs');
+    function setProc(titulo, detalhe) {
+      document.getElementById('proc-titulo').textContent  = titulo;
+      document.getElementById('proc-detalhe').textContent = detalhe || '';
+    }
+
+    // ---------- Compressão lossy de imagens ----------
+    function comprimirImagens(doc, q) {
+      var n           = doc.countObjects();
+      var processadas = 0;
+
+      for (var i = 1; i < n; i++) {
+        var ref = doc.newIndirect(i);
+        try {
+          var obj = ref.resolve();
+
+          // Só interessa dict + stream
+          if (!obj.isDictionary() || !obj.isStream()) continue;
+
+          // Só XObject Image
+          var subtype = obj.get('Subtype');
+          if (subtype.isNull() || subtype.asName() !== 'Image') continue;
+
+          // Pula image masks (1-bit)
+          var imageMaskVal = obj.get('ImageMask');
+          if (!imageMaskVal.isNull() && imageMaskVal.asBoolean()) continue;
+
+          // Carrega a imagem
+          var image;
+          try { image = doc.loadImage(ref); }
+          catch (e) { continue; }
+
+          // Pula imagens 1-bit (ilustrações p&b, assinaturas)
+          if (image.getBitsPerComponent() === 1) { image.destroy(); continue; }
+
+          // Imagens muito pequenas não valem o overhead do JPEG
+          var w = image.getWidth();
+          var h = image.getHeight();
+          if (w < 32 || h < 32) { image.destroy(); continue; }
+
+          // Converte para Pixmap
+          var pixmap;
+          try { pixmap = image.toPixmap(); }
+          catch (e) { image.destroy(); continue; }
+
+          // Detecta espaço de cor → JPEG suporta Gray e RGB/CMYK
+          var cs       = pixmap.getColorSpace();
+          var nComp    = cs ? cs.getNumberOfComponents() : 3;
+          var isGray   = (nComp === 1);
+          var targetCS = isGray
+            ? mupdf.ColorSpace.DeviceGray
+            : mupdf.ColorSpace.DeviceRGB;
+
+          // Converte sem canal alpha (JPEG não suporta transparência)
+          var pixFinal;
+          try {
+            pixFinal = pixmap.convertToColorSpace(targetCS, false);
+          } catch (e) {
+            pixmap.destroy();
+            image.destroy();
+            continue;
+          }
+          pixmap.destroy();
+
+          // Preserva SMask (máscara de transparência) se existir
+          var smask = obj.get('SMask');
+
+          // Encoda como JPEG
+          var jpegBuf;
+          try { jpegBuf = pixFinal.asJPEG(q); }
+          catch (e) { pixFinal.destroy(); image.destroy(); continue; }
+          pixFinal.destroy();
+
+          // Monta novo dicionário e substitui o objeto no PDF
+          try {
+            var newDict = {
+              'Type':             'XObject',
+              'Subtype':          'Image',
+              'Width':            w,
+              'Height':           h,
+              'ColorSpace':       isGray ? 'DeviceGray' : 'DeviceRGB',
+              'BitsPerComponent': 8,
+              'Filter':           'DCTDecode'
+            };
+            // Mantém referência ao SMask se existia
+            if (!smask.isNull()) newDict['SMask'] = smask;
+
+            ref.writeObject(newDict);
+            ref.writeRawStream(jpegBuf);
+            processadas++;
+          } catch (e) { /* mantém original se falhar */ }
+
+          jpegBuf.destroy();
+          image.destroy();
+
+        } catch (e) {
+          // objeto sem suporte, ignora
+        }
+      }
+
+      return processadas;
+    }
+
+    // ---------- Resultado ----------
+    function mostrarResultado(tamanhoOriginal, nImagens) {
+      var reducao   = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
+      var box       = document.getElementById('resultado-box');
+      var titulo    = document.getElementById('resultado-titulo');
+      var icone     = document.getElementById('resultado-icone');
+      var obs       = document.getElementById('resultado-obs');
       var btnBaixar = document.getElementById('btn-baixar');
 
       document.getElementById('tamanho-original').textContent = mb(tamanhoOriginal);
       document.getElementById('tamanho-final').textContent    = mb(bytesResultado.length);
-      document.getElementById('reducao').textContent          = reducao > 0 ? '-' + reducao + '%' : (reducao === 0 ? '0%' : '+' + Math.abs(reducao) + '%');
+      document.getElementById('reducao').textContent =
+        reducao > 0 ? '-' + reducao + '%' : (reducao === 0 ? '0%' : '+' + Math.abs(reducao) + '%');
 
       if (reducao >= 1) {
-        // Houve compressão real
         box.style.background = '#f0fff4';
         box.style.border     = '1px solid #86efac';
         icone.textContent    = '✓';
@@ -244,66 +381,74 @@
         titulo.textContent   = 'PDF compactado com sucesso!';
         document.getElementById('tamanho-final').style.color = '#166534';
         document.getElementById('reducao').style.color       = '#166534';
-        obs.textContent  = '';
-        btnBaixar.textContent = 'Baixar PDF compactado';
+        obs.style.color      = '#6b7280';
+        obs.textContent      = nImagens > 0
+          ? nImagens + ' imagem(ns) re-encodada(s) em JPEG ' + qualidade + '%'
+          : 'Streams e fontes comprimidos.';
+        btnBaixar.textContent   = 'Baixar PDF compactado';
         btnBaixar.style.display = '';
       } else {
-        // PDF já estava otimizado — imagens provavelmente já em JPEG, deflate não ganha
         box.style.background = '#f8f9ff';
         box.style.border     = '1px solid #c7d2fe';
         icone.textContent    = 'ℹ';
         titulo.style.color   = '#3730a3';
-        titulo.textContent   = 'PDF já está otimizado';
+        titulo.textContent   = 'Sem redução possível';
         document.getElementById('tamanho-final').style.color = '#555';
         document.getElementById('reducao').style.color       = '#888';
-        obs.style.color   = '#6b7280';
-        obs.textContent   = 'Este PDF contém imagens já comprimidas (JPEG/ZIP) — não há ganho adicional com compressão lossless.';
-        // Esconde botão de download quando não há redução
+        obs.style.color  = '#6b7280';
+        obs.textContent  = 'Este PDF não contém imagens recomprimíveis — pode ser texto puro, vetorial ou já otimizado.';
         btnBaixar.style.display = 'none';
       }
 
       mostrar('estado-resultado');
     }
 
+    // ---------- Fluxo principal ----------
     async function processar(file) {
-      // Reseta o input para garantir que o mesmo arquivo pode ser selecionado novamente
       try { document.getElementById('entrada-pdf').value = ''; } catch(e) {}
 
-      nomeArquivo     = file.name.replace(/\.pdf$/i, '') || 'documento';
+      nomeArquivo = file.name.replace(/\.pdf$/i, '') || 'documento';
       var tamanhoOriginal = file.size;
 
-      // Carregar motor MuPDF (somente na primeira vez)
-      if (!mupdfCarregado) {
+      // Carrega MuPDF na primeira vez
+      if (!mupdf) {
         mostrar('estado-carregando');
         try {
-          mupdfCarregado = await import('/assets/mupdf/mupdf.js');
+          mupdf = await import('/assets/mupdf/mupdf.js');
         } catch (e) {
           mostrar('estado-erro');
-          document.getElementById('msg-erro').textContent = 'Falha ao carregar o motor de compressão. Verifique sua conexão.';
+          document.getElementById('msg-erro').textContent = 'Falha ao carregar o motor. Verifique sua conexão.';
           return;
         }
       }
 
       mostrar('estado-processando');
-      document.getElementById('nome-arquivo').textContent = file.name;
+      setProc('Lendo arquivo…', file.name);
 
       try {
         var arrayBuf = await file.arrayBuffer();
         var uint8    = new Uint8Array(arrayBuf);
 
-        // Abre e compacta — saveToBuffer recebe string de opções
-        var doc = mupdfCarregado.Document.openDocument(uint8, 'application/pdf');
-        var buf = doc.saveToBuffer('compress,compress-images,compress-fonts,garbage=4');
+        setProc('Abrindo PDF…', '');
+        var doc = mupdf.Document.openDocument(uint8, 'application/pdf');
 
-        // Copia para heap JS antes de liberar memória WASM
+        // Fase 1: re-encoda imagens em JPEG com qualidade configurada
+        setProc('Comprimindo imagens…', 'JPEG ' + qualidade + '%');
+        var nImagens = comprimirImagens(doc, qualidade);
+
+        // Fase 2: serializa com garbage collection (remove dados antigos das imagens substituídas)
+        setProc('Finalizando…', 'Removendo dados antigos e comprimindo streams');
+        var buf = doc.saveToBuffer('compress,compress-fonts,garbage=4');
+
         bytesResultado = new Uint8Array(buf.asUint8Array());
         buf.destroy();
         doc.destroy();
 
-        mostrarResultado(tamanhoOriginal);
+        mostrarResultado(tamanhoOriginal, nImagens);
       } catch (e) {
         mostrar('estado-erro');
-        document.getElementById('msg-erro').textContent = 'O arquivo pode estar corrompido ou protegido por senha.';
+        document.getElementById('msg-erro').textContent =
+          'Falha ao processar. O arquivo pode estar corrompido ou protegido por senha.';
       }
     }
 
@@ -320,12 +465,11 @@
 
     function reiniciar() {
       bytesResultado = null;
-      bytesOriginais = null;
       document.getElementById('entrada-pdf').value = '';
       mostrar('estado-inicial');
     }
 
-    // Usar tanto 'change' quanto 'input' para máxima compatibilidade
+    // Eventos do input (change + input para compatibilidade máxima)
     var inputEl = document.getElementById('entrada-pdf');
     inputEl.addEventListener('change', function (e) {
       var file = e.target.files && e.target.files[0];
@@ -340,7 +484,7 @@
     document.getElementById('btn-outro').addEventListener('click', reiniciar);
     document.getElementById('btn-tentar-novamente').addEventListener('click', reiniciar);
 
-    // Drag and drop — sem filtro de MIME (alguns PDFs chegam como octet-stream)
+    // Drag and drop (sem filtro de MIME — PDFs podem chegar como octet-stream)
     var zona = document.getElementById('zona-clique');
     zona.addEventListener('dragover', function (e) {
       e.preventDefault();
