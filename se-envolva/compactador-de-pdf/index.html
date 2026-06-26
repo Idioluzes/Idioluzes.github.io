@@ -112,7 +112,6 @@
         <p style="font-family:Georgia,serif;font-size:1.15rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Escolher PDF</p>
         <p style="font-family:sans-serif;font-size:.82rem;color:#aaa;margin:0;">Clique aqui e selecione o arquivo no seu computador</p>
       </div>
-      <p style="font-family:sans-serif;font-size:.72rem;color:#ccc;text-align:center;margin-top:14px;">Na primeira utilização, o compactador (~9 MB) será baixado automaticamente</p>
     </div>
 
     <!-- ESTADO: CARREGANDO MOTOR -->
@@ -247,15 +246,14 @@
         var uint8    = new Uint8Array(arrayBuf);
 
         // Abre e compacta com MuPDF
+        // saveToBuffer recebe string de opções (não objeto)
         var doc = mupdfCarregado.Document.openDocument(uint8, 'application/pdf');
-        var buf = doc.saveToBuffer({
-          compress:         true,
-          'compress-images': true,
-          'compress-fonts':  true,
-          garbage:           4,
-          linearize:         false
-        });
-        bytesResultado = buf.asUint8Array();
+        var buf = doc.saveToBuffer('compress,compress-images,compress-fonts,garbage=4');
+
+        // Copia para heap JS antes de liberar memória WASM
+        bytesResultado = new Uint8Array(buf.asUint8Array());
+        buf.destroy();
+        doc.destroy();
 
         // Calcula redução
         var reducao = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
