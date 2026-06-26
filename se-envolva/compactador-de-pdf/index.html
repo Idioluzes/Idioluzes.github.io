@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <script>try{if(localStorage.gaTheme==='dark')document.documentElement.classList.add('dark')}catch(e){}</script>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Compactador de PDF gratuito e privado. Seu arquivo nunca sai do seu computador — tudo processado localmente no browser."/>
+  <meta name="robots" content="index, follow"/>
+  <meta property="og:title" content="Compactador de PDF | Grande Ateu"/>
+  <meta property="og:description" content="Compacte PDFs gratuitamente. Seu arquivo nunca sai do seu computador."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://grandeateu.com/se-envolva/compactador-de-pdf/"/>
+  <link rel="canonical" href="https://grandeateu.com/se-envolva/compactador-de-pdf/"/>
+  <title>Compactador de PDF | Grande Ateu</title>
+  <link rel="stylesheet" href="/assets/tailwind.min.css"/>
+  <link rel="stylesheet" href="/assets/custom.css"/>
+</head>
+<body class="font-sans antialiased bg-fundo text-texto">
+
+  <header class="bg-fundo border-b border-borda sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center justify-between h-16" aria-label="Navegação principal">
+        <a href="/" class="font-serif text-xl font-bold text-acento">Grande Ateu <span class="hidden sm:inline text-texto-sec text-sm font-sans font-normal">| A Bíblia Ateia</span></a>
+        <ul class="hidden md:flex items-center gap-5 text-sm font-semibold text-texto">
+          <li style="position:relative;">
+            <button id="btn-biblia" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">Bíblia Online <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="drop-biblia" style="display:none;position:absolute;top:calc(100% + 10px);left:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:160px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="/biblia/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Conheça</a>
+              <a href="/t1/An/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Leia</a>
+            </div>
+          </li>
+          <li style="position:relative;">
+            <button id="btn-loja" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">Loja <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="drop-loja" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:180px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="/loja/#produto-biblia" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Bíblia Impressa</a>
+              <a href="/loja/#produto-curso" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Imersão Hotmart</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Doação</a>
+            </div>
+          </li>
+          <li style="position:relative;">
+            <button id="btn-redes" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">Redes <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="drop-redes" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:150px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="#" data-externo="https://whatsapp.com/channel/0029VbBSupFAjPXGrgFRxG0V" style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366" style="flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Canal WhatsApp</a>
+              <a href="#" data-externo="https://www.instagram.com/governogoias" style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#E1306C" style="flex-shrink:0;"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Instagram</a>
+              <a href="#" data-externo="https://t.me/diariodetorcedor" style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#229ED9" style="flex-shrink:0;"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>Canal Telegram</a>
+              <a href="#" data-externo="https://www.youtube.com/c/VlogdoCair%C3%A3oOficial" style="display:flex;align-items:center;gap:10px;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FF0000" style="flex-shrink:0;"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>Canal YouTube</a>
+            </div>
+          </li>
+          <!-- SE ENVOLVA -->
+          <li style="position:relative;">
+            <button id="btn-envolva" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">Se Envolva <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="drop-envolva" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);min-width:220px;">
+              <a href="/se-envolva/compactador-de-pdf/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1A3A5C;text-decoration:none;font-weight:700;white-space:nowrap;">Compactador de PDF</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Votações</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Fórum</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Listas de Distribuição</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Enviar Material</a>
+            </div>
+          </li>
+          <li style="position:relative;">
+            <button id="btn-cosmo" style="background:none;border:none;cursor:pointer;font-size:.875rem;font-weight:600;font-family:inherit;color:inherit;display:flex;align-items:center;gap:4px;padding:0;">Cosmovisão <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
+            <div id="drop-cosmo" style="display:none;position:absolute;top:calc(100% + 10px);right:0;background:#F9F7F4;border:1px solid #DCDCDC;border-radius:8px;padding:6px 0;min-width:215px;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,.09);">
+              <a href="/jornada/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Jornada</a>
+              <a href="/piramide/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Pirâmide Ateia</a>
+              <a href="/dicionario/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Dicionário Bíblico</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Grande Ateu</a>
+              <a href="#" data-placeholder style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Salvação</a>
+              <a href="/declaracao/" style="display:block;padding:10px 18px;font-size:.85rem;font-family:sans-serif;color:#1C1C1E;text-decoration:none;font-weight:600;white-space:nowrap;">Declaração de Fé Genuína</a>
+            </div>
+          </li>
+          <li class="flex items-center gap-2">
+            <a href="/" title="Português"><img src="/assets/flags/br.svg" alt="PT" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=en&u=https%3A%2F%2Fgrandeateu.com%2Fse-envolva%2Fcompactador-de-pdf%2F" title="English"><img src="/assets/flags/us.svg" alt="EN" width="24" height="17" style="border-radius:2px;display:block;"></a>
+            <a href="https://translate.google.com/translate?sl=pt&tl=es&u=https%3A%2F%2Fgrandeateu.com%2Fse-envolva%2Fcompactador-de-pdf%2F" title="Español"><img src="/assets/flags/es.svg" alt="ES" width="24" height="17" style="border-radius:2px;display:block;"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 sm:px-6 py-12">
+
+    <nav aria-label="Breadcrumb" class="mb-8 text-xs text-texto-sec">
+      <ol class="flex items-center gap-1">
+        <li><a href="/" class="hover:text-acento transition-colors">Início</a></li>
+        <li aria-hidden="true" class="mx-1">›</li>
+        <li class="text-texto font-semibold">Compactador de PDF</li>
+      </ol>
+    </nav>
+
+    <div class="mb-8 pb-6 border-b border-borda">
+      <p class="text-xs uppercase tracking-widest text-texto-sec mb-2">Ferramenta gratuita</p>
+      <h1 class="font-serif text-4xl font-bold text-acento mb-3">Compactador de PDF</h1>
+      <p class="text-base text-texto-sec leading-relaxed">Reduza o tamanho do seu PDF diretamente no browser. <strong class="text-texto">Seu arquivo nunca sai do seu computador</strong> — zero upload, zero servidor.</p>
+    </div>
+
+    <!-- ESTADO: INICIAL -->
+    <div id="estado-inicial">
+      <input type="file" id="entrada-pdf" accept=".pdf" style="display:none;">
+      <div id="zona-clique"
+           style="border:2px dashed #DCDCDC;border-radius:16px;padding:56px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;"
+           onclick="document.getElementById('entrada-pdf').click()"
+           onmouseover="this.style.borderColor='#1A3A5C';this.style.background='#f5f8ff'"
+           onmouseout="this.style.borderColor='#DCDCDC';this.style.background=''">
+        <div style="width:64px;height:64px;background:#f0f4ff;border-radius:50%;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="28" fill="none" stroke="#1A3A5C" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0L8 8m4-4l4 4"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1"/>
+          </svg>
+        </div>
+        <p style="font-family:Georgia,serif;font-size:1.15rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Escolher PDF</p>
+        <p style="font-family:sans-serif;font-size:.82rem;color:#aaa;margin:0;">Clique aqui e selecione o arquivo no seu computador</p>
+      </div>
+      <p style="font-family:sans-serif;font-size:.72rem;color:#ccc;text-align:center;margin-top:14px;">Na primeira utilização, o compactador (~9 MB) será baixado automaticamente</p>
+    </div>
+
+    <!-- ESTADO: CARREGANDO MOTOR -->
+    <div id="estado-carregando" style="display:none;text-align:center;padding:48px 0;">
+      <div style="width:56px;height:56px;border:3px solid #f0f0f0;border-top-color:#1A3A5C;border-radius:50%;margin:0 auto 24px;animation:girar 0.9s linear infinite;"></div>
+      <p style="font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;" id="msg-carregando">Baixando compactador…</p>
+      <p style="font-family:sans-serif;font-size:.8rem;color:#aaa;margin:0;">Somente na primeira vez (~9 MB)</p>
+    </div>
+
+    <!-- ESTADO: PROCESSANDO -->
+    <div id="estado-processando" style="display:none;text-align:center;padding:48px 0;">
+      <div style="width:56px;height:56px;border:3px solid #f0f0f0;border-top-color:#1A3A5C;border-radius:50%;margin:0 auto 24px;animation:girar 0.9s linear infinite;"></div>
+      <p style="font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:#1C1C1E;margin:0 0 8px;">Compactando…</p>
+      <p id="nome-arquivo" style="font-family:sans-serif;font-size:.8rem;color:#aaa;margin:0;"></p>
+    </div>
+
+    <!-- ESTADO: RESULTADO -->
+    <div id="estado-resultado" style="display:none;">
+      <div style="background:#f0fff4;border:1px solid #86efac;border-radius:14px;padding:28px 24px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:2rem;margin-bottom:8px;">✓</div>
+        <p style="font-family:Georgia,serif;font-size:1.25rem;font-weight:700;color:#166534;margin:0 0 16px;">PDF compactado com sucesso!</p>
+        <div style="display:flex;justify-content:center;gap:32px;margin-bottom:20px;">
+          <div>
+            <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Original</p>
+            <p id="tamanho-original" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;color:#555;margin:0;"></p>
+          </div>
+          <div style="display:flex;align-items:center;color:#ccc;font-size:1.2rem;">→</div>
+          <div>
+            <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Compactado</p>
+            <p id="tamanho-final" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;color:#166534;margin:0;"></p>
+          </div>
+          <div>
+            <p style="font-family:sans-serif;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:700;margin:0 0 4px;">Redução</p>
+            <p id="reducao" style="font-family:sans-serif;font-size:1.1rem;font-weight:700;color:#166534;margin:0;"></p>
+          </div>
+        </div>
+        <button id="btn-baixar" style="background:#1A3A5C;color:#fff;font-family:sans-serif;font-size:.9rem;font-weight:700;padding:14px 32px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.04em;">Baixar PDF compactado</button>
+      </div>
+      <div style="text-align:center;">
+        <button id="btn-outro" style="background:none;border:none;font-family:sans-serif;font-size:.82rem;color:#aaa;cursor:pointer;text-decoration:underline;">Compactar outro arquivo</button>
+      </div>
+    </div>
+
+    <!-- ESTADO: ERRO -->
+    <div id="estado-erro" style="display:none;">
+      <div style="background:#fff5f5;border:1px solid #fca5a5;border-radius:14px;padding:28px 24px;text-align:center;margin-bottom:20px;">
+        <p style="font-size:1.8rem;margin:0 0 8px;">⚠</p>
+        <p style="font-family:Georgia,serif;font-size:1.1rem;font-weight:700;color:#991b1b;margin:0 0 8px;">Não foi possível compactar</p>
+        <p id="msg-erro" style="font-family:sans-serif;font-size:.82rem;color:#7f1d1d;margin:0;"></p>
+      </div>
+      <div style="text-align:center;">
+        <button id="btn-tentar-novamente" style="background:none;border:none;font-family:sans-serif;font-size:.82rem;color:#aaa;cursor:pointer;text-decoration:underline;">Tentar com outro arquivo</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="bg-acento text-white py-12 px-4 mt-16" role="contentinfo">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm font-sans">
+      <div>
+        <p class="font-serif text-lg font-bold mb-2">Grande Ateu</p>
+        <p class="text-blue-200 leading-relaxed">A Bíblia Ateia — 3 tomos · 38 livros originais.</p>
+      </div>
+      <nav aria-label="Tomos">
+        <p class="font-semibold mb-3 uppercase tracking-wider text-xs text-blue-200">Tomos</p>
+        <ul class="space-y-2">
+          <li><a href="/t1/" class="text-blue-100 hover:text-white transition-colors">Tomo I — Ruptura</a></li>
+          <li><a href="/t2/" class="text-blue-100 hover:text-white transition-colors">Tomo II — Edificação</a></li>
+          <li><a href="/t3/" class="text-blue-100 hover:text-white transition-colors">Tomo III — Consolidação</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Site">
+        <p class="font-semibold mb-3 uppercase tracking-wider text-xs text-blue-200">Site</p>
+        <ul class="space-y-2">
+          <li><a href="/faq/" class="text-blue-100 hover:text-white transition-colors">FAQ</a></li>
+          <li><a href="/sobre/" class="text-blue-100 hover:text-white transition-colors">Sobre</a></li>
+          <li><a href="/loja/" class="text-blue-100 hover:text-white transition-colors">Loja</a></li>
+          <li><a href="/apoiar/" class="text-blue-100 hover:text-white transition-colors">Apoiar</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="max-w-6xl mx-auto mt-10 pt-6 border-t border-blue-800 text-blue-300 text-xs text-center">
+      © 2026 Grande Ateu — Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <style>
+  @keyframes girar { to { transform: rotate(360deg); } }
+  </style>
+
+  <script src="/assets/mobile.js"></script>
+  <script src="/assets/analytics.js"></script>
+  <script type="module">
+  (function () {
+    var mupdfCarregado = null;
+    var bytesResultado = null;
+    var nomeArquivo    = '';
+
+    function mb(bytes) {
+      if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
+      return Math.round(bytes / 1024) + ' KB';
+    }
+
+    function mostrar(id) {
+      ['estado-inicial','estado-carregando','estado-processando','estado-resultado','estado-erro'].forEach(function (s) {
+        document.getElementById(s).style.display = s === id ? '' : 'none';
+      });
+    }
+
+    async function processar(file) {
+      nomeArquivo = file.name.replace(/\.pdf$/i, '') || 'documento';
+      var tamanhoOriginal = file.size;
+
+      // Carregar motor MuPDF (somente uma vez)
+      if (!mupdfCarregado) {
+        mostrar('estado-carregando');
+        try {
+          mupdfCarregado = await import('/assets/mupdf/mupdf.js');
+        } catch (e) {
+          mostrar('estado-erro');
+          document.getElementById('msg-erro').textContent = 'Falha ao carregar o motor de compressão. Verifique sua conexão.';
+          return;
+        }
+      }
+
+      mostrar('estado-processando');
+      document.getElementById('nome-arquivo').textContent = file.name;
+
+      try {
+        // Lê o arquivo
+        var arrayBuf = await file.arrayBuffer();
+        var uint8    = new Uint8Array(arrayBuf);
+
+        // Abre e compacta com MuPDF
+        var doc = mupdfCarregado.Document.openDocument(uint8, 'application/pdf');
+        var buf = doc.saveToBuffer({
+          compress:         true,
+          'compress-images': true,
+          'compress-fonts':  true,
+          garbage:           4,
+          linearize:         false
+        });
+        bytesResultado = buf.asUint8Array();
+
+        // Calcula redução
+        var reducao = Math.round((1 - bytesResultado.length / tamanhoOriginal) * 100);
+
+        document.getElementById('tamanho-original').textContent = mb(tamanhoOriginal);
+        document.getElementById('tamanho-final').textContent    = mb(bytesResultado.length);
+        document.getElementById('reducao').textContent          = reducao > 0 ? '-' + reducao + '%' : '+' + Math.abs(reducao) + '%';
+
+        mostrar('estado-resultado');
+      } catch (e) {
+        mostrar('estado-erro');
+        document.getElementById('msg-erro').textContent = 'O arquivo pode estar corrompido ou protegido por senha.';
+      }
+    }
+
+    function baixar() {
+      if (!bytesResultado) return;
+      var blob = new Blob([bytesResultado], { type: 'application/pdf' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href     = url;
+      a.download = nomeArquivo + '-compactado.pdf';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function reiniciar() {
+      bytesResultado = null;
+      document.getElementById('entrada-pdf').value = '';
+      mostrar('estado-inicial');
+    }
+
+    // Eventos
+    document.getElementById('entrada-pdf').addEventListener('change', function (e) {
+      var file = e.target.files && e.target.files[0];
+      if (file) processar(file);
+    });
+
+    document.getElementById('btn-baixar').addEventListener('click', baixar);
+    document.getElementById('btn-outro').addEventListener('click', reiniciar);
+    document.getElementById('btn-tentar-novamente').addEventListener('click', reiniciar);
+
+    // Drag and drop na zona
+    var zona = document.getElementById('zona-clique');
+    zona.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      zona.style.borderColor = '#1A3A5C';
+      zona.style.background  = '#f5f8ff';
+    });
+    zona.addEventListener('dragleave', function () {
+      zona.style.borderColor = '#DCDCDC';
+      zona.style.background  = '';
+    });
+    zona.addEventListener('drop', function (e) {
+      e.preventDefault();
+      zona.style.borderColor = '#DCDCDC';
+      zona.style.background  = '';
+      var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (file && file.type === 'application/pdf') processar(file);
+    });
+  })();
+  </script>
+
+</body>
+</html>
